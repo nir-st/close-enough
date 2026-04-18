@@ -1,0 +1,218 @@
+.answer-reveal {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.reveal-title {
+  text-align: center;
+  margin-bottom: 32px;
+  color: #2d3748;
+  font-size: 24px;
+}
+
+.number-line-container {
+  position: relative;
+  min-height: 200px;
+  margin: 40px 0;
+}
+
+.outliers-container {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.outlier-label {
+  background: #fef5e7;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #d68910;
+  border: 2px solid #f39c12;
+  animation: bounceIn 0.4s ease-out;
+}
+
+.number-line {
+  position: relative;
+  height: 120px;
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+.number-line.visible {
+  opacity: 1;
+}
+
+.line {
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  right: 5%;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  border-radius: 2px;
+  transform: translateY(-50%);
+  animation: expandLine 0.5s ease-out;
+}
+
+.ticks {
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  right: 5%;
+  transform: translateY(-50%);
+}
+
+.tick {
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+.tick-mark {
+  width: 2px;
+  height: 12px;
+  background: #4a5568;
+  margin: 0 auto;
+}
+
+.tick-label {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #718096;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.marker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  opacity: 0;
+  transition: all 0.3s ease-out;
+}
+
+.marker.visible {
+  opacity: 1;
+  animation: dropIn 0.4s ease-out;
+}
+
+.marker.winner {
+  animation: pulse 0.6s ease-in-out infinite;
+}
+
+.marker-avatar,
+.marker-star {
+  font-size: 32px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.marker-label {
+  background: white;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  color: #2d3748;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
+}
+
+.answer-marker .marker-star {
+  animation: starPulse 1s ease-in-out infinite;
+}
+
+.answer-label {
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+  color: #2d3748;
+  font-size: 16px;
+  font-weight: 800;
+  border: 2px solid #f39c12;
+}
+
+.winner-announcement {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: #48bb78;
+  margin-top: 24px;
+  padding: 16px;
+  background: #f0fff4;
+  border-radius: 12px;
+  animation: bounceIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes expandLine {
+  from {
+    transform: translateY(-50%) scaleX(0);
+  }
+  to {
+    transform: translateY(-50%) scaleX(1);
+  }
+}
+
+@keyframes dropIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -150%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+}
+
+@keyframes starPulse {
+  0%, 100% {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  }
+  50% {
+    filter: drop-shadow(0 4px 12px rgba(255, 215, 0, 0.6));
+  }
+}

@@ -1,0 +1,109 @@
+.host-container {
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.host-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.host-header h1 {
+  font-size: 32px;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.room-code-badge {
+  background: white;
+  padding: 8px 20px;
+  border-radius: 24px;
+  font-weight: 700;
+  color: #667eea;
+  font-size: 18px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.waiting-view {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.host-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.host-main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.start-game-btn {
+  width: 100%;
+  padding: 20px;
+  font-size: 20px;
+}
+
+.game-view {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.game-instruction {
+  text-align: center;
+  font-size: 18px;
+  color: white;
+  font-weight: 600;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+}
+
+.results-view {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.next-btn {
+  width: 100%;
+  padding: 20px;
+  font-size: 20px;
+}
+
+@media (max-width: 968px) {
+  .waiting-view {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .host-header h1 {
+    font-size: 24px;
+  }
+
+  .room-code-badge {
+    font-size: 16px;
+  }
+}

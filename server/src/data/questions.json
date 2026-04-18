@@ -1,0 +1,148 @@
+{
+  "questions": [
+    {
+      "id": "geo_easy_1",
+      "categories": ["Geography", "Israel"],
+      "difficulty": "easy",
+      "text": "How many countries border Israel?",
+      "correctAnswer": 4,
+      "unit": "countries"
+    },
+    {
+      "id": "geo_easy_2",
+      "categories": ["Geography"],
+      "difficulty": "easy",
+      "text": "How many continents are there on Earth?",
+      "correctAnswer": 7,
+      "unit": "continents"
+    },
+    {
+      "id": "hist_easy_1",
+      "categories": ["History", "Israel"],
+      "difficulty": "easy",
+      "text": "What year did Israel declare independence?",
+      "correctAnswer": 1948,
+      "unit": "year"
+    },
+    {
+      "id": "sci_easy_1",
+      "categories": ["Science", "Astronomy"],
+      "difficulty": "easy",
+      "text": "How many planets are in our solar system?",
+      "correctAnswer": 8,
+      "unit": "planets"
+    },
+    {
+      "id": "pop_easy_1",
+      "categories": ["Pop Culture", "Movies"],
+      "difficulty": "easy",
+      "text": "How many Harry Potter movies are there?",
+      "correctAnswer": 8,
+      "unit": "movies"
+    },
+    {
+      "id": "sport_easy_1",
+      "categories": ["Sports", "Soccer"],
+      "difficulty": "easy",
+      "text": "How many players are on a soccer team on the field?",
+      "correctAnswer": 11,
+      "unit": "players"
+    },
+    {
+      "id": "geo_med_1",
+      "categories": ["Geography", "Israel"],
+      "difficulty": "medium",
+      "text": "What is the population of Israel in millions?",
+      "correctAnswer": 9,
+      "unit": "million people"
+    },
+    {
+      "id": "geo_med_2",
+      "categories": ["Geography"],
+      "difficulty": "medium",
+      "text": "How many countries are in the European Union?",
+      "correctAnswer": 27,
+      "unit": "countries"
+    },
+    {
+      "id": "hist_med_1",
+      "categories": ["History", "Israel"],
+      "difficulty": "medium",
+      "text": "What year was Tel Aviv founded?",
+      "correctAnswer": 1909,
+      "unit": "year"
+    },
+    {
+      "id": "sci_med_1",
+      "categories": ["Science", "Geography"],
+      "difficulty": "medium",
+      "text": "What is the approximate distance from Earth to the Moon in thousands of km?",
+      "correctAnswer": 384,
+      "unit": "thousand km"
+    },
+    {
+      "id": "tech_med_1",
+      "categories": ["Technology"],
+      "difficulty": "medium",
+      "text": "What year was the iPhone first released?",
+      "correctAnswer": 2007,
+      "unit": "year"
+    },
+    {
+      "id": "sport_med_1",
+      "categories": ["Sports", "Olympics"],
+      "difficulty": "medium",
+      "text": "How many gold medals did Israel win in the 2020 Tokyo Olympics?",
+      "correctAnswer": 2,
+      "unit": "medals"
+    },
+    {
+      "id": "geo_hard_1",
+      "categories": ["Geography", "Israel"],
+      "difficulty": "hard",
+      "text": "What is the elevation of the Dead Sea in meters below sea level?",
+      "correctAnswer": 430,
+      "unit": "meters"
+    },
+    {
+      "id": "hist_hard_1",
+      "categories": ["History"],
+      "difficulty": "hard",
+      "text": "What year did World War II end?",
+      "correctAnswer": 1945,
+      "unit": "year"
+    },
+    {
+      "id": "sci_hard_1",
+      "categories": ["Science", "Physics"],
+      "difficulty": "hard",
+      "text": "What is the speed of light in thousands of km per second?",
+      "correctAnswer": 300,
+      "unit": "thousand km/s"
+    },
+    {
+      "id": "geo_hard_2",
+      "categories": ["Geography"],
+      "difficulty": "hard",
+      "text": "How many countries are recognized by the United Nations?",
+      "correctAnswer": 193,
+      "unit": "countries"
+    },
+    {
+      "id": "pop_hard_1",
+      "categories": ["Pop Culture", "Music"],
+      "difficulty": "hard",
+      "text": "What year did Eurovision Song Contest first take place?",
+      "correctAnswer": 1956,
+      "unit": "year"
+    },
+    {
+      "id": "sci_hard_2",
+      "categories": ["Science", "Human Body"],
+      "difficulty": "hard",
+      "text": "How many bones are in the adult human body?",
+      "correctAnswer": 206,
+      "unit": "bones"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+.answer-input-container {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.answer-input {
+  width: 100%;
+  padding: 16px;
+  font-size: 24px;
+  text-align: center;
+  border: 3px solid #e2e8f0;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.answer-input:focus {
+  border-color: #667eea;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  font-size: 18px;
+}
+
+.answer-submitted {
+  background: white;
+  border-radius: 12px;
+  padding: 48px 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.checkmark {
+  font-size: 64px;
+  color: #48bb78;
+  margin-bottom: 16px;
+  animation: scaleIn 0.3s ease-out;
+}
+
+.answer-submitted p {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 8px;
+}
+
+.waiting-text {
+  font-size: 16px !important;
+  color: #718096 !important;
+  font-weight: 400 !important;
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

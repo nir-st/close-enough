@@ -1,0 +1,58 @@
+.timer-container {
+  margin: 20px 0;
+}
+
+.timer {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.timer-value {
+  font-size: 32px;
+  font-weight: 800;
+  text-align: center;
+  color: #48bb78;
+  margin-bottom: 12px;
+}
+
+.timer.low .timer-value {
+  color: #ed8936;
+}
+
+.timer.very-low .timer-value {
+  color: #f56565;
+  animation: pulse 0.5s infinite;
+}
+
+.timer-bar-container {
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.timer-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #48bb78, #38a169);
+  transition: width 0.3s linear;
+  border-radius: 4px;
+}
+
+.timer.low .timer-bar {
+  background: linear-gradient(90deg, #ed8936, #dd6b20);
+}
+
+.timer.very-low .timer-bar {
+  background: linear-gradient(90deg, #f56565, #e53e3e);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
