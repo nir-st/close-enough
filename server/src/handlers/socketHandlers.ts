@@ -100,12 +100,26 @@ export function setupSocketHandlers(io: Server) {
 
             if (room.state === 'answering') {
               socket.emit('answering-started', {});
+
+              // Check if player already submitted answer
+              const hasAnswered = room.answers.has(player.id);
+              if (hasAnswered) {
+                socket.emit('answer-already-submitted', {});
+              }
             }
           }
 
           // Send results if in results phase
           if (room.state === 'results') {
-            // They'll see results when question ends
+            // Player will see results when they're broadcast
+            // Send current ready state
+            socket.emit('player-ready-update', {
+              playerId: player.id,
+              playerName: player.name,
+              readyCount: room.readyPlayers.size,
+              totalCount: room.players.filter(p => p.connected).length,
+              readyPlayerIds: Array.from(room.readyPlayers)
+            });
           }
         }
 

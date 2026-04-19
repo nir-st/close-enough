@@ -62,7 +62,8 @@ class GameService {
     // Check if player already answered
     const answerKey = `${playerId}`;
     if (room.answers.has(answerKey)) {
-      throw new Error('Already submitted answer');
+      // Already submitted - silently ignore for reconnection case
+      return;
     }
 
     // Calculate time taken

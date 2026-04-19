@@ -10,7 +10,6 @@ import './Play.css';
 function Play() {
   const { roomCode } = useParams();
   const hasJoinedRef = useRef(false);
-  const [showDetailedResults, setShowDetailedResults] = useState(false);
   const {
     connectSocket,
     joinRoom,
@@ -33,13 +32,6 @@ function Play() {
   useEffect(() => {
     connectSocket();
   }, [connectSocket]);
-
-  // Reset detailed results view when entering results state
-  useEffect(() => {
-    if (gameState === 'results') {
-      setShowDetailedResults(false);
-    }
-  }, [gameState]);
 
   useEffect(() => {
     // Auto-join if we have a room code but haven't joined yet
@@ -117,48 +109,40 @@ function Play() {
 
       {gameState === 'results' && roundResult && (
         <div className="play-results">
-          {!showDetailedResults ? (
-            <AnswerReveal
-              correctAnswer={roundResult.correctAnswer}
-              results={roundResult.results}
-              onComplete={() => setShowDetailedResults(true)}
-            />
-          ) : (
-            <>
-              <div className="my-result">
-                {roundResult.results.find(r => r.playerId === playerId) && (
-                  <div className="my-result-card">
-                    {roundResult.results.find(r => r.playerId === playerId)!.pointsEarned > 0 ? (
-                      <div className="result-success">
-                        🎉 You earned{' '}
-                        {roundResult.results.find(r => r.playerId === playerId)!.pointsEarned} points!
-                      </div>
-                    ) : (
-                      <div className="result-fail">
-                        Better luck next time!
-                      </div>
-                    )}
-                    <div className="answer-comparison">
-                      <div>Your answer: {roundResult.results.find(r => r.playerId === playerId)!.answer}</div>
-                      <div>Correct: {roundResult.correctAnswer}</div>
-                    </div>
+          <div className="my-result">
+            {roundResult.results.find(r => r.playerId === playerId) && (
+              <div className="my-result-card">
+                {roundResult.results.find(r => r.playerId === playerId)!.pointsEarned > 0 ? (
+                  <div className="result-success">
+                    🎉 You were closest!
+                  </div>
+                ) : (
+                  <div className="result-fail">
+                    Better luck next time!
                   </div>
                 )}
+                <div className="answer-comparison">
+                  <div>Your answer: {roundResult.results.find(r => r.playerId === playerId)!.answer}</div>
+                  <div>Correct: {roundResult.correctAnswer}</div>
+                  <div className="current-score">
+                    Your score: {roundResult.results.find(r => r.playerId === playerId)!.totalScore} pts
+                  </div>
+                </div>
               </div>
-              <div className="ready-section">
-                <button
-                  className={`btn-ready ${isReady ? 'ready' : ''}`}
-                  onClick={markReady}
-                  disabled={isReady}
-                >
-                  {isReady ? '✅ Ready!' : 'Ready for Next Question'}
-                </button>
-                <p className="ready-status">
-                  {readyCount} / {totalCount} players ready
-                </p>
-              </div>
-            </>
-          )}
+            )}
+          </div>
+          <div className="ready-section">
+            <button
+              className={`btn-ready ${isReady ? 'ready' : ''}`}
+              onClick={markReady}
+              disabled={isReady}
+            >
+              {isReady ? '✅ Ready!' : 'Ready for Next Question'}
+            </button>
+            <p className="ready-status">
+              {readyCount} / {totalCount} players ready
+            </p>
+          </div>
         </div>
       )}
 

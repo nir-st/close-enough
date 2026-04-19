@@ -40,7 +40,7 @@ function Scoreboard({ roundResult, finalResults }: ScoreboardProps) {
         </div>
         {roundResult.winner && (
           <div className="round-winner">
-            🎉 {roundResult.winner.playerAvatar} {roundResult.winner.playerName} wins this round! (+{roundResult.winner.pointsEarned} pts)
+            🎉 {roundResult.winner.playerAvatar} {roundResult.winner.playerName} wins this round!
           </div>
         )}
         <div className="results-table">
@@ -55,10 +55,9 @@ function Scoreboard({ roundResult, finalResults }: ScoreboardProps) {
               </div>
               <div className="answer-info">
                 <span className="answer-value">{result.answer}</span>
-                <span className="distance">(off by {result.distance})</span>
               </div>
               <div className="points">
-                {result.pointsEarned > 0 ? `+${result.pointsEarned}` : '0'} pts
+                {result.totalScore} pts
               </div>
             </div>
           ))}

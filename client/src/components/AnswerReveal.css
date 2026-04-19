@@ -10,12 +10,13 @@
   text-align: center;
   margin-bottom: 32px;
   color: #2d3748;
-  font-size: 24px;
+  font-size: 32px;
+  font-weight: 800;
 }
 
 .number-line-container {
   position: relative;
-  min-height: 200px;
+  min-height: 250px;
   margin: 40px 0;
 }
 
@@ -87,8 +88,9 @@
 
 .tick-label {
   margin-top: 8px;
-  font-size: 12px;
-  color: #718096;
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a5568;
   white-space: nowrap;
   text-align: center;
 }
@@ -121,17 +123,17 @@
 
 .marker-avatar,
 .marker-star {
-  font-size: 32px;
+  font-size: 48px;
   line-height: 1;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
 .marker-label {
   background: white;
-  padding: 4px 8px;
+  padding: 6px 12px;
   border-radius: 8px;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 18px;
   color: #2d3748;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   white-space: nowrap;
@@ -144,18 +146,19 @@
 .answer-label {
   background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
   color: #2d3748;
-  font-size: 16px;
+  font-size: 22px;
   font-weight: 800;
-  border: 2px solid #f39c12;
+  border: 3px solid #f39c12;
+  padding: 8px 16px;
 }
 
 .winner-announcement {
   text-align: center;
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 28px;
+  font-weight: 800;
   color: #48bb78;
   margin-top: 24px;
-  padding: 16px;
+  padding: 20px;
   background: #f0fff4;
   border-radius: 12px;
   animation: bounceIn 0.5s ease-out;

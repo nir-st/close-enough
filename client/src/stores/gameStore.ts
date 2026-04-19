@@ -147,6 +147,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
       get().setAnswerReceived(data);
     });
 
+    socket.on('answer-already-submitted', () => {
+      // Player reconnected after already submitting answer
+      set({ hasAnswered: true });
+      console.log('✅ You already submitted an answer for this question');
+    });
+
     socket.on('question-ended', (result) => {
       get().setQuestionEnded(result);
     });

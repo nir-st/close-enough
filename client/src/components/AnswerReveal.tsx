@@ -151,13 +151,13 @@ function AnswerReveal({ correctAnswer, results, onComplete }: AnswerRevealProps)
 
       // Variable delay based on step type
       if (step.type === 'zoom') {
-        delay += 800; // Zoom animation
+        delay += 1500; // Zoom animation (was 800ms)
       } else if (step.type === 'guess') {
-        delay += 600; // Guess reveal
+        delay += 1000; // Guess reveal (was 600ms)
       } else if (step.type === 'answer') {
-        delay += 1000; // Answer reveal
+        delay += 2000; // Answer reveal (was 1000ms)
       } else if (step.type === 'highlight') {
-        delay += 1500; // Highlight
+        delay += 2500; // Highlight (was 1500ms)
       }
     });
 
