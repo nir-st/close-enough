@@ -22,12 +22,16 @@ function Host() {
     joinUrl,
     roundResult,
     finalResults,
+    readyCount,
+    totalCount,
     updateSettings,
     startGame,
     nextQuestion,
     endGame,
     kickPlayer,
-    setTimeRemaining
+    setTimeRemaining,
+    addBots,
+    removeBots
   } = useGameStore();
 
   // Timer countdown
@@ -75,6 +79,30 @@ function Host() {
           <div className="host-sidebar">
             <QRCodeDisplay joinUrl={joinUrl || ''} roomCode={roomCode || ''} />
             <PlayerList players={players} isHost={true} onKick={kickPlayer} />
+            <div className="bot-controls card">
+              <h3>🤖 Bot Players</h3>
+              <p className="bot-info">Add bots for testing (1-5)</p>
+              <div className="bot-buttons">
+                {[1, 2, 3, 4, 5].map(count => (
+                  <button
+                    key={count}
+                    className="btn-bot"
+                    onClick={() => addBots(count)}
+                    disabled={players.length + count > 10}
+                  >
+                    +{count}
+                  </button>
+                ))}
+              </div>
+              {players.some(p => p.isBot) && (
+                <button
+                  className="btn-remove-bots"
+                  onClick={removeBots}
+                >
+                  Remove All Bots
+                </button>
+              )}
+            </div>
           </div>
           <div className="host-main">
             <GameSettings
@@ -129,14 +157,14 @@ function Host() {
           ) : (
             <>
               <Scoreboard roundResult={roundResult} />
-              <button className="btn-primary next-btn" onClick={() => {
-                setShowDetailedResults(false);
-                nextQuestion();
-              }}>
-                {roundResult.questionNumber < roundResult.totalQuestions
-                  ? 'Next Question'
-                  : 'See Final Results'}
-              </button>
+              <div className="ready-status-display">
+                <p className="ready-text">
+                  Waiting for players to be ready: {readyCount} / {totalCount}
+                </p>
+                {readyCount === totalCount && totalCount > 0 && (
+                  <p className="all-ready-text">✅ All players ready! Moving to next question...</p>
+                )}
+              </div>
             </>
           )}
           <PlayerList players={players} />

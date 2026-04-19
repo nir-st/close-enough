@@ -102,12 +102,17 @@
   align-items: center;
   gap: 4px;
   opacity: 0;
-  transition: all 0.3s ease-out;
+  transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .marker.visible {
   opacity: 1;
-  animation: dropIn 0.4s ease-out;
+  animation: dropIn 0.6s ease-out;
+}
+
+.marker.out-of-range {
+  opacity: 0.3;
+  pointer-events: none;
 }
 
 .marker.winner {

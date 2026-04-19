@@ -92,6 +92,95 @@
   font-size: 20px;
 }
 
+.ready-status-display {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.ready-text {
+  font-size: 20px;
+  font-weight: 700;
+  color: #667eea;
+  margin-bottom: 12px;
+}
+
+.all-ready-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #48bb78;
+  animation: pulse-green 1s infinite;
+}
+
+@keyframes pulse-green {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.bot-controls {
+  padding: 20px;
+}
+
+.bot-controls h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #2d3748;
+}
+
+.bot-info {
+  font-size: 14px;
+  color: #718096;
+  margin-bottom: 16px;
+}
+
+.bot-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-bot {
+  flex: 1;
+  min-width: 50px;
+  background: #764ba2;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-bot:hover:not(:disabled) {
+  background: #5f3d85;
+  transform: translateY(-2px);
+}
+
+.btn-bot:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-remove-bots {
+  width: 100%;
+  background: #f56565;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-remove-bots:hover {
+  background: #e53e3e;
+}
+
 @media (max-width: 968px) {
   .waiting-view {
     grid-template-columns: 1fr;

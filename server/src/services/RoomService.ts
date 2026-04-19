@@ -37,6 +37,7 @@ class RoomService {
       currentQuestionIndex: 0,
       questions: [],
       answers: new Map(),
+      readyPlayers: new Set(),
       createdAt: new Date()
     };
 
@@ -82,7 +83,8 @@ class RoomService {
       isHost: false,
       connected: true,
       avatar: getRandomAvatar(),
-      lastSeen: new Date()
+      lastSeen: new Date(),
+      isBot: false
     };
 
     room.players.push(player);
@@ -217,6 +219,72 @@ class RoomService {
     if (this.activeRoom && this.activeRoom.players.length === 0) {
       this.clearRoom();
     }
+  }
+
+  // Mark player as ready for next question
+  markPlayerReady(playerId: string): void {
+    if (!this.activeRoom) return;
+    this.activeRoom.readyPlayers.add(playerId);
+  }
+
+  // Check if all connected players are ready
+  areAllPlayersReady(): boolean {
+    if (!this.activeRoom) return false;
+    const connectedPlayers = this.activeRoom.players.filter(p => p.connected);
+    return connectedPlayers.length > 0 &&
+           connectedPlayers.every(p => this.activeRoom!.readyPlayers.has(p.id));
+  }
+
+  // Clear ready state (when moving to next question)
+  clearReadyPlayers(): void {
+    if (!this.activeRoom) return;
+    this.activeRoom.readyPlayers.clear();
+  }
+
+  // Add bot players to room
+  addBots(count: number): Player[] {
+    if (!this.activeRoom) return [];
+    if (this.activeRoom.state !== 'waiting') {
+      throw new Error("Can't add bots after game has started");
+    }
+
+    const botNames = [
+      'Bot Alpha', 'Bot Beta', 'Bot Gamma', 'Bot Delta', 'Bot Epsilon',
+      'Bot Zeta', 'Bot Eta', 'Bot Theta', 'Bot Iota', 'Bot Kappa'
+    ];
+
+    const bots: Player[] = [];
+    const availableSlots = 10 - this.activeRoom.players.length;
+    const botsToAdd = Math.min(count, availableSlots, botNames.length);
+
+    for (let i = 0; i < botsToAdd; i++) {
+      const bot: Player = {
+        id: this.generatePlayerId(),
+        name: botNames[i],
+        socketId: 'bot', // Bots don't have real socket IDs
+        score: 0,
+        isHost: false,
+        connected: true,
+        avatar: getRandomAvatar(),
+        lastSeen: new Date(),
+        isBot: true
+      };
+
+      this.activeRoom.players.push(bot);
+      bots.push(bot);
+    }
+
+    return bots;
+  }
+
+  // Remove all bots from room
+  removeBots(): void {
+    if (!this.activeRoom) return;
+
+    const removedBots = this.activeRoom.players.filter(p => p.isBot);
+    removedBots.forEach(bot => releaseAvatar(bot.avatar));
+
+    this.activeRoom.players = this.activeRoom.players.filter(p => !p.isBot);
   }
 
   // Helper: Generate unique player ID

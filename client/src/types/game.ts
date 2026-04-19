@@ -15,6 +15,7 @@ export interface Player {
   isHost: boolean;
   connected: boolean;
   avatar: string;
+  isBot?: boolean;
 }
 
 export interface GameSettings {

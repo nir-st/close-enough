@@ -1,6 +1,7 @@
 import { Server, Socket } from 'socket.io';
 import { roomService } from '../services/RoomService';
 import { gameService } from '../services/GameService';
+import { botService } from '../services/BotService';
 import { localIP } from '../index';
 
 export function setupSocketHandlers(io: Server) {
@@ -148,6 +149,65 @@ export function setupSocketHandlers(io: Server) {
       }
     });
 
+    // Add bots
+    socket.on('add-bots', ({ count }: { count: number }) => {
+      try {
+        const room = roomService.getRoom();
+        if (!room) {
+          socket.emit('error', { message: 'Room not found' });
+          return;
+        }
+
+        // Check if this socket is the host
+        if (socket.id !== room.hostId) {
+          socket.emit('error', { message: 'Only host can add bots' });
+          return;
+        }
+
+        const bots = roomService.addBots(count);
+
+        // Notify all players about new bots
+        io.to(room.id).emit('bots-added', {
+          bots,
+          players: room.players
+        });
+
+        console.log(`🤖 Added ${bots.length} bots to room ${room.code}`);
+      } catch (error: any) {
+        socket.emit('error', { message: error.message });
+        console.error('❌ Error adding bots:', error.message);
+      }
+    });
+
+    // Remove bots
+    socket.on('remove-bots', () => {
+      try {
+        const room = roomService.getRoom();
+        if (!room) {
+          socket.emit('error', { message: 'Room not found' });
+          return;
+        }
+
+        // Check if this socket is the host
+        if (socket.id !== room.hostId) {
+          socket.emit('error', { message: 'Only host can remove bots' });
+          return;
+        }
+
+        roomService.removeBots();
+
+        // Notify all players about bot removal
+        io.to(room.id).emit('bots-removed', {
+          players: room.players
+        });
+
+        console.log(`🤖 Removed all bots from room ${room.code}`);
+      } catch (error: any) {
+        socket.emit('error', { message: error.message });
+        console.error('❌ Error removing bots:', error.message);
+      }
+    });
+
     // Start game
     socket.on('start-game', () => {
       try {
@@ -256,6 +316,9 @@ export function setupSocketHandlers(io: Server) {
           return;
         }
 
+        // Clear ready state
+        roomService.clearReadyPlayers();
+
         gameService.nextQuestion(room.id);
 
         if (room.state === 'question') {
@@ -272,6 +335,68 @@ export function setupSocketHandlers(io: Server) {
       } catch (error: any) {
         socket.emit('error', { message: error.message });
         console.error('❌ Error moving to next question:', error.message);
+      }
+    });
+
+    // Player ready for next question
+    socket.on('player-ready', () => {
+      try {
+        const player = roomService.getPlayerBySocketId(socket.id);
+        if (!player) {
+          socket.emit('error', { message: 'Player not found' });
+          return;
+        }
+
+        const room = roomService.getRoom();
+        if (!room) {
+          socket.emit('error', { message: 'Room not found' });
+          return;
+        }
+
+        // Mark player as ready
+        roomService.markPlayerReady(player.id);
+
+        // Notify everyone about ready status update
+        const readyCount = room.readyPlayers.size;
+        const connectedCount = room.players.filter(p => p.connected).length;
+
+        io.to(room.id).emit('player-ready-update', {
+          playerId: player.id,
+          playerName: player.name,
+          readyCount,
+          totalCount: connectedCount,
+          readyPlayerIds: Array.from(room.readyPlayers)
+        });
+
+        console.log(`✅ ${player.name} is ready (${readyCount}/${connectedCount})`);
+
+        // If all players are ready, proceed to next question
+        if (roomService.areAllPlayersReady()) {
+          console.log(`🎯 All players ready! Moving to next question`);
+
+          // Clear ready state
+          roomService.clearReadyPlayers();
+
+          // Brief delay before proceeding
+          setTimeout(() => {
+            gameService.nextQuestion(room.id);
+
+            if (room.state === 'question') {
+              // More questions remaining
+              setTimeout(() => {
+                sendCurrentQuestion(io, room.id);
+              }, 1000);
+            } else if (room.state === 'finished') {
+              // Game finished
+              const results = gameService.getFinalResults(room.id);
+              io.to(room.id).emit('game-ended', results);
+              console.log(`🏆 Game ended in room ${room.code}`);
+            }
+          }, 1000);
+        }
+      } catch (error: any) {
+        socket.emit('error', { message: error.message });
+        console.error('❌ Error marking player ready:', error.message);
       }
     });
 
@@ -387,6 +512,23 @@ export function setupSocketHandlers(io: Server) {
     setTimeout(() => {
       gameService.startAnswering(roomId);
       io.to(roomId).emit('answering-started', {});
+
+      // Submit bot answers
+      const currentQ = room.questions[room.currentQuestionIndex];
+      botService.submitBotAnswers(room, currentQ, (botId, answer) => {
+        try {
+          gameService.submitAnswer(room.id, botId, answer);
+          console.log(`🤖 Bot ${room.players.find(p => p.id === botId)?.name} submitted: ${answer}`);
+
+          // Check if all players have answered
+          if (gameService.haveAllPlayersAnswered(room)) {
+            console.log(`✅ All players answered, ending question`);
+            endCurrentQuestion(io, room.id);
+          }
+        } catch (error) {
+          console.error('❌ Error submitting bot answer:', error);
+        }
+      });
     }, 3000); // 3 second delay to show question before accepting answers
   }
 
@@ -397,6 +539,46 @@ export function setupSocketHandlers(io: Server) {
       io.to(roomId).emit('question-ended', results);
 
       console.log(`📊 Question ended. Winner: ${results.winner?.playerName || 'None'}`);
+
+      // Make bots ready after a delay
+      const room = roomService.getRoom();
+      if (room) {
+        botService.markBotsReady(room, (botId) => {
+          roomService.markPlayerReady(botId);
+
+          const readyCount = room.readyPlayers.size;
+          const connectedCount = room.players.filter(p => p.connected).length;
+
+          io.to(room.id).emit('player-ready-update', {
+            playerId: botId,
+            playerName: room.players.find(p => p.id === botId)?.name || 'Bot',
+            readyCount,
+            totalCount: connectedCount,
+            readyPlayerIds: Array.from(room.readyPlayers)
+          });
+
+          // If all players are ready, proceed to next question
+          if (roomService.areAllPlayersReady()) {
+            console.log(`🎯 All players ready! Moving to next question`);
+
+            roomService.clearReadyPlayers();
+
+            setTimeout(() => {
+              gameService.nextQuestion(room.id);
+
+              if (room.state === 'question') {
+                setTimeout(() => {
+                  sendCurrentQuestion(io, room.id);
+                }, 1000);
+              } else if (room.state === 'finished') {
+                const finalResults = gameService.getFinalResults(room.id);
+                io.to(room.id).emit('game-ended', finalResults);
+                console.log(`🏆 Game ended in room ${room.code}`);
+              }
+            }, 1000);
+          }
+        });
+      }
     } catch (error: any) {
       console.error('❌ Error ending question:', error.message);
     }

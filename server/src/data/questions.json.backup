@@ -1,0 +1,724 @@
+{
+  "questions": [
+    {
+      "id": "geo_easy_1",
+      "categories": ["Geography"],
+      "difficulty": "easy",
+      "text": "How many kilometers from Tel Aviv to Eilat?",
+      "correctAnswer": 350,
+      "unit": "km"
+    },
+    {
+      "id": "geo_easy_2",
+      "categories": ["Geography"],
+      "difficulty": "easy",
+      "text": "How many countries border Israel?",
+      "correctAnswer": 4,
+      "unit": "countries"
+    },
+    {
+      "id": "geo_easy_3",
+      "categories": ["Geography"],
+      "difficulty": "easy",
+      "text": "What is the population of Jerusalem?",
+      "correctAnswer": 950000,
+      "unit": "people"
+    },
+    {
+      "id": "geo_easy_4",
+      "categories": ["Geography"],
+      "difficulty": "easy",
+      "text": "How many kilometers from London to Paris?",
+      "correctAnswer": 344,
+      "unit": "km"
+    },
+    {
+      "id": "geo_easy_5",
+      "categories": ["Geography"],
+      "difficulty": "easy",
+      "text": "What is the population of Tel Aviv?",
+      "correctAnswer": 460000,
+      "unit": "people"
+    },
+    {
+      "id": "geo_med_1",
+      "categories": ["Geography"],
+      "difficulty": "medium",
+      "text": "What is the population of New York City?",
+      "correctAnswer": 8300000,
+      "unit": "people"
+    },
+    {
+      "id": "geo_med_2",
+      "categories": ["Geography"],
+      "difficulty": "medium",
+      "text": "What is the height of Mount Everest in meters?",
+      "correctAnswer": 8849,
+      "unit": "meters"
+    },
+    {
+      "id": "geo_med_3",
+      "categories": ["Geography"],
+      "difficulty": "medium",
+      "text": "What is the length of the Nile River in kilometers?",
+      "correctAnswer": 6650,
+      "unit": "km"
+    },
+    {
+      "id": "geo_med_4",
+      "categories": ["Geography"],
+      "difficulty": "medium",
+      "text": "What is the population of Tokyo?",
+      "correctAnswer": 14000000,
+      "unit": "people"
+    },
+    {
+      "id": "geo_med_5",
+      "categories": ["Geography"],
+      "difficulty": "medium",
+      "text": "How many kilometers is the Amazon River?",
+      "correctAnswer": 6400,
+      "unit": "km"
+    },
+    {
+      "id": "geo_hard_1",
+      "categories": ["Geography"],
+      "difficulty": "hard",
+      "text": "What is the area of Russia in square kilometers?",
+      "correctAnswer": 17100000,
+      "unit": "km²"
+    },
+    {
+      "id": "geo_hard_2",
+      "categories": ["Geography"],
+      "difficulty": "hard",
+      "text": "What is the population of India?",
+      "correctAnswer": 1400000000,
+      "unit": "people"
+    },
+    {
+      "id": "geo_hard_3",
+      "categories": ["Geography"],
+      "difficulty": "hard",
+      "text": "What is the circumference of Earth at the equator in kilometers?",
+      "correctAnswer": 40075,
+      "unit": "km"
+    },
+    {
+      "id": "geo_hard_4",
+      "categories": ["Geography"],
+      "difficulty": "hard",
+      "text": "What is the depth of the Mariana Trench in meters?",
+      "correctAnswer": 10994,
+      "unit": "meters"
+    },
+    {
+      "id": "geo_hard_5",
+      "categories": ["Geography"],
+      "difficulty": "hard",
+      "text": "What is the area of the Sahara Desert in square kilometers?",
+      "correctAnswer": 9200000,
+      "unit": "km²"
+    },
+    {
+      "id": "sport_easy_1",
+      "categories": ["Sports"],
+      "difficulty": "easy",
+      "text": "How many players are on a soccer team on the field?",
+      "correctAnswer": 11,
+      "unit": "players"
+    },
+    {
+      "id": "sport_easy_2",
+      "categories": ["Sports"],
+      "difficulty": "easy",
+      "text": "How many Grand Slam tennis tournaments are there per year?",
+      "correctAnswer": 4,
+      "unit": "tournaments"
+    },
+    {
+      "id": "sport_easy_3",
+      "categories": ["Sports"],
+      "difficulty": "easy",
+      "text": "How many points is a touchdown worth in American football?",
+      "correctAnswer": 6,
+      "unit": "points"
+    },
+    {
+      "id": "sport_easy_4",
+      "categories": ["Sports"],
+      "difficulty": "easy",
+      "text": "How many players are on a basketball team on the court?",
+      "correctAnswer": 5,
+      "unit": "players"
+    },
+    {
+      "id": "sport_med_1",
+      "categories": ["Sports"],
+      "difficulty": "medium",
+      "text": "What is the seating capacity of Camp Nou stadium in Barcelona?",
+      "correctAnswer": 99354,
+      "unit": "seats"
+    },
+    {
+      "id": "sport_med_2",
+      "categories": ["Sports"],
+      "difficulty": "medium",
+      "text": "How many career goals did Pelé score?",
+      "correctAnswer": 1279,
+      "unit": "goals"
+    },
+    {
+      "id": "sport_med_3",
+      "categories": ["Sports"],
+      "difficulty": "medium",
+      "text": "How many total Olympic medals has Michael Phelps won?",
+      "correctAnswer": 28,
+      "unit": "medals"
+    },
+    {
+      "id": "sport_med_4",
+      "categories": ["Sports"],
+      "difficulty": "medium",
+      "text": "What is the seating capacity of Wembley Stadium in London?",
+      "correctAnswer": 90000,
+      "unit": "seats"
+    },
+    {
+      "id": "sport_med_5",
+      "categories": ["Sports"],
+      "difficulty": "medium",
+      "text": "How many Grand Slam titles did Roger Federer win?",
+      "correctAnswer": 20,
+      "unit": "titles"
+    },
+    {
+      "id": "sport_hard_1",
+      "categories": ["Sports"],
+      "difficulty": "hard",
+      "text": "What was Neymar's transfer fee from Barcelona to PSG in millions of euros?",
+      "correctAnswer": 222,
+      "unit": "million euros"
+    },
+    {
+      "id": "sport_hard_2",
+      "categories": ["Sports"],
+      "difficulty": "hard",
+      "text": "How many career points did Kobe Bryant score in the NBA?",
+      "correctAnswer": 33643,
+      "unit": "points"
+    },
+    {
+      "id": "sport_hard_3",
+      "categories": ["Sports"],
+      "difficulty": "hard",
+      "text": "What is the prize money for winning Wimbledon in British pounds?",
+      "correctAnswer": 2350000,
+      "unit": "pounds"
+    },
+    {
+      "id": "sport_hard_4",
+      "categories": ["Sports"],
+      "difficulty": "hard",
+      "text": "How many total Olympic gold medals has the USA won (all-time)?",
+      "correctAnswer": 1070,
+      "unit": "gold medals"
+    },
+    {
+      "id": "sport_hard_5",
+      "categories": ["Sports"],
+      "difficulty": "hard",
+      "text": "How many matches did Cristiano Ronaldo play for Real Madrid?",
+      "correctAnswer": 438,
+      "unit": "matches"
+    },
+    {
+      "id": "ent_easy_1",
+      "categories": ["Entertainment"],
+      "difficulty": "easy",
+      "text": "How many Harry Potter movies are there?",
+      "correctAnswer": 8,
+      "unit": "movies"
+    },
+    {
+      "id": "ent_easy_2",
+      "categories": ["Entertainment"],
+      "difficulty": "easy",
+      "text": "How many seasons does Friends have?",
+      "correctAnswer": 10,
+      "unit": "seasons"
+    },
+    {
+      "id": "ent_easy_3",
+      "categories": ["Entertainment"],
+      "difficulty": "easy",
+      "text": "How many original Star Wars trilogy movies are there?",
+      "correctAnswer": 3,
+      "unit": "movies"
+    },
+    {
+      "id": "ent_easy_4",
+      "categories": ["Entertainment"],
+      "difficulty": "easy",
+      "text": "How many main characters are in the TV show Friends?",
+      "correctAnswer": 6,
+      "unit": "characters"
+    },
+    {
+      "id": "ent_med_1",
+      "categories": ["Entertainment"],
+      "difficulty": "medium",
+      "text": "How many episodes of Game of Thrones are there in total?",
+      "correctAnswer": 73,
+      "unit": "episodes"
+    },
+    {
+      "id": "ent_med_2",
+      "categories": ["Entertainment"],
+      "difficulty": "medium",
+      "text": "How many followers does Cristiano Ronaldo have on Instagram (in millions)?",
+      "correctAnswer": 600,
+      "unit": "million followers"
+    },
+    {
+      "id": "ent_med_3",
+      "categories": ["Entertainment"],
+      "difficulty": "medium",
+      "text": "How many albums did The Beatles release?",
+      "correctAnswer": 13,
+      "unit": "albums"
+    },
+    {
+      "id": "ent_med_4",
+      "categories": ["Entertainment"],
+      "difficulty": "medium",
+      "text": "How many Oscars did the movie Titanic win?",
+      "correctAnswer": 11,
+      "unit": "Oscars"
+    },
+    {
+      "id": "ent_med_5",
+      "categories": ["Entertainment"],
+      "difficulty": "medium",
+      "text": "How many episodes of The Simpsons have aired (approximately)?",
+      "correctAnswer": 750,
+      "unit": "episodes"
+    },
+    {
+      "id": "ent_hard_1",
+      "categories": ["Entertainment"],
+      "difficulty": "hard",
+      "text": "What was Avatar's worldwide box office in millions of dollars?",
+      "correctAnswer": 2923,
+      "unit": "million dollars"
+    },
+    {
+      "id": "ent_hard_2",
+      "categories": ["Entertainment"],
+      "difficulty": "hard",
+      "text": "How many views does the music video Despacito have on YouTube (in billions)?",
+      "correctAnswer": 8,
+      "unit": "billion views"
+    },
+    {
+      "id": "ent_hard_3",
+      "categories": ["Entertainment"],
+      "difficulty": "hard",
+      "text": "How many Grammy Awards has Beyoncé won?",
+      "correctAnswer": 32,
+      "unit": "Grammys"
+    },
+    {
+      "id": "ent_hard_4",
+      "categories": ["Entertainment"],
+      "difficulty": "hard",
+      "text": "What was Avengers: Endgame's opening weekend box office in millions of dollars?",
+      "correctAnswer": 1223,
+      "unit": "million dollars"
+    },
+    {
+      "id": "ent_hard_5",
+      "categories": ["Entertainment"],
+      "difficulty": "hard",
+      "text": "How many countries has Eurovision Song Contest been held in?",
+      "correctAnswer": 21,
+      "unit": "countries"
+    },
+    {
+      "id": "food_easy_1",
+      "categories": ["Food"],
+      "difficulty": "easy",
+      "text": "How many calories are in a Big Mac?",
+      "correctAnswer": 563,
+      "unit": "calories"
+    },
+    {
+      "id": "food_easy_2",
+      "categories": ["Food"],
+      "difficulty": "easy",
+      "text": "How many grams of protein are in one large egg?",
+      "correctAnswer": 6,
+      "unit": "grams"
+    },
+    {
+      "id": "food_easy_3",
+      "categories": ["Food"],
+      "difficulty": "easy",
+      "text": "How many slices are in a standard pizza?",
+      "correctAnswer": 8,
+      "unit": "slices"
+    },
+    {
+      "id": "food_med_1",
+      "categories": ["Food"],
+      "difficulty": "medium",
+      "text": "How many McDonald's restaurants are there worldwide?",
+      "correctAnswer": 40000,
+      "unit": "restaurants"
+    },
+    {
+      "id": "food_med_2",
+      "categories": ["Food"],
+      "difficulty": "medium",
+      "text": "How many Starbucks locations are there worldwide?",
+      "correctAnswer": 36000,
+      "unit": "locations"
+    },
+    {
+      "id": "food_med_3",
+      "categories": ["Food"],
+      "difficulty": "medium",
+      "text": "What is the weight of the world's largest pizza in kilograms?",
+      "correctAnswer": 13580,
+      "unit": "kg"
+    },
+    {
+      "id": "food_med_4",
+      "categories": ["Food"],
+      "difficulty": "medium",
+      "text": "How many calories are in a Starbucks Venti Frappuccino?",
+      "correctAnswer": 510,
+      "unit": "calories"
+    },
+    {
+      "id": "food_hard_1",
+      "categories": ["Food"],
+      "difficulty": "hard",
+      "text": "What is the price of a bottle of Romanée-Conti wine in dollars?",
+      "correctAnswer": 19000,
+      "unit": "dollars"
+    },
+    {
+      "id": "food_hard_2",
+      "categories": ["Food"],
+      "difficulty": "hard",
+      "text": "How many kilograms of chocolate does the average Swiss person consume per year?",
+      "correctAnswer": 11,
+      "unit": "kg"
+    },
+    {
+      "id": "food_hard_3",
+      "categories": ["Food"],
+      "difficulty": "hard",
+      "text": "What is the weight of the world's largest burger in kilograms?",
+      "correctAnswer": 914,
+      "unit": "kg"
+    },
+    {
+      "id": "food_hard_4",
+      "categories": ["Food"],
+      "difficulty": "hard",
+      "text": "How many Michelin-starred restaurants are there in France?",
+      "correctAnswer": 630,
+      "unit": "restaurants"
+    },
+    {
+      "id": "animal_easy_1",
+      "categories": ["Animals"],
+      "difficulty": "easy",
+      "text": "How many legs does a spider have?",
+      "correctAnswer": 8,
+      "unit": "legs"
+    },
+    {
+      "id": "animal_easy_2",
+      "categories": ["Animals"],
+      "difficulty": "easy",
+      "text": "How many years can a cat typically live?",
+      "correctAnswer": 15,
+      "unit": "years"
+    },
+    {
+      "id": "animal_easy_3",
+      "categories": ["Animals"],
+      "difficulty": "easy",
+      "text": "How many humps does a dromedary camel have?",
+      "correctAnswer": 1,
+      "unit": "humps"
+    },
+    {
+      "id": "animal_med_1",
+      "categories": ["Animals"],
+      "difficulty": "medium",
+      "text": "How many days is a dog's pregnancy?",
+      "correctAnswer": 63,
+      "unit": "days"
+    },
+    {
+      "id": "animal_med_2",
+      "categories": ["Animals"],
+      "difficulty": "medium",
+      "text": "What is the weight of an adult male lion in kilograms?",
+      "correctAnswer": 190,
+      "unit": "kg"
+    },
+    {
+      "id": "animal_med_3",
+      "categories": ["Animals"],
+      "difficulty": "medium",
+      "text": "How many eggs can a chicken lay per year?",
+      "correctAnswer": 250,
+      "unit": "eggs"
+    },
+    {
+      "id": "animal_med_4",
+      "categories": ["Animals"],
+      "difficulty": "medium",
+      "text": "What is the top speed of a cheetah in km/h?",
+      "correctAnswer": 120,
+      "unit": "km/h"
+    },
+    {
+      "id": "animal_med_5",
+      "categories": ["Animals"],
+      "difficulty": "medium",
+      "text": "How many days is an elephant's pregnancy?",
+      "correctAnswer": 660,
+      "unit": "days"
+    },
+    {
+      "id": "animal_hard_1",
+      "categories": ["Animals"],
+      "difficulty": "hard",
+      "text": "How many kilometers do Arctic Terns migrate annually?",
+      "correctAnswer": 70900,
+      "unit": "km"
+    },
+    {
+      "id": "animal_hard_2",
+      "categories": ["Animals"],
+      "difficulty": "hard",
+      "text": "What is the weight of an adult blue whale in kilograms?",
+      "correctAnswer": 150000,
+      "unit": "kg"
+    },
+    {
+      "id": "animal_hard_3",
+      "categories": ["Animals"],
+      "difficulty": "hard",
+      "text": "What is the bite force of a Nile crocodile in PSI?",
+      "correctAnswer": 5000,
+      "unit": "PSI"
+    },
+    {
+      "id": "animal_hard_4",
+      "categories": ["Animals"],
+      "difficulty": "hard",
+      "text": "How many teeth does an adult human have?",
+      "correctAnswer": 32,
+      "unit": "teeth"
+    },
+    {
+      "id": "animal_hard_5",
+      "categories": ["Animals"],
+      "difficulty": "hard",
+      "text": "How many species of birds are there in the world?",
+      "correctAnswer": 10000,
+      "unit": "species"
+    },
+    {
+      "id": "science_easy_1",
+      "categories": ["Science"],
+      "difficulty": "easy",
+      "text": "How many planets are in our solar system?",
+      "correctAnswer": 8,
+      "unit": "planets"
+    },
+    {
+      "id": "science_easy_2",
+      "categories": ["Science"],
+      "difficulty": "easy",
+      "text": "How many bones are in the adult human body?",
+      "correctAnswer": 206,
+      "unit": "bones"
+    },
+    {
+      "id": "science_easy_3",
+      "categories": ["Science"],
+      "difficulty": "easy",
+      "text": "What is the boiling point of water in degrees Celsius?",
+      "correctAnswer": 100,
+      "unit": "°C"
+    },
+    {
+      "id": "science_med_1",
+      "categories": ["Science"],
+      "difficulty": "medium",
+      "text": "How many kilometers is the distance from Earth to the Moon?",
+      "correctAnswer": 384400,
+      "unit": "km"
+    },
+    {
+      "id": "science_med_2",
+      "categories": ["Science"],
+      "difficulty": "medium",
+      "text": "How many times does the average human heart beat per day?",
+      "correctAnswer": 100000,
+      "unit": "beats"
+    },
+    {
+      "id": "science_med_3",
+      "categories": ["Science"],
+      "difficulty": "medium",
+      "text": "What is the speed of sound in meters per second?",
+      "correctAnswer": 343,
+      "unit": "m/s"
+    },
+    {
+      "id": "science_med_4",
+      "categories": ["Science"],
+      "difficulty": "medium",
+      "text": "How many elements are in the periodic table?",
+      "correctAnswer": 118,
+      "unit": "elements"
+    },
+    {
+      "id": "science_hard_1",
+      "categories": ["Science"],
+      "difficulty": "hard",
+      "text": "What is the speed of light in kilometers per second?",
+      "correctAnswer": 299792,
+      "unit": "km/s"
+    },
+    {
+      "id": "science_hard_2",
+      "categories": ["Science"],
+      "difficulty": "hard",
+      "text": "What is the distance from Earth to Mars at closest approach in kilometers?",
+      "correctAnswer": 54600000,
+      "unit": "km"
+    },
+    {
+      "id": "science_hard_3",
+      "categories": ["Science"],
+      "difficulty": "hard",
+      "text": "What is the diameter of Jupiter in kilometers?",
+      "correctAnswer": 139820,
+      "unit": "km"
+    },
+    {
+      "id": "science_hard_4",
+      "categories": ["Science"],
+      "difficulty": "hard",
+      "text": "How many cells are in the human body (in trillions)?",
+      "correctAnswer": 37,
+      "unit": "trillion cells"
+    },
+    {
+      "id": "science_hard_5",
+      "categories": ["Science"],
+      "difficulty": "hard",
+      "text": "What is the temperature at the center of the Sun in degrees Celsius?",
+      "correctAnswer": 15000000,
+      "unit": "°C"
+    },
+    {
+      "id": "guinness_easy_1",
+      "categories": ["Guinness World Records"],
+      "difficulty": "easy",
+      "text": "How many hot dogs did Joey Chestnut eat in 10 minutes (2021 record)?",
+      "correctAnswer": 76,
+      "unit": "hot dogs"
+    },
+    {
+      "id": "guinness_easy_2",
+      "categories": ["Guinness World Records"],
+      "difficulty": "easy",
+      "text": "What is the world record for the 100-meter sprint in seconds?",
+      "correctAnswer": 9.58,
+      "unit": "seconds"
+    },
+    {
+      "id": "guinness_easy_3",
+      "categories": ["Guinness World Records"],
+      "difficulty": "easy",
+      "text": "What is the tallest building in the world in meters (Burj Khalifa)?",
+      "correctAnswer": 828,
+      "unit": "meters"
+    },
+    {
+      "id": "guinness_med_1",
+      "categories": ["Guinness World Records"],
+      "difficulty": "medium",
+      "text": "What is the world record for holding breath underwater in minutes?",
+      "correctAnswer": 24,
+      "unit": "minutes"
+    },
+    {
+      "id": "guinness_med_2",
+      "categories": ["Guinness World Records"],
+      "difficulty": "medium",
+      "text": "What is the longest recorded flight time for a paper airplane in seconds?",
+      "correctAnswer": 29,
+      "unit": "seconds"
+    },
+    {
+      "id": "guinness_med_3",
+      "categories": ["Guinness World Records"],
+      "difficulty": "medium",
+      "text": "What is the world record for marathon running in minutes?",
+      "correctAnswer": 121,
+      "unit": "minutes"
+    },
+    {
+      "id": "guinness_med_4",
+      "categories": ["Guinness World Records"],
+      "difficulty": "medium",
+      "text": "How many push-ups were done in one hour (world record)?",
+      "correctAnswer": 3877,
+      "unit": "push-ups"
+    },
+    {
+      "id": "guinness_hard_1",
+      "categories": ["Guinness World Records"],
+      "difficulty": "hard",
+      "text": "How many hours is the longest flight ever recorded (distance record)?",
+      "correctAnswer": 64,
+      "unit": "hours"
+    },
+    {
+      "id": "guinness_hard_2",
+      "categories": ["Guinness World Records"],
+      "difficulty": "hard",
+      "text": "What is the heaviest weight ever lifted by a human in kilograms?",
+      "correctAnswer": 501,
+      "unit": "kg"
+    },
+    {
+      "id": "guinness_hard_3",
+      "categories": ["Guinness World Records"],
+      "difficulty": "hard",
+      "text": "How many dominoes were toppled in the largest domino chain reaction?",
+      "correctAnswer": 4491863,
+      "unit": "dominoes"
+    },
+    {
+      "id": "guinness_hard_4",
+      "categories": ["Guinness World Records"],
+      "difficulty": "hard",
+      "text": "What is the oldest person ever recorded in years?",
+      "correctAnswer": 122,
+      "unit": "years"
+    }
+  ]
+}

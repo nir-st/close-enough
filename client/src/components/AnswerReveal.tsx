@@ -8,85 +8,189 @@ interface AnswerRevealProps {
   onComplete?: () => void;
 }
 
-interface MarkerPosition {
-  value: number;
-  percentage: number;
-  isOutlier: boolean;
+interface ZoomRange {
+  min: number;
+  max: number;
+}
+
+interface AnimationStep {
+  type: 'zoom' | 'guess' | 'answer' | 'highlight';
+  zoomRange?: ZoomRange;
+  guessIndex?: number;
 }
 
 function AnswerReveal({ correctAnswer, results, onComplete }: AnswerRevealProps) {
-  const [phase, setPhase] = useState<'line' | 'guesses' | 'answer' | 'highlight'>('line');
-  const [visibleGuesses, setVisibleGuesses] = useState<number>(0);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [animationSteps, setAnimationSteps] = useState<AnimationStep[]>([]);
+  const [currentZoom, setCurrentZoom] = useState<ZoomRange>({ min: 0, max: 100 });
 
-  // Calculate range and positions
-  const allValues = [...results.map(r => r.answer), correctAnswer];
-  const min = Math.min(...allValues);
-  const max = Math.max(...allValues);
+  // Sort guesses from lowest to highest
+  const sortedResults = [...results].sort((a, b) => a.answer - b.answer);
+  const allValues = [...sortedResults.map(r => r.answer), correctAnswer];
 
-  // Add 10% padding to range
-  const padding = (max - min) * 0.1 || 10; // fallback padding if all same
-  const rangeMin = Math.floor(min - padding);
-  const rangeMax = Math.ceil(max + padding);
-  const range = rangeMax - rangeMin;
-
-  // Detect outliers (more than 3x median distance from median)
-  const sortedValues = [...results.map(r => r.answer)].sort((a, b) => a - b);
-  const median = sortedValues[Math.floor(sortedValues.length / 2)];
-  const distances = results.map(r => Math.abs(r.answer - median));
-  const medianDistance = distances.sort((a, b) => a - b)[Math.floor(distances.length / 2)];
-  const outlierThreshold = medianDistance * 3;
-
-  // Calculate positions for all markers
-  const guessPositions: (MarkerPosition & { result: ScoreResult })[] = results.map(result => {
-    const isOutlier = Math.abs(result.answer - median) > outlierThreshold && results.length > 2;
-    return {
-      value: result.answer,
-      percentage: ((result.answer - rangeMin) / range) * 100,
-      isOutlier,
-      result
-    };
-  });
-
-  const answerPosition: MarkerPosition = {
-    value: correctAnswer,
-    percentage: ((correctAnswer - rangeMin) / range) * 100,
-    isOutlier: false
-  };
-
-  // Animation sequence
+  // Calculate smart zoom ranges
   useEffect(() => {
+    const steps: AnimationStep[] = [];
+
+    // Group values by proximity (values within 30% of range are considered "close")
+    const globalMin = Math.min(...allValues);
+    const globalMax = Math.max(...allValues);
+    const globalRange = globalMax - globalMin;
+
+    if (globalRange === 0) {
+      // All values are the same - just show them all at once
+      sortedResults.forEach((_, i) => {
+        steps.push({ type: 'guess', guessIndex: i });
+      });
+      steps.push({ type: 'answer' });
+      steps.push({ type: 'highlight' });
+    } else {
+      // Find clusters of close values
+      const clusters: number[][] = [];
+      let currentCluster: number[] = [sortedResults[0].answer];
+
+      for (let i = 1; i < sortedResults.length; i++) {
+        const prevValue = sortedResults[i - 1].answer;
+        const currValue = sortedResults[i].answer;
+        const gap = currValue - prevValue;
+        const gapRatio = gap / globalRange;
+
+        // If gap is more than 30% of global range, start new cluster
+        if (gapRatio > 0.3) {
+          clusters.push([...currentCluster]);
+          currentCluster = [currValue];
+        } else {
+          currentCluster.push(currValue);
+        }
+      }
+      clusters.push(currentCluster);
+
+      // Process each cluster
+      let revealedCount = 0;
+      for (let clusterIdx = 0; clusterIdx < clusters.length; clusterIdx++) {
+        const cluster = clusters[clusterIdx];
+        const clusterMin = Math.min(...cluster);
+        const clusterMax = Math.max(...cluster);
+        const padding = Math.max((clusterMax - clusterMin) * 0.2, globalRange * 0.05);
+
+        // Zoom to this cluster
+        steps.push({
+          type: 'zoom',
+          zoomRange: {
+            min: clusterMin - padding,
+            max: clusterMax + padding
+          }
+        });
+
+        // Reveal guesses in this cluster one by one
+        for (let i = 0; i < cluster.length; i++) {
+          const guessIndex = sortedResults.findIndex(r => r.answer === cluster[i] &&
+            sortedResults.slice(0, revealedCount).filter(sr => sr.answer === cluster[i]).length <=
+            cluster.slice(0, i).filter(c => c === cluster[i]).length
+          );
+          steps.push({ type: 'guess', guessIndex });
+          revealedCount++;
+        }
+
+        // If this is not the last cluster and there's a significant gap, zoom out slightly
+        if (clusterIdx < clusters.length - 1) {
+          const nextCluster = clusters[clusterIdx + 1];
+          const nextMin = Math.min(...nextCluster);
+          const gapSize = nextMin - clusterMax;
+
+          // Show the gap by zooming out a bit
+          if (gapSize > globalRange * 0.3) {
+            steps.push({
+              type: 'zoom',
+              zoomRange: {
+                min: clusterMin - padding,
+                max: nextMin + padding
+              }
+            });
+          }
+        }
+      }
+
+      // Final zoom to show everything including correct answer
+      const finalPadding = globalRange * 0.1 || 10;
+      steps.push({
+        type: 'zoom',
+        zoomRange: {
+          min: globalMin - finalPadding,
+          max: globalMax + finalPadding
+        }
+      });
+
+      steps.push({ type: 'answer' });
+      steps.push({ type: 'highlight' });
+    }
+
+    setAnimationSteps(steps);
+  }, [results, correctAnswer]);
+
+  // Execute animation steps
+  useEffect(() => {
+    if (animationSteps.length === 0) return;
+
     const timers: NodeJS.Timeout[] = [];
+    let delay = 500; // Initial delay
 
-    // Phase 1: Show line (500ms)
-    timers.push(setTimeout(() => setPhase('guesses'), 500));
-
-    // Phase 2: Drop in guesses one by one (300ms each)
-    guessPositions.forEach((_, index) => {
+    animationSteps.forEach((step, index) => {
       timers.push(setTimeout(() => {
-        setVisibleGuesses(index + 1);
-      }, 800 + index * 300));
+        setCurrentStep(index);
+
+        if (step.zoomRange) {
+          setCurrentZoom(step.zoomRange);
+        }
+
+        // Call onComplete after the last step
+        if (index === animationSteps.length - 1 && onComplete) {
+          setTimeout(onComplete, 2000);
+        }
+      }, delay));
+
+      // Variable delay based on step type
+      if (step.type === 'zoom') {
+        delay += 800; // Zoom animation
+      } else if (step.type === 'guess') {
+        delay += 600; // Guess reveal
+      } else if (step.type === 'answer') {
+        delay += 1000; // Answer reveal
+      } else if (step.type === 'highlight') {
+        delay += 1500; // Highlight
+      }
     });
 
-    // Phase 3: Reveal answer (after all guesses + 500ms)
-    const answerDelay = 800 + guessPositions.length * 300 + 500;
-    timers.push(setTimeout(() => setPhase('answer'), answerDelay));
-
-    // Phase 4: Highlight winner (after answer + 1000ms)
-    timers.push(setTimeout(() => {
-      setPhase('highlight');
-      if (onComplete) {
-        setTimeout(onComplete, 1500);
-      }
-    }, answerDelay + 1000));
-
     return () => timers.forEach(timer => clearTimeout(timer));
-  }, [guessPositions.length, onComplete]);
+  }, [animationSteps, onComplete]);
 
-  // Generate tick marks
+  // Calculate visible guesses up to current step
+  const visibleGuessIndices = animationSteps
+    .slice(0, currentStep + 1)
+    .filter(s => s.type === 'guess')
+    .map(s => s.guessIndex!);
+
+  const showAnswer = animationSteps.slice(0, currentStep + 1).some(s => s.type === 'answer');
+  const showHighlight = animationSteps.slice(0, currentStep + 1).some(s => s.type === 'highlight');
+
+  // Calculate position based on current zoom
+  const getPosition = (value: number): number => {
+    const zoomRange = currentZoom.max - currentZoom.min;
+    if (zoomRange === 0) return 50;
+    return ((value - currentZoom.min) / zoomRange) * 100;
+  };
+
+  // Generate tick marks for current zoom
   const numTicks = 5;
   const ticks = Array.from({ length: numTicks }, (_, i) => {
-    const value = rangeMin + (range / (numTicks - 1)) * i;
-    return Math.round(value);
+    const value = currentZoom.min + ((currentZoom.max - currentZoom.min) / (numTicks - 1)) * i;
+    // Format large numbers more nicely
+    if (Math.abs(value) >= 1000000) {
+      return `${(value / 1000000).toFixed(1)}M`;
+    } else if (Math.abs(value) >= 1000) {
+      return `${(value / 1000).toFixed(1)}K`;
+    }
+    return Math.round(value).toString();
   });
 
   const winners = results.filter(r => r.pointsEarned > 0);
@@ -95,49 +199,41 @@ function AnswerReveal({ correctAnswer, results, onComplete }: AnswerRevealProps)
     <div className="answer-reveal">
       <h3 className="reveal-title">📊 Results</h3>
 
-      {/* Number line */}
       <div className="number-line-container">
-        {/* Outlier labels above */}
-        {phase !== 'line' && (
-          <div className="outliers-container">
-            {guessPositions
-              .filter(gp => gp.isOutlier && visibleGuesses > guessPositions.indexOf(gp))
-              .map((gp, index) => (
-                <div key={`outlier-${index}`} className="outlier-label">
-                  {gp.result.playerAvatar} {gp.result.playerName}: {gp.value} ↓
-                </div>
-              ))}
-          </div>
-        )}
-
-        {/* Main number line */}
-        <div className={`number-line ${phase !== 'line' ? 'visible' : ''}`}>
+        <div className="number-line visible">
           {/* Player guess markers */}
-          {guessPositions
-            .filter(gp => !gp.isOutlier)
-            .map((gp, index) => (
+          {sortedResults.map((result, index) => {
+            const isVisible = visibleGuessIndices.includes(index);
+            const position = getPosition(result.answer);
+            const isWinner = showHighlight && result.pointsEarned > 0;
+
+            // Only show if in current zoom range and revealed
+            const inRange = position >= -5 && position <= 105;
+
+            return (
               <div
-                key={`guess-${gp.result.playerId}`}
-                className={`marker guess-marker ${
-                  index < visibleGuesses ? 'visible' : ''
-                } ${phase === 'highlight' && gp.result.pointsEarned > 0 ? 'winner' : ''}`}
-                style={{ left: `${gp.percentage}%` }}
+                key={`guess-${result.playerId}`}
+                className={`marker guess-marker ${isVisible ? 'visible' : ''} ${
+                  isWinner ? 'winner' : ''
+                } ${!inRange ? 'out-of-range' : ''}`}
+                style={{ left: `${Math.max(0, Math.min(100, position))}%` }}
               >
-                <div className="marker-avatar">{gp.result.playerAvatar}</div>
-                <div className="marker-label">{gp.value}</div>
+                <div className="marker-avatar">{result.playerAvatar}</div>
+                <div className="marker-label">{result.answer}</div>
               </div>
-            ))}
+            );
+          })}
 
           {/* Correct answer marker */}
-          {phase === 'answer' || phase === 'highlight' ? (
+          {showAnswer && (
             <div
-              className={`marker answer-marker ${phase === 'answer' || phase === 'highlight' ? 'visible' : ''}`}
-              style={{ left: `${answerPosition.percentage}%` }}
+              className="marker answer-marker visible"
+              style={{ left: `${Math.max(0, Math.min(100, getPosition(correctAnswer)))}%` }}
             >
               <div className="marker-star">⭐</div>
               <div className="marker-label answer-label">{correctAnswer}</div>
             </div>
-          ) : null}
+          )}
 
           {/* Line itself */}
           <div className="line" />
@@ -159,7 +255,7 @@ function AnswerReveal({ correctAnswer, results, onComplete }: AnswerRevealProps)
       </div>
 
       {/* Winner announcement */}
-      {phase === 'highlight' && winners.length > 0 && (
+      {showHighlight && winners.length > 0 && (
         <div className="winner-announcement">
           🎉 {winners.map(w => `${w.playerAvatar} ${w.playerName}`).join(' & ')} closest!
         </div>

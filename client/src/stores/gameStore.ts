@@ -39,6 +39,9 @@ interface GameStore {
   // Results state
   roundResult: RoundResult | null;
   finalResults: FinalResults | null;
+  readyPlayerIds: string[];
+  readyCount: number;
+  totalCount: number;
 
   // Actions
   connectSocket: () => void;
@@ -48,6 +51,9 @@ interface GameStore {
   startGame: () => void;
   submitAnswer: (answer: number) => void;
   nextQuestion: () => void;
+  markReady: () => void;
+  addBots: (count: number) => void;
+  removeBots: () => void;
   endGame: () => void;
   kickPlayer: (playerId: string) => void;
   reset: () => void;
@@ -90,6 +96,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
   myAnswer: null,
   roundResult: null,
   finalResults: null,
+  readyPlayerIds: [],
+  readyCount: 0,
+  totalCount: 0,
 
   // Connect to socket and setup listeners
   connectSocket: () => {
@@ -148,6 +157,25 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     socket.on('player-left', (data) => {
       get().setPlayerLeft(data);
+    });
+
+    socket.on('player-ready-update', (data) => {
+      set({
+        readyPlayerIds: data.readyPlayerIds,
+        readyCount: data.readyCount,
+        totalCount: data.totalCount
+      });
+      console.log(`✅ ${data.playerName} is ready (${data.readyCount}/${data.totalCount})`);
+    });
+
+    socket.on('bots-added', (data) => {
+      set({ players: data.players });
+      console.log(`🤖 ${data.bots.length} bots added`);
+    });
+
+    socket.on('bots-removed', (data) => {
+      set({ players: data.players });
+      console.log(`🤖 All bots removed`);
     });
 
     socket.on('player-disconnected', (data) => {
@@ -227,7 +255,31 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (!socket) return;
 
     socket.emit('next-question');
-    set({ hasAnswered: false, myAnswer: null, roundResult: null });
+    set({ hasAnswered: false, myAnswer: null, roundResult: null, readyPlayerIds: [], readyCount: 0, totalCount: 0 });
+  },
+
+  // Mark player ready for next question
+  markReady: () => {
+    const { socket } = get();
+    if (!socket) return;
+
+    socket.emit('player-ready');
+  },
+
+  // Add bots
+  addBots: (count: number) => {
+    const { socket } = get();
+    if (!socket) return;
+
+    socket.emit('add-bots', { count });
+  },
+
+  // Remove bots
+  removeBots: () => {
+    const { socket } = get();
+    if (!socket) return;
+
+    socket.emit('remove-bots');
   },
 
   // End game

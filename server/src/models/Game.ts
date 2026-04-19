@@ -16,6 +16,7 @@ export interface Player {
   connected: boolean;
   avatar: string; // Emoji avatar
   lastSeen: Date; // For cleanup of long-disconnected players
+  isBot: boolean; // Whether this is a bot player
 }
 
 export interface Answer {
@@ -45,6 +46,7 @@ export interface Room {
   questions: Question[];
   answers: Map<string, Answer>;
   questionStartTime?: number;
+  readyPlayers: Set<string>; // Track which players are ready for next question
   createdAt: Date;
 }
 

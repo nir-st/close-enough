@@ -1,0 +1,11 @@
+[
+  {"id": "hist_easy_1", "categories": ["History"], "difficulty": "easy", "text": "How many years did the Berlin Wall stand?", "correctAnswer": 28, "unit": "years"},
+  {"id": "hist_easy_2", "categories": ["History"], "difficulty": "easy", "text": "How many people attended Woodstock festival in 1969?", "correctAnswer": 400000, "unit": "people"},
+  {"id": "hist_easy_3", "categories": ["History"], "difficulty": "easy", "text": "In what year did World War II end?", "correctAnswer": 1945, "unit": "year"},
+  {"id": "hist_med_1", "categories": ["History"], "difficulty": "medium", "text": "How many years did the Roman Empire last?", "correctAnswer": 1000, "unit": "years"},
+  {"id": "hist_med_2", "categories": ["History"], "difficulty": "medium", "text": "How many years did it take to build the Panama Canal?", "correctAnswer": 10, "unit": "years"},
+  {"id": "hist_med_3", "categories": ["History"], "difficulty": "medium", "text": "How many books were printed in the Gutenberg Bible first edition?", "correctAnswer": 180, "unit": "books"},
+  {"id": "hist_hard_1", "categories": ["History"], "difficulty": "hard", "text": "How many soldiers landed on D-Day (June 6, 1944)?", "correctAnswer": 156000, "unit": "soldiers"},
+  {"id": "hist_hard_2", "categories": ["History"], "difficulty": "hard", "text": "How many people worked on the Manhattan Project?", "correctAnswer": 130000, "unit": "people"},
+  {"id": "hist_hard_3", "categories": ["History"], "difficulty": "hard", "text": "How many ships were in the Spanish Armada?", "correctAnswer": 130, "unit": "ships"}
+]

@@ -23,7 +23,11 @@ function Play() {
     finalResults,
     players,
     playerId,
-    connected
+    connected,
+    readyPlayerIds,
+    readyCount,
+    totalCount,
+    markReady
   } = useGameStore();
 
   useEffect(() => {
@@ -62,6 +66,7 @@ function Play() {
   }, [roomCode, playerName, playerId, joinRoom]);
 
   const myPlayer = players.find(p => p.id === playerId);
+  const isReady = readyPlayerIds.includes(playerId || '');
 
   return (
     <div className="play-container">
@@ -140,7 +145,18 @@ function Play() {
                   </div>
                 )}
               </div>
-              <p className="waiting-next">Waiting for next question...</p>
+              <div className="ready-section">
+                <button
+                  className={`btn-ready ${isReady ? 'ready' : ''}`}
+                  onClick={markReady}
+                  disabled={isReady}
+                >
+                  {isReady ? '✅ Ready!' : 'Ready for Next Question'}
+                </button>
+                <p className="ready-status">
+                  {readyCount} / {totalCount} players ready
+                </p>
+              </div>
             </>
           )}
         </div>
