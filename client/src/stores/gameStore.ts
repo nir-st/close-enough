@@ -35,6 +35,7 @@ interface GameStore {
   timeRemaining: number;
   hasAnswered: boolean;
   myAnswer: number | null;
+  answeredPlayerIds: string[]; // Track which players have submitted answers
 
   // Results state
   roundResult: RoundResult | null;
@@ -94,6 +95,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   timeRemaining: 0,
   hasAnswered: false,
   myAnswer: null,
+  answeredPlayerIds: [],
   roundResult: null,
   finalResults: null,
   readyPlayerIds: [],
@@ -379,23 +381,33 @@ export const useGameStore = create<GameStore>((set, get) => ({
       currentQuestion: data.question,
       timeRemaining: data.timeLimit,
       hasAnswered: false,
-      myAnswer: null
+      myAnswer: null,
+      answeredPlayerIds: [],
+      readyPlayerIds: [],
+      readyCount: 0,
+      totalCount: 0
     });
   },
 
   setAnsweringStarted: () => {
-    set({ gameState: 'answering' });
+    set({ gameState: 'answering', answeredPlayerIds: [] });
   },
 
   setAnswerReceived: (data) => {
     // Mark that a player has answered (could show who has answered)
     console.log('Answer received from:', data.playerId);
+    set({
+      answeredPlayerIds: [...get().answeredPlayerIds, data.playerId]
+    });
   },
 
   setQuestionEnded: (result) => {
     set({
       gameState: 'results',
       roundResult: result,
+      readyPlayerIds: [],
+      readyCount: 0,
+      totalCount: 0,
       // Update players with new scores
       players: get().players.map(p => {
         const playerResult = result.results.find(r => r.playerId === p.id);

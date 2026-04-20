@@ -118,12 +118,11 @@ function Play() {
                   </div>
                 ) : (
                   <div className="result-fail">
-                    Better luck next time!
+                    Not quite! Watch the big screen for the answer
                   </div>
                 )}
                 <div className="answer-comparison">
-                  <div>Your answer: {roundResult.results.find(r => r.playerId === playerId)!.answer}</div>
-                  <div>Correct: {roundResult.correctAnswer}</div>
+                  <div className="your-guess">Your guess: {roundResult.results.find(r => r.playerId === playerId)!.answer}</div>
                   <div className="current-score">
                     Your score: {roundResult.results.find(r => r.playerId === playerId)!.totalScore} pts
                   </div>

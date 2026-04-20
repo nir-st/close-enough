@@ -32,6 +32,11 @@
   background: #fff5f5;
 }
 
+.player-card.answered {
+  background: #f0fff4;
+  border: 2px solid #48bb78;
+}
+
 .player-card.disconnected .status-badge {
   animation: pulse 1.5s ease-in-out infinite;
 }
@@ -69,6 +74,10 @@
   color: white;
   border-radius: 12px;
   font-weight: 600;
+}
+
+.status-badge.answered-badge {
+  background: #48bb78;
 }
 
 .player-actions {

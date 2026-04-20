@@ -143,6 +143,11 @@
   font-weight: 600;
 }
 
+.your-guess {
+  font-size: 18px;
+  color: #2d3748;
+}
+
 .current-score {
   font-size: 20px;
   color: #667eea;

@@ -24,6 +24,7 @@ function Host() {
     finalResults,
     readyCount,
     totalCount,
+    answeredPlayerIds,
     updateSettings,
     startGame,
     nextQuestion,
@@ -140,7 +141,7 @@ function Host() {
             onExpire={() => {}}
           />
           <div className="info-section">
-            <PlayerList players={players} />
+            <PlayerList players={players} answeredPlayerIds={answeredPlayerIds} />
             <p className="game-instruction">Players are answering...</p>
           </div>
         </div>
