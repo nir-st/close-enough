@@ -180,6 +180,11 @@ function AnswerReveal({ correctAnswer, results, onComplete }: AnswerRevealProps)
     return ((value - currentZoom.min) / zoomRange) * 100;
   };
 
+  // Format number with commas
+  const formatNumber = (num: number): string => {
+    return Math.round(num).toLocaleString('en-US');
+  };
+
   // Generate tick marks for current zoom
   const numTicks = 5;
   const ticks = Array.from({ length: numTicks }, (_, i) => {
@@ -190,7 +195,7 @@ function AnswerReveal({ correctAnswer, results, onComplete }: AnswerRevealProps)
     } else if (Math.abs(value) >= 1000) {
       return `${(value / 1000).toFixed(1)}K`;
     }
-    return Math.round(value).toString();
+    return formatNumber(value);
   });
 
   const winners = results.filter(r => r.pointsEarned > 0);
@@ -221,7 +226,7 @@ function AnswerReveal({ correctAnswer, results, onComplete }: AnswerRevealProps)
                 <div className="marker-content">
                   <div className="marker-name">{result.playerName}</div>
                   <div className="marker-avatar">{result.playerAvatar}</div>
-                  <div className="marker-label">{result.answer}</div>
+                  <div className="marker-label">{formatNumber(result.answer)}</div>
                 </div>
               </div>
             );
@@ -236,7 +241,7 @@ function AnswerReveal({ correctAnswer, results, onComplete }: AnswerRevealProps)
               <div className="marker-content">
                 <div className="marker-name answer-name">Correct Answer</div>
                 <div className="marker-star">⭐</div>
-                <div className="marker-label answer-label">{correctAnswer}</div>
+                <div className="marker-label answer-label">{formatNumber(correctAnswer)}</div>
               </div>
             </div>
           )}

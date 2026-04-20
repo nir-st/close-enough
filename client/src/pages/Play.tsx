@@ -109,27 +109,31 @@ function Play() {
 
       {gameState === 'results' && roundResult && (
         <div className="play-results">
-          <div className="watch-host-screen">
-            <div className="watch-message">
-              👀 Watch the host screen for results!
-            </div>
-          </div>
-          {roundResult.isLastQuestion ? (
-            <div className="final-message">
-              <p>🏁 Last question complete! Calculating final scores...</p>
-            </div>
+          {!roundResult.isLastQuestion ? (
+            <>
+              <div className="watch-host-screen">
+                <div className="watch-message">
+                  👀 Watch the host screen for results!
+                </div>
+              </div>
+              <div className="ready-section">
+                <button
+                  className={`btn-ready ${isReady ? 'ready' : ''}`}
+                  onClick={markReady}
+                  disabled={isReady}
+                >
+                  {isReady ? '✅ Ready!' : 'Ready for Next Question'}
+                </button>
+                <p className="ready-status">
+                  {readyCount} / {totalCount} players ready
+                </p>
+              </div>
+            </>
           ) : (
-            <div className="ready-section">
-              <button
-                className={`btn-ready ${isReady ? 'ready' : ''}`}
-                onClick={markReady}
-                disabled={isReady}
-              >
-                {isReady ? '✅ Ready!' : 'Ready for Next Question'}
-              </button>
-              <p className="ready-status">
-                {readyCount} / {totalCount} players ready
-              </p>
+            <div className="watch-host-screen">
+              <div className="watch-message">
+                👀 Watch the host screen for final results!
+              </div>
             </div>
           )}
         </div>

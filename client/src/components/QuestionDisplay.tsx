@@ -34,7 +34,6 @@ function QuestionDisplay({ question, large = false }: QuestionDisplayProps) {
         </div>
       </div>
       <div className="question-text">{question.text}</div>
-      {question.unit && <div className="question-unit">Answer in: {question.unit}</div>}
     </div>
   );
 }
