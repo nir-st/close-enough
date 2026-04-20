@@ -1909,6 +1909,816 @@
       "text": "How many billion LEGO bricks are produced per year?",
       "correctAnswer": 36,
       "unit": "billion bricks"
+    },
+    {
+      "id": "pop_easy_1",
+      "categories": [
+        "Population"
+      ],
+      "difficulty": "easy",
+      "text": "What is the population of Los Angeles?",
+      "correctAnswer": 4000000,
+      "unit": "people"
+    },
+    {
+      "id": "pop_easy_2",
+      "categories": [
+        "Population"
+      ],
+      "difficulty": "easy",
+      "text": "What is the population of Chicago?",
+      "correctAnswer": 2700000,
+      "unit": "people"
+    },
+    {
+      "id": "pop_easy_3",
+      "categories": [
+        "Population"
+      ],
+      "difficulty": "easy",
+      "text": "What is the population of Sydney?",
+      "correctAnswer": 5300000,
+      "unit": "people"
+    },
+    {
+      "id": "pop_med_1",
+      "categories": [
+        "Population"
+      ],
+      "difficulty": "medium",
+      "text": "What is the population of Mexico City?",
+      "correctAnswer": 22000000,
+      "unit": "people"
+    },
+    {
+      "id": "pop_med_2",
+      "categories": [
+        "Population"
+      ],
+      "difficulty": "medium",
+      "text": "What is the population of Lagos, Nigeria?",
+      "correctAnswer": 15000000,
+      "unit": "people"
+    },
+    {
+      "id": "pop_med_3",
+      "categories": [
+        "Population"
+      ],
+      "difficulty": "medium",
+      "text": "What is the population of South Korea?",
+      "correctAnswer": 51000000,
+      "unit": "people"
+    },
+    {
+      "id": "pop_hard_1",
+      "categories": [
+        "Population"
+      ],
+      "difficulty": "hard",
+      "text": "What is the population of Indonesia?",
+      "correctAnswer": 275000000,
+      "unit": "people"
+    },
+    {
+      "id": "pop_hard_2",
+      "categories": [
+        "Population"
+      ],
+      "difficulty": "hard",
+      "text": "What is the population of Brazil?",
+      "correctAnswer": 215000000,
+      "unit": "people"
+    },
+    {
+      "id": "pop_hard_3",
+      "categories": [
+        "Population"
+      ],
+      "difficulty": "hard",
+      "text": "What is the population of Pakistan?",
+      "correctAnswer": 230000000,
+      "unit": "people"
+    },
+    {
+      "id": "social_easy_1",
+      "categories": [
+        "Social Media"
+      ],
+      "difficulty": "easy",
+      "text": "How many million followers does Taylor Swift have on Instagram?",
+      "correctAnswer": 280,
+      "unit": "million followers"
+    },
+    {
+      "id": "social_easy_2",
+      "categories": [
+        "Social Media"
+      ],
+      "difficulty": "easy",
+      "text": "How many million followers does Selena Gomez have on Instagram?",
+      "correctAnswer": 430,
+      "unit": "million followers"
+    },
+    {
+      "id": "social_easy_3",
+      "categories": [
+        "Social Media"
+      ],
+      "difficulty": "easy",
+      "text": "How many million subscribers does MrBeast have on YouTube?",
+      "correctAnswer": 240,
+      "unit": "million subscribers"
+    },
+    {
+      "id": "social_med_1",
+      "categories": [
+        "Social Media"
+      ],
+      "difficulty": "medium",
+      "text": "How many billion monthly active users does Facebook have?",
+      "correctAnswer": 3,
+      "unit": "billion users"
+    },
+    {
+      "id": "social_med_2",
+      "categories": [
+        "Social Media"
+      ],
+      "difficulty": "medium",
+      "text": "How many million tweets are sent per day on Twitter/X?",
+      "correctAnswer": 500,
+      "unit": "million tweets"
+    },
+    {
+      "id": "social_med_3",
+      "categories": [
+        "Social Media"
+      ],
+      "difficulty": "medium",
+      "text": "How many billion hours of video are watched on YouTube daily?",
+      "correctAnswer": 1,
+      "unit": "billion hours"
+    },
+    {
+      "id": "social_hard_1",
+      "categories": [
+        "Social Media"
+      ],
+      "difficulty": "hard",
+      "text": "How many billion monthly active users does TikTok have?",
+      "correctAnswer": 1,
+      "unit": "billion users"
+    },
+    {
+      "id": "social_hard_2",
+      "categories": [
+        "Social Media"
+      ],
+      "difficulty": "hard",
+      "text": "How many million photos are shared on Snapchat daily?",
+      "correctAnswer": 5,
+      "unit": "billion photos"
+    },
+    {
+      "id": "social_hard_3",
+      "categories": [
+        "Social Media"
+      ],
+      "difficulty": "hard",
+      "text": "How many million content creators are on YouTube?",
+      "correctAnswer": 62,
+      "unit": "million creators"
+    },
+    {
+      "id": "ocean_easy_1",
+      "categories": [
+        "Oceans"
+      ],
+      "difficulty": "easy",
+      "text": "What percentage of Earth's surface is covered by oceans?",
+      "correctAnswer": 71,
+      "unit": "percent"
+    },
+    {
+      "id": "ocean_easy_2",
+      "categories": [
+        "Oceans"
+      ],
+      "difficulty": "easy",
+      "text": "How many oceans are there on Earth?",
+      "correctAnswer": 5,
+      "unit": "oceans"
+    },
+    {
+      "id": "ocean_easy_3",
+      "categories": [
+        "Oceans"
+      ],
+      "difficulty": "easy",
+      "text": "What is the average depth of the ocean in meters?",
+      "correctAnswer": 3700,
+      "unit": "meters"
+    },
+    {
+      "id": "ocean_med_1",
+      "categories": [
+        "Oceans"
+      ],
+      "difficulty": "medium",
+      "text": "How many species of fish live in the ocean?",
+      "correctAnswer": 20000,
+      "unit": "species"
+    },
+    {
+      "id": "ocean_med_2",
+      "categories": [
+        "Oceans"
+      ],
+      "difficulty": "medium",
+      "text": "What is the maximum diving depth of a sperm whale in meters?",
+      "correctAnswer": 2250,
+      "unit": "meters"
+    },
+    {
+      "id": "ocean_med_3",
+      "categories": [
+        "Oceans"
+      ],
+      "difficulty": "medium",
+      "text": "How many tons of plastic enter the oceans each year?",
+      "correctAnswer": 8000000,
+      "unit": "tons"
+    },
+    {
+      "id": "ocean_hard_1",
+      "categories": [
+        "Oceans"
+      ],
+      "difficulty": "hard",
+      "text": "How many cubic kilometers of water are in Earth's oceans?",
+      "correctAnswer": 1335000000,
+      "unit": "km³"
+    },
+    {
+      "id": "ocean_hard_2",
+      "categories": [
+        "Oceans"
+      ],
+      "difficulty": "hard",
+      "text": "What is the area of the Pacific Ocean in square kilometers?",
+      "correctAnswer": 165000000,
+      "unit": "km²"
+    },
+    {
+      "id": "ocean_hard_3",
+      "categories": [
+        "Oceans"
+      ],
+      "difficulty": "hard",
+      "text": "How many tons does the largest recorded blue whale weigh?",
+      "correctAnswer": 173,
+      "unit": "tons"
+    },
+    {
+      "id": "music_easy_1",
+      "categories": [
+        "Music"
+      ],
+      "difficulty": "easy",
+      "text": "How many strings does a standard guitar have?",
+      "correctAnswer": 6,
+      "unit": "strings"
+    },
+    {
+      "id": "music_easy_2",
+      "categories": [
+        "Music"
+      ],
+      "difficulty": "easy",
+      "text": "How many keys does a standard piano have?",
+      "correctAnswer": 88,
+      "unit": "keys"
+    },
+    {
+      "id": "music_easy_3",
+      "categories": [
+        "Music"
+      ],
+      "difficulty": "easy",
+      "text": "How many albums did Michael Jackson sell worldwide?",
+      "correctAnswer": 400000000,
+      "unit": "albums"
+    },
+    {
+      "id": "music_med_1",
+      "categories": [
+        "Music"
+      ],
+      "difficulty": "medium",
+      "text": "How many streams does the most-streamed song on Spotify have?",
+      "correctAnswer": 4000000000,
+      "unit": "streams"
+    },
+    {
+      "id": "music_med_2",
+      "categories": [
+        "Music"
+      ],
+      "difficulty": "medium",
+      "text": "How many tickets did Taylor Swift's Eras Tour sell?",
+      "correctAnswer": 4600000,
+      "unit": "tickets"
+    },
+    {
+      "id": "music_med_3",
+      "categories": [
+        "Music"
+      ],
+      "difficulty": "medium",
+      "text": "How many people attended Woodstock 1969?",
+      "correctAnswer": 400000,
+      "unit": "people"
+    },
+    {
+      "id": "music_hard_1",
+      "categories": [
+        "Music"
+      ],
+      "difficulty": "hard",
+      "text": "How many songs are available on Spotify?",
+      "correctAnswer": 100000000,
+      "unit": "songs"
+    },
+    {
+      "id": "music_hard_2",
+      "categories": [
+        "Music"
+      ],
+      "difficulty": "hard",
+      "text": "What was the highest-grossing concert tour revenue in dollars (Ed Sheeran Divide Tour)?",
+      "correctAnswer": 776000000,
+      "unit": "dollars"
+    },
+    {
+      "id": "music_hard_3",
+      "categories": [
+        "Music"
+      ],
+      "difficulty": "hard",
+      "text": "How many million vinyl records were sold in the US in 2022?",
+      "correctAnswer": 41,
+      "unit": "million records"
+    },
+    {
+      "id": "energy_easy_1",
+      "categories": [
+        "Energy"
+      ],
+      "difficulty": "easy",
+      "text": "How many watts does a typical LED light bulb use?",
+      "correctAnswer": 10,
+      "unit": "watts"
+    },
+    {
+      "id": "energy_easy_2",
+      "categories": [
+        "Energy"
+      ],
+      "difficulty": "easy",
+      "text": "How many solar panels does a typical home need?",
+      "correctAnswer": 20,
+      "unit": "panels"
+    },
+    {
+      "id": "energy_easy_3",
+      "categories": [
+        "Energy"
+      ],
+      "difficulty": "easy",
+      "text": "How many kilowatt-hours does an average home use per month?",
+      "correctAnswer": 900,
+      "unit": "kWh"
+    },
+    {
+      "id": "energy_med_1",
+      "categories": [
+        "Energy"
+      ],
+      "difficulty": "medium",
+      "text": "How many megawatts does a typical wind turbine generate?",
+      "correctAnswer": 3,
+      "unit": "MW"
+    },
+    {
+      "id": "energy_med_2",
+      "categories": [
+        "Energy"
+      ],
+      "difficulty": "medium",
+      "text": "How many kilowatt-hours does a Tesla Model 3 battery hold?",
+      "correctAnswer": 75,
+      "unit": "kWh"
+    },
+    {
+      "id": "energy_med_3",
+      "categories": [
+        "Energy"
+      ],
+      "difficulty": "medium",
+      "text": "How many barrels of oil are consumed worldwide per day?",
+      "correctAnswer": 100000000,
+      "unit": "barrels"
+    },
+    {
+      "id": "energy_hard_1",
+      "categories": [
+        "Energy"
+      ],
+      "difficulty": "hard",
+      "text": "How many terawatt-hours of electricity does the world consume per year?",
+      "correctAnswer": 29000,
+      "unit": "TWh"
+    },
+    {
+      "id": "energy_hard_2",
+      "categories": [
+        "Energy"
+      ],
+      "difficulty": "hard",
+      "text": "How many megawatts does the Hoover Dam generate?",
+      "correctAnswer": 2080,
+      "unit": "MW"
+    },
+    {
+      "id": "energy_hard_3",
+      "categories": [
+        "Energy"
+      ],
+      "difficulty": "hard",
+      "text": "How many gigawatts does the Three Gorges Dam produce?",
+      "correctAnswer": 22,
+      "unit": "GW"
+    },
+    {
+      "id": "war_easy_1",
+      "categories": [
+        "Military"
+      ],
+      "difficulty": "easy",
+      "text": "How many years did World War I last?",
+      "correctAnswer": 4,
+      "unit": "years"
+    },
+    {
+      "id": "war_easy_2",
+      "categories": [
+        "Military"
+      ],
+      "difficulty": "easy",
+      "text": "How many countries fought in World War II?",
+      "correctAnswer": 30,
+      "unit": "countries"
+    },
+    {
+      "id": "war_easy_3",
+      "categories": [
+        "Military"
+      ],
+      "difficulty": "easy",
+      "text": "How many aircraft carriers does the US Navy have?",
+      "correctAnswer": 11,
+      "unit": "carriers"
+    },
+    {
+      "id": "war_med_1",
+      "categories": [
+        "Military"
+      ],
+      "difficulty": "medium",
+      "text": "How many soldiers were in the Roman legions at their peak?",
+      "correctAnswer": 450000,
+      "unit": "soldiers"
+    },
+    {
+      "id": "war_med_2",
+      "categories": [
+        "Military"
+      ],
+      "difficulty": "medium",
+      "text": "What is the top speed of an F-16 fighter jet in km/h?",
+      "correctAnswer": 2400,
+      "unit": "km/h"
+    },
+    {
+      "id": "war_med_3",
+      "categories": [
+        "Military"
+      ],
+      "difficulty": "medium",
+      "text": "How many crew members does a submarine typically have?",
+      "correctAnswer": 140,
+      "unit": "crew"
+    },
+    {
+      "id": "war_hard_1",
+      "categories": [
+        "Military"
+      ],
+      "difficulty": "hard",
+      "text": "How many million people died in World War II?",
+      "correctAnswer": 75,
+      "unit": "million people"
+    },
+    {
+      "id": "war_hard_2",
+      "categories": [
+        "Military"
+      ],
+      "difficulty": "hard",
+      "text": "What is the price of an F-35 fighter jet in dollars?",
+      "correctAnswer": 80000000,
+      "unit": "dollars"
+    },
+    {
+      "id": "war_hard_3",
+      "categories": [
+        "Military"
+      ],
+      "difficulty": "hard",
+      "text": "How many soldiers are in the Chinese military?",
+      "correctAnswer": 2000000,
+      "unit": "soldiers"
+    },
+    {
+      "id": "medical_easy_1",
+      "categories": [
+        "Medicine"
+      ],
+      "difficulty": "easy",
+      "text": "What is the normal resting heart rate in beats per minute?",
+      "correctAnswer": 70,
+      "unit": "bpm"
+    },
+    {
+      "id": "medical_easy_2",
+      "categories": [
+        "Medicine"
+      ],
+      "difficulty": "easy",
+      "text": "How many hours of sleep does an adult need per night?",
+      "correctAnswer": 8,
+      "unit": "hours"
+    },
+    {
+      "id": "medical_easy_3",
+      "categories": [
+        "Medicine"
+      ],
+      "difficulty": "easy",
+      "text": "How many calories should an average adult consume per day?",
+      "correctAnswer": 2000,
+      "unit": "calories"
+    },
+    {
+      "id": "medical_med_1",
+      "categories": [
+        "Medicine"
+      ],
+      "difficulty": "medium",
+      "text": "How many days does it take for skin cells to regenerate?",
+      "correctAnswer": 28,
+      "unit": "days"
+    },
+    {
+      "id": "medical_med_2",
+      "categories": [
+        "Medicine"
+      ],
+      "difficulty": "medium",
+      "text": "How many liters of air does a person breathe per day?",
+      "correctAnswer": 11000,
+      "unit": "liters"
+    },
+    {
+      "id": "medical_med_3",
+      "categories": [
+        "Medicine"
+      ],
+      "difficulty": "medium",
+      "text": "How many times does a person swallow per day?",
+      "correctAnswer": 600,
+      "unit": "times"
+    },
+    {
+      "id": "medical_hard_1",
+      "categories": [
+        "Medicine"
+      ],
+      "difficulty": "hard",
+      "text": "How many red blood cells does the human body produce per second?",
+      "correctAnswer": 2000000,
+      "unit": "cells"
+    },
+    {
+      "id": "medical_hard_2",
+      "categories": [
+        "Medicine"
+      ],
+      "difficulty": "hard",
+      "text": "How many meters of DNA are in a single human cell?",
+      "correctAnswer": 2,
+      "unit": "meters"
+    },
+    {
+      "id": "medical_hard_3",
+      "categories": [
+        "Medicine"
+      ],
+      "difficulty": "hard",
+      "text": "How many million bacteria live in one milliliter of saliva?",
+      "correctAnswer": 100,
+      "unit": "million bacteria"
+    },
+    {
+      "id": "gaming_easy_1",
+      "categories": [
+        "Gaming"
+      ],
+      "difficulty": "easy",
+      "text": "How many copies did Minecraft sell worldwide?",
+      "correctAnswer": 300000000,
+      "unit": "copies"
+    },
+    {
+      "id": "gaming_easy_2",
+      "categories": [
+        "Gaming"
+      ],
+      "difficulty": "easy",
+      "text": "How many Pokémon were in the original game?",
+      "correctAnswer": 151,
+      "unit": "Pokémon"
+    },
+    {
+      "id": "gaming_easy_3",
+      "categories": [
+        "Gaming"
+      ],
+      "difficulty": "easy",
+      "text": "How many million units did the PlayStation 2 sell?",
+      "correctAnswer": 155,
+      "unit": "million units"
+    },
+    {
+      "id": "gaming_med_1",
+      "categories": [
+        "Gaming"
+      ],
+      "difficulty": "medium",
+      "text": "How many million monthly active players does Fortnite have?",
+      "correctAnswer": 230,
+      "unit": "million players"
+    },
+    {
+      "id": "gaming_med_2",
+      "categories": [
+        "Gaming"
+      ],
+      "difficulty": "medium",
+      "text": "What was Grand Theft Auto V's development cost in dollars?",
+      "correctAnswer": 265000000,
+      "unit": "dollars"
+    },
+    {
+      "id": "gaming_med_3",
+      "categories": [
+        "Gaming"
+      ],
+      "difficulty": "medium",
+      "text": "How many million copies did The Legend of Zelda: Breath of the Wild sell?",
+      "correctAnswer": 31,
+      "unit": "million copies"
+    },
+    {
+      "id": "gaming_hard_1",
+      "categories": [
+        "Gaming"
+      ],
+      "difficulty": "hard",
+      "text": "How many million registered accounts does League of Legends have?",
+      "correctAnswer": 150,
+      "unit": "million accounts"
+    },
+    {
+      "id": "gaming_hard_2",
+      "categories": [
+        "Gaming"
+      ],
+      "difficulty": "hard",
+      "text": "What was the prize pool for The International 2021 Dota 2 tournament in dollars?",
+      "correctAnswer": 40000000,
+      "unit": "dollars"
+    },
+    {
+      "id": "gaming_hard_3",
+      "categories": [
+        "Gaming"
+      ],
+      "difficulty": "hard",
+      "text": "How many billion hours of gameplay does Roblox have per month?",
+      "correctAnswer": 4,
+      "unit": "billion hours"
+    },
+    {
+      "id": "weather_easy_1",
+      "categories": [
+        "Weather"
+      ],
+      "difficulty": "easy",
+      "text": "What is the freezing point of water in degrees Celsius?",
+      "correctAnswer": 0,
+      "unit": "°C"
+    },
+    {
+      "id": "weather_easy_2",
+      "categories": [
+        "Weather"
+      ],
+      "difficulty": "easy",
+      "text": "What is the average annual rainfall in London in millimeters?",
+      "correctAnswer": 600,
+      "unit": "mm"
+    },
+    {
+      "id": "weather_easy_3",
+      "categories": [
+        "Weather"
+      ],
+      "difficulty": "easy",
+      "text": "What is the average summer temperature in Dubai in degrees Celsius?",
+      "correctAnswer": 40,
+      "unit": "°C"
+    },
+    {
+      "id": "weather_med_1",
+      "categories": [
+        "Weather"
+      ],
+      "difficulty": "medium",
+      "text": "What is the windspeed of a Category 3 hurricane in km/h?",
+      "correctAnswer": 180,
+      "unit": "km/h"
+    },
+    {
+      "id": "weather_med_2",
+      "categories": [
+        "Weather"
+      ],
+      "difficulty": "medium",
+      "text": "What is the temperature of a lightning bolt in degrees Celsius?",
+      "correctAnswer": 30000,
+      "unit": "°C"
+    },
+    {
+      "id": "weather_med_3",
+      "categories": [
+        "Weather"
+      ],
+      "difficulty": "medium",
+      "text": "How many millimeters of rain fell in the wettest day ever recorded?",
+      "correctAnswer": 1825,
+      "unit": "mm"
+    },
+    {
+      "id": "weather_hard_1",
+      "categories": [
+        "Weather"
+      ],
+      "difficulty": "hard",
+      "text": "What is the lowest temperature ever recorded on Earth in degrees Celsius?",
+      "correctAnswer": -89,
+      "unit": "°C"
+    },
+    {
+      "id": "weather_hard_2",
+      "categories": [
+        "Weather"
+      ],
+      "difficulty": "hard",
+      "text": "What is the highest temperature ever recorded on Earth in degrees Celsius?",
+      "correctAnswer": 57,
+      "unit": "°C"
+    },
+    {
+      "id": "weather_hard_3",
+      "categories": [
+        "Weather"
+      ],
+      "difficulty": "hard",
+      "text": "What was the windspeed of the strongest tornado ever recorded in km/h?",
+      "correctAnswer": 486,
+      "unit": "km/h"
     }
   ]
 }
