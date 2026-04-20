@@ -392,7 +392,8 @@ export function setupSocketHandlers(io: Server) {
         console.log(`✅ ${player.name} is ready (${readyCount}/${connectedCount})`);
 
         // If all players are ready, proceed to next question
-        if (roomService.areAllPlayersReady()) {
+        if (roomService.areAllPlayersReady() && !room.isProcessingReady) {
+          room.isProcessingReady = true; // Prevent duplicate processing
           console.log(`🎯 All players ready! Moving to next question`);
 
           // Clear ready state
@@ -406,12 +407,14 @@ export function setupSocketHandlers(io: Server) {
               // More questions remaining
               setTimeout(() => {
                 sendCurrentQuestion(io, room.id);
+                room.isProcessingReady = false; // Reset flag after processing complete
               }, 1000);
             } else if (room.state === 'finished') {
               // Game finished
               const results = gameService.getFinalResults(room.id);
               io.to(room.id).emit('game-ended', results);
               console.log(`🏆 Game ended in room ${room.code}`);
+              room.isProcessingReady = false; // Reset flag
             }
           }, 1000);
         }
@@ -579,7 +582,8 @@ export function setupSocketHandlers(io: Server) {
           });
 
           // If all players are ready, proceed to next question
-          if (roomService.areAllPlayersReady()) {
+          if (roomService.areAllPlayersReady() && !room.isProcessingReady) {
+            room.isProcessingReady = true; // Prevent duplicate processing
             console.log(`🎯 All players ready! Moving to next question`);
 
             roomService.clearReadyPlayers();
@@ -590,11 +594,13 @@ export function setupSocketHandlers(io: Server) {
               if (room.state === 'question') {
                 setTimeout(() => {
                   sendCurrentQuestion(io, room.id);
+                  room.isProcessingReady = false; // Reset flag after processing complete
                 }, 1000);
               } else if (room.state === 'finished') {
                 const finalResults = gameService.getFinalResults(room.id);
                 io.to(room.id).emit('game-ended', finalResults);
                 console.log(`🏆 Game ended in room ${room.code}`);
+                room.isProcessingReady = false; // Reset flag
               }
             }, 1000);
           }

@@ -47,6 +47,7 @@ export interface Room {
   answers: Map<string, Answer>;
   questionStartTime?: number;
   readyPlayers: Set<string>; // Track which players are ready for next question
+  isProcessingReady: boolean; // Flag to prevent duplicate processing when all ready
   createdAt: Date;
 }
 

@@ -38,6 +38,7 @@ class RoomService {
       questions: [],
       answers: new Map(),
       readyPlayers: new Set(),
+      isProcessingReady: false,
       createdAt: new Date()
     };
 
