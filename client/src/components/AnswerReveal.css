@@ -40,13 +40,16 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 40%;
+  height: 60%;
   background-image:
     radial-gradient(circle, white 1px, transparent 1px),
     radial-gradient(circle, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-    radial-gradient(circle, rgba(255, 255, 255, 0.6) 0.5px, transparent 0.5px);
-  background-size: 150px 150px, 200px 200px, 100px 100px;
-  background-position: 0 0, 50px 50px, 75px 25px;
+    radial-gradient(circle, rgba(255, 255, 255, 0.6) 0.5px, transparent 0.5px),
+    radial-gradient(circle, white 1.5px, transparent 1.5px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.7) 0.8px, transparent 0.8px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.5) 0.6px, transparent 0.6px);
+  background-size: 180px 180px, 240px 240px, 120px 120px, 200px 200px, 160px 160px, 140px 140px;
+  background-position: 0 10%, 60px 25%, 90px 5%, 30px 40%, 150px 15%, 110px 35%;
   border-radius: 16px 16px 0 0;
   opacity: 0.9;
   pointer-events: none;

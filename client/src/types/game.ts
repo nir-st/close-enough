@@ -43,6 +43,7 @@ export interface RoundResult {
   winner: ScoreResult | null;
   questionNumber: number;
   totalQuestions: number;
+  isLastQuestion?: boolean;
 }
 
 export interface FinalResults {

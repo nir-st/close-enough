@@ -221,3 +221,46 @@
   font-weight: 600;
   text-align: center;
 }
+
+.watch-host-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 40vh;
+}
+
+.watch-message {
+  background: white;
+  padding: 48px 32px;
+  border-radius: 16px;
+  font-size: 28px;
+  font-weight: 800;
+  color: #667eea;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  animation: gentlePulse 2s ease-in-out infinite;
+}
+
+@keyframes gentlePulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+.final-message {
+  background: white;
+  padding: 32px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.final-message p {
+  font-size: 20px;
+  font-weight: 600;
+  color: #667eea;
+  margin: 0;
+}

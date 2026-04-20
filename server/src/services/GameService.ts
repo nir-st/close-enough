@@ -106,10 +106,13 @@ class GameService {
 
     room.state = 'results';
 
+    const isLastQuestion = room.currentQuestionIndex >= room.questions.length - 1;
+
     return {
       ...roundResult,
       questionNumber: room.currentQuestionIndex + 1,
-      totalQuestions: room.questions.length
+      totalQuestions: room.questions.length,
+      isLastQuestion
     };
   }
 

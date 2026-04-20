@@ -109,39 +109,29 @@ function Play() {
 
       {gameState === 'results' && roundResult && (
         <div className="play-results">
-          <div className="my-result">
-            {roundResult.results.find(r => r.playerId === playerId) && (
-              <div className="my-result-card">
-                {roundResult.results.find(r => r.playerId === playerId)!.pointsEarned > 0 ? (
-                  <div className="result-success">
-                    🎉 You were closest!
-                  </div>
-                ) : (
-                  <div className="result-fail">
-                    Not quite! Watch the big screen for the answer
-                  </div>
-                )}
-                <div className="answer-comparison">
-                  <div className="your-guess">Your guess: {roundResult.results.find(r => r.playerId === playerId)!.answer}</div>
-                  <div className="current-score">
-                    Your score: {roundResult.results.find(r => r.playerId === playerId)!.totalScore} pts
-                  </div>
-                </div>
-              </div>
-            )}
+          <div className="watch-host-screen">
+            <div className="watch-message">
+              👀 Watch the host screen for results!
+            </div>
           </div>
-          <div className="ready-section">
-            <button
-              className={`btn-ready ${isReady ? 'ready' : ''}`}
-              onClick={markReady}
-              disabled={isReady}
-            >
-              {isReady ? '✅ Ready!' : 'Ready for Next Question'}
-            </button>
-            <p className="ready-status">
-              {readyCount} / {totalCount} players ready
-            </p>
-          </div>
+          {roundResult.isLastQuestion ? (
+            <div className="final-message">
+              <p>🏁 Last question complete! Calculating final scores...</p>
+            </div>
+          ) : (
+            <div className="ready-section">
+              <button
+                className={`btn-ready ${isReady ? 'ready' : ''}`}
+                onClick={markReady}
+                disabled={isReady}
+              >
+                {isReady ? '✅ Ready!' : 'Ready for Next Question'}
+              </button>
+              <p className="ready-status">
+                {readyCount} / {totalCount} players ready
+              </p>
+            </div>
+          )}
         </div>
       )}
 
