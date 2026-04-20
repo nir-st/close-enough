@@ -145,7 +145,7 @@ function AnswerReveal({ correctAnswer, results, onComplete }: AnswerRevealProps)
 
         // Call onComplete after the last step
         if (index === animationSteps.length - 1 && onComplete) {
-          setTimeout(onComplete, 2000);
+          setTimeout(onComplete, 4000);
         }
       }, delay));
 

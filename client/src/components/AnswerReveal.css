@@ -20,37 +20,52 @@
   margin: 40px 0;
   padding-top: 80px;
   background: linear-gradient(180deg,
-    #1e3a8a 0%,    /* Deep blue */
-    #3b82f6 20%,   /* Sky blue */
-    #60a5fa 40%,   /* Light blue */
-    #93c5fd 60%,   /* Very light blue */
-    #dbeafe 80%,   /* Almost white blue */
-    #f0f9ff 100%   /* White blue */
+    #1e3a5f 0%,    /* Night sky */
+    #2d5a8e 15%,   /* Deep evening */
+    #4a90d9 30%,   /* Twilight */
+    #87ceeb 50%,   /* Sky blue */
+    #b5d8f0 70%,   /* Light sky */
+    #e8f4f8 100%   /* Horizon */
   );
   border-radius: 16px;
   padding: 80px 20px 40px 20px;
   box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
-/* Add some stars/dots for space effect */
+/* Stars */
 .number-line-container::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 50%;
+  height: 40%;
   background-image:
-    radial-gradient(2px 2px at 20% 30%, white, transparent),
-    radial-gradient(2px 2px at 60% 70%, white, transparent),
-    radial-gradient(1px 1px at 50% 20%, white, transparent),
-    radial-gradient(1px 1px at 80% 10%, white, transparent),
-    radial-gradient(2px 2px at 90% 60%, white, transparent),
-    radial-gradient(1px 1px at 30% 80%, white, transparent);
-  background-size: 200% 200%;
-  background-position: 0% 0%;
+    radial-gradient(circle, white 1px, transparent 1px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.6) 0.5px, transparent 0.5px);
+  background-size: 150px 150px, 200px 200px, 100px 100px;
+  background-position: 0 0, 50px 50px, 75px 25px;
   border-radius: 16px 16px 0 0;
-  opacity: 0.6;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+/* Clouds */
+.number-line-container::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 25%;
+  background:
+    radial-gradient(ellipse 200px 60px at 20% 80%, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(ellipse 250px 70px at 60% 75%, rgba(255, 255, 255, 0.3), transparent),
+    radial-gradient(ellipse 180px 50px at 85% 85%, rgba(255, 255, 255, 0.35), transparent),
+    radial-gradient(ellipse 220px 65px at 40% 90%, rgba(255, 255, 255, 0.25), transparent);
+  border-radius: 0 0 16px 16px;
   pointer-events: none;
 }
 

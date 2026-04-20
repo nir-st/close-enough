@@ -42,27 +42,27 @@ class QuestionService {
     // Select based on difficulty and question count
     if (settings.difficulty === 'mixed') {
       if (settings.questionCount === 10) {
-        // 10 questions: 5 easy, 3 medium, 2 hard
+        // 10 questions: 5 easy, 3 medium, 2 hard (in order)
         selected = [
           ...this.randomSelect(filtered, 'easy', 5),
           ...this.randomSelect(filtered, 'medium', 3),
           ...this.randomSelect(filtered, 'hard', 2)
         ];
       } else {
-        // 5 questions: 2 easy, 2 medium, 1 hard
+        // 5 questions: 2 easy, 2 medium, 1 hard (in order)
         selected = [
           ...this.randomSelect(filtered, 'easy', 2),
           ...this.randomSelect(filtered, 'medium', 2),
           ...this.randomSelect(filtered, 'hard', 1)
         ];
       }
+      // Don't shuffle for mixed difficulty - keep the easy → medium → hard order
+      return selected;
     } else {
-      // All same difficulty
+      // All same difficulty - shuffle these
       selected = this.randomSelect(filtered, settings.difficulty, settings.questionCount);
+      return this.shuffle(selected);
     }
-
-    // Shuffle to randomize order
-    return this.shuffle(selected);
   }
 
   // Randomly select N questions of a specific difficulty
