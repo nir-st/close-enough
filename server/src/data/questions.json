@@ -246,9 +246,9 @@
         "Sports"
       ],
       "difficulty": "hard",
-      "text": "What was Neymar's transfer fee from Barcelona to PSG in millions of euros?",
-      "correctAnswer": 222,
-      "unit": "million euros"
+      "text": "What was Neymar's transfer fee from Barcelona to PSG in euros?",
+      "correctAnswer": 222000000,
+      "unit": "euros"
     },
     {
       "id": "sport_hard_2",
@@ -346,9 +346,9 @@
         "Entertainment"
       ],
       "difficulty": "medium",
-      "text": "How many followers does Cristiano Ronaldo have on Instagram (in millions)?",
-      "correctAnswer": 600,
-      "unit": "million followers"
+      "text": "How many followers does Cristiano Ronaldo have on Instagram?",
+      "correctAnswer": 600000000,
+      "unit": "followers"
     },
     {
       "id": "ent_med_3",
@@ -386,9 +386,9 @@
         "Entertainment"
       ],
       "difficulty": "hard",
-      "text": "What was Avatar's worldwide box office in millions of dollars?",
-      "correctAnswer": 2923,
-      "unit": "million dollars"
+      "text": "What was Avatar's worldwide box office in dollars?",
+      "correctAnswer": 2923000000,
+      "unit": "dollars"
     },
     {
       "id": "ent_hard_2",
@@ -396,9 +396,9 @@
         "Entertainment"
       ],
       "difficulty": "hard",
-      "text": "How many views does the music video Despacito have on YouTube (in billions)?",
-      "correctAnswer": 8,
-      "unit": "billion views"
+      "text": "How many views does the music video Despacito have on YouTube?",
+      "correctAnswer": 8000000000,
+      "unit": "views"
     },
     {
       "id": "ent_hard_3",
@@ -416,9 +416,9 @@
         "Entertainment"
       ],
       "difficulty": "hard",
-      "text": "What was Avengers: Endgame's opening weekend box office in millions of dollars?",
-      "correctAnswer": 1223,
-      "unit": "million dollars"
+      "text": "What was Avengers: Endgame's opening weekend box office in dollars?",
+      "correctAnswer": 1223000000,
+      "unit": "dollars"
     },
     {
       "id": "ent_hard_5",
@@ -956,9 +956,9 @@
         "Entertainment"
       ],
       "difficulty": "easy",
-      "text": "What was the opening weekend box office for Spider-Man: No Way Home in millions of dollars?",
-      "correctAnswer": 260,
-      "unit": "million dollars"
+      "text": "What was the opening weekend box office for Spider-Man: No Way Home in dollars?",
+      "correctAnswer": 260000000,
+      "unit": "dollars"
     },
     {
       "id": "food_easy_4",
@@ -1486,9 +1486,9 @@
         "Transportation"
       ],
       "difficulty": "hard",
-      "text": "What is the price of a new Boeing 747 in millions of dollars?",
-      "correctAnswer": 418,
-      "unit": "million dollars"
+      "text": "What is the price of a new Boeing 747 in dollars?",
+      "correctAnswer": 418000000,
+      "unit": "dollars"
     },
     {
       "id": "lang_easy_1",
@@ -1706,9 +1706,9 @@
         "Money"
       ],
       "difficulty": "medium",
-      "text": "What is the insured value of the Mona Lisa in millions of dollars?",
-      "correctAnswer": 870,
-      "unit": "million dollars"
+      "text": "What is the insured value of the Mona Lisa in dollars?",
+      "correctAnswer": 870000000,
+      "unit": "dollars"
     },
     {
       "id": "money_med_2",
@@ -1716,9 +1716,9 @@
         "Money"
       ],
       "difficulty": "medium",
-      "text": "What was the most expensive NFT ever sold in millions of dollars?",
-      "correctAnswer": 91,
-      "unit": "million dollars"
+      "text": "What was the most expensive NFT ever sold in dollars?",
+      "correctAnswer": 91000000,
+      "unit": "dollars"
     },
     {
       "id": "money_med_3",
@@ -1726,9 +1726,9 @@
         "Money"
       ],
       "difficulty": "medium",
-      "text": "How much did it cost to build the Tokyo Olympic Stadium in billions of dollars?",
-      "correctAnswer": 1,
-      "unit": "billion dollars"
+      "text": "How much did it cost to build the Tokyo Olympic Stadium in dollars?",
+      "correctAnswer": 1000000000,
+      "unit": "dollars"
     },
     {
       "id": "money_hard_1",
@@ -1736,9 +1736,9 @@
         "Money"
       ],
       "difficulty": "hard",
-      "text": "What is the price of the most expensive car ever sold (Ferrari 250 GTO) in millions of dollars?",
-      "correctAnswer": 70,
-      "unit": "million dollars"
+      "text": "What is the price of the most expensive car ever sold (Ferrari 250 GTO) in dollars?",
+      "correctAnswer": 70000000,
+      "unit": "dollars"
     },
     {
       "id": "money_hard_2",
@@ -1756,9 +1756,9 @@
         "Money"
       ],
       "difficulty": "hard",
-      "text": "What is the total value of all Bitcoin in circulation in billions of dollars?",
-      "correctAnswer": 850,
-      "unit": "billion dollars"
+      "text": "What is the total value of all Bitcoin in circulation in dollars?",
+      "correctAnswer": 850000000000,
+      "unit": "dollars"
     },
     {
       "id": "space_med_1",

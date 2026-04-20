@@ -266,10 +266,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   // Mark player ready for next question
   markReady: () => {
-    const { socket } = get();
-    if (!socket) return;
+    const { socket, playerId } = get();
+    if (!socket || !playerId) return;
 
-    socket.emit('player-ready');
+    socket.emit('player-ready', { playerId });
   },
 
   // Add bots

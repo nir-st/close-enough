@@ -218,8 +218,11 @@ function AnswerReveal({ correctAnswer, results, onComplete }: AnswerRevealProps)
                 } ${!inRange ? 'out-of-range' : ''}`}
                 style={{ left: `${Math.max(0, Math.min(100, position))}%` }}
               >
-                <div className="marker-avatar">{result.playerAvatar}</div>
-                <div className="marker-label">{result.answer}</div>
+                <div className="marker-content">
+                  <div className="marker-name">{result.playerName}</div>
+                  <div className="marker-avatar">{result.playerAvatar}</div>
+                  <div className="marker-label">{result.answer}</div>
+                </div>
               </div>
             );
           })}
@@ -230,8 +233,11 @@ function AnswerReveal({ correctAnswer, results, onComplete }: AnswerRevealProps)
               className="marker answer-marker visible"
               style={{ left: `${Math.max(0, Math.min(100, getPosition(correctAnswer)))}%` }}
             >
-              <div className="marker-star">⭐</div>
-              <div className="marker-label answer-label">{correctAnswer}</div>
+              <div className="marker-content">
+                <div className="marker-name answer-name">Correct Answer</div>
+                <div className="marker-star">⭐</div>
+                <div className="marker-label answer-label">{correctAnswer}</div>
+              </div>
             </div>
           )}
 

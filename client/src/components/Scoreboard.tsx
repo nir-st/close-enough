@@ -53,9 +53,6 @@ function Scoreboard({ roundResult, finalResults }: ScoreboardProps) {
                 <span className="player-avatar-result">{result.playerAvatar}</span>
                 {result.playerName}
               </div>
-              <div className="answer-info">
-                <span className="answer-value">{result.answer}</span>
-              </div>
               <div className="points">
                 {result.totalScore} pts
               </div>

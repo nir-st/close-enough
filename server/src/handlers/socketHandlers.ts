@@ -353,9 +353,16 @@ export function setupSocketHandlers(io: Server) {
     });
 
     // Player ready for next question
-    socket.on('player-ready', () => {
+    socket.on('player-ready', ({ playerId }: { playerId: string }) => {
       try {
-        const player = roomService.getPlayerBySocketId(socket.id);
+        // First try to find by provided playerId, fallback to socket.id
+        let player = roomService.getPlayerById(playerId);
+
+        if (!player) {
+          // Fallback: try finding by socket ID (for backward compatibility)
+          player = roomService.getPlayerBySocketId(socket.id);
+        }
+
         if (!player) {
           socket.emit('error', { message: 'Player not found' });
           return;

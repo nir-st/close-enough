@@ -16,8 +16,9 @@
 
 .number-line-container {
   position: relative;
-  min-height: 250px;
+  min-height: 300px;
   margin: 40px 0;
+  padding-top: 80px;
 }
 
 .outliers-container {
@@ -105,6 +106,34 @@
   gap: 4px;
   opacity: 0;
   transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10;
+}
+
+.marker-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.marker-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #2d3748;
+  background: white;
+  padding: 4px 10px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
+  margin-bottom: 4px;
+}
+
+.answer-name {
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+  color: #2d3748;
+  border: 2px solid #f39c12;
+  font-size: 16px;
+  padding: 6px 12px;
 }
 
 .marker.visible {
@@ -185,7 +214,7 @@
 @keyframes dropIn {
   from {
     opacity: 0;
-    transform: translate(-50%, -150%);
+    transform: translate(-50%, -200%);
   }
   to {
     opacity: 1;
