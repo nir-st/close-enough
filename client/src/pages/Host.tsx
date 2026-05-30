@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useGameStore } from '../stores/gameStore';
 import QRCodeDisplay from '../components/QRCodeDisplay';
 import PlayerList from '../components/PlayerList';
@@ -12,6 +12,7 @@ import './Host.css';
 
 function Host() {
   const { roomCode } = useParams();
+  const navigate = useNavigate();
   const [showDetailedResults, setShowDetailedResults] = useState(false);
   const {
     gameState,
@@ -22,18 +23,22 @@ function Host() {
     joinUrl,
     roundResult,
     finalResults,
-    readyCount,
+    readyPlayerIds,
     totalCount,
     answeredPlayerIds,
+    notification,
     updateSettings,
     startGame,
-    nextQuestion,
     endGame,
+    restartGame,
     kickPlayer,
     setTimeRemaining,
     addBots,
     removeBots
   } = useGameStore();
+
+  const disconnectedPlayerIds = players.filter(p => !p.connected).map(p => p.id);
+  const connectedCount = players.filter(p => p.connected).length;
 
   // Timer countdown
   useEffect(() => {
@@ -68,12 +73,22 @@ function Host() {
     startGame();
   };
 
+  const handleEndGame = () => {
+    endGame();
+    navigate('/');
+  };
+
   return (
     <div className="host-container">
       <div className="host-header">
         <h1>🎮 Close Enough</h1>
         <div className="room-code-badge">Room: {roomCode}</div>
       </div>
+
+      {/* In-game notification toast (#9) */}
+      {notification && (
+        <div className="game-notification">{notification}</div>
+      )}
 
       {gameState === 'waiting' && (
         <div className="waiting-view">
@@ -96,10 +111,7 @@ function Host() {
                 ))}
               </div>
               {players.some(p => p.isBot) && (
-                <button
-                  className="btn-remove-bots"
-                  onClick={removeBots}
-                >
+                <button className="btn-remove-bots" onClick={removeBots}>
                   Remove All Bots
                 </button>
               )}
@@ -125,10 +137,7 @@ function Host() {
       {gameState === 'question' && currentQuestion && (
         <div className="game-view">
           <QuestionDisplay question={currentQuestion} large />
-          <div className="info-section">
-            <PlayerList players={players} />
-            <p className="game-instruction">Get ready! Question appearing in 3 seconds...</p>
-          </div>
+          <p className="game-instruction">Get ready! Question appearing shortly...</p>
         </div>
       )}
 
@@ -140,9 +149,8 @@ function Host() {
             totalTime={settings.timePerQuestion}
             onExpire={() => {}}
           />
-          <div className="info-section">
-            <PlayerList players={players} answeredPlayerIds={answeredPlayerIds} />
-            <p className="game-instruction">Players are answering...</p>
+          <div className="answered-status">
+            {answeredPlayerIds.length} / {players.filter(p => p.connected).length} answered
           </div>
         </div>
       )}
@@ -157,27 +165,38 @@ function Host() {
             />
           ) : (
             <>
-              <Scoreboard roundResult={roundResult} />
+              <Scoreboard
+                roundResult={roundResult}
+                readyPlayerIds={readyPlayerIds}
+                disconnectedPlayerIds={disconnectedPlayerIds}
+              />
               <div className="ready-status-display">
-                <p className="ready-text">
-                  Waiting for players to be ready: {readyCount} / {totalCount}
-                </p>
-                {readyCount === totalCount && totalCount > 0 && (
-                  <p className="all-ready-text">✅ All players ready! Moving to next question...</p>
+                {connectedCount < 2 ? (
+                  <p className="waiting-reconnect-text">
+                    ⏳ Waiting for players to reconnect... ({connectedCount} connected)
+                  </p>
+                ) : (
+                  <p className="ready-text">
+                    Waiting for players: {readyPlayerIds.length} / {totalCount} ready
+                  </p>
                 )}
               </div>
             </>
           )}
-          <PlayerList players={players} />
         </div>
       )}
 
       {gameState === 'finished' && finalResults && (
         <div className="results-view">
           <Scoreboard finalResults={finalResults} />
-          <button className="btn-danger" onClick={endGame}>
-            End Game
-          </button>
+          <div className="finished-actions">
+            <button className="btn-primary" onClick={restartGame}>
+              🔄 Play Again
+            </button>
+            <button className="btn-danger" onClick={handleEndGame}>
+              End Game
+            </button>
+          </div>
         </div>
       )}
     </div>

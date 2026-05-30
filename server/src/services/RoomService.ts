@@ -189,6 +189,25 @@ class RoomService {
     this.activeRoom = null;
   }
 
+  // Restart game with same players - reset state back to waiting, clear scores
+  restartGame(): void {
+    if (!this.activeRoom) return;
+
+    this.activeRoom.state = 'waiting';
+    this.activeRoom.currentQuestionIndex = 0;
+    this.activeRoom.questions = [];
+    this.activeRoom.answers.clear();
+    this.activeRoom.readyPlayers.clear();
+    this.activeRoom.isProcessingReady = false;
+    this.activeRoom.questionStartTime = undefined;
+    this.activeRoom.lastRoundResult = undefined;
+
+    // Reset player scores
+    this.activeRoom.players.forEach(p => {
+      p.score = 0;
+    });
+  }
+
   // Clean up players disconnected for more than 5 minutes
   cleanupDisconnectedPlayers(): void {
     if (!this.activeRoom) return;

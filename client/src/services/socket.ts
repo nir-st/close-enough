@@ -1,6 +1,9 @@
 import { io, Socket } from 'socket.io-client';
 
-const SERVER_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+// Use env override if set, otherwise derive from window hostname so mobile devices
+// automatically connect to the same machine that served the page.
+const SERVER_URL = import.meta.env.VITE_SERVER_URL ||
+  `http://${window.location.hostname}:3000`;
 
 class SocketService {
   private socket: Socket | null = null;

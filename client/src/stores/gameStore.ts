@@ -35,7 +35,7 @@ interface GameStore {
   timeRemaining: number;
   hasAnswered: boolean;
   myAnswer: number | null;
-  answeredPlayerIds: string[]; // Track which players have submitted answers
+  answeredPlayerIds: string[];
 
   // Results state
   roundResult: RoundResult | null;
@@ -43,6 +43,9 @@ interface GameStore {
   readyPlayerIds: string[];
   readyCount: number;
   totalCount: number;
+
+  // Notification (transient in-game messages)
+  notification: string | null;
 
   // Actions
   connectSocket: () => void;
@@ -56,6 +59,7 @@ interface GameStore {
   addBots: (count: number) => void;
   removeBots: () => void;
   endGame: () => void;
+  restartGame: () => void;
   kickPlayer: (playerId: string) => void;
   reset: () => void;
 
@@ -71,6 +75,7 @@ interface GameStore {
   setGameEnded: (results: FinalResults) => void;
   setPlayerLeft: (data: any) => void;
   setTimeRemaining: (time: number) => void;
+  showNotification: (message: string) => void;
 }
 
 export const useGameStore = create<GameStore>((set, get) => ({
@@ -101,6 +106,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   readyPlayerIds: [],
   readyCount: 0,
   totalCount: 0,
+  notification: null,
 
   // Connect to socket and setup listeners
   connectSocket: () => {
@@ -118,7 +124,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     socket.on('reconnect', () => {
       set({ connected: true });
       console.log('✅ Reconnected successfully!');
-      // Optionally: rejoin room or sync state here if needed
+      // Re-join the room so the server knows the new socket ID
+      const { roomCode, playerName } = get();
+      if (roomCode && playerName) {
+        socket.emit('join-room', { roomCode, playerName });
+      }
     });
 
     socket.on('room-created', (data) => {
@@ -189,6 +199,28 @@ export const useGameStore = create<GameStore>((set, get) => ({
     socket.on('player-disconnected', (data) => {
       console.log(`⚠️  ${data.playerName} went offline`);
       set({ players: data.players });
+      const { gameState } = get();
+      if (gameState !== 'waiting') {
+        get().showNotification(`${data.playerName} disconnected`);
+      }
+    });
+
+    socket.on('game-restarted', (data) => {
+      set({
+        gameState: 'waiting',
+        players: data.players,
+        settings: data.settings,
+        currentQuestion: null,
+        roundResult: null,
+        finalResults: null,
+        hasAnswered: false,
+        myAnswer: null,
+        answeredPlayerIds: [],
+        readyPlayerIds: [],
+        readyCount: 0,
+        totalCount: 0,
+        timeRemaining: 0
+      });
     });
 
     socket.on('error', (error) => {
@@ -290,12 +322,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
     socket.emit('remove-bots');
   },
 
-  // End game
+  // End game (clears room)
   endGame: () => {
     const { socket } = get();
     if (!socket) return;
 
     socket.emit('end-game');
+  },
+
+  // Restart game (same room, reset to waiting)
+  restartGame: () => {
+    const { socket } = get();
+    if (!socket) return;
+
+    socket.emit('restart-game');
   },
 
   // Kick player
@@ -344,24 +384,27 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setPlayerJoined: (data) => {
-    // If this is our join confirmation
     if (data.playerId && !get().playerId) {
+      // Fresh first-time join
       set({
         playerId: data.playerId,
         roomId: data.roomId,
         players: data.players,
         gameState: data.gameState || get().gameState
       });
-
-      // If reconnected, restore game state
-      if (data.reconnected) {
-        console.log('✅ Reconnected to game in progress');
-      }
+    } else if (data.playerId) {
+      // Our own reconnection — update players + game state from server
+      set({
+        players: data.players,
+        gameState: data.gameState || get().gameState
+      });
+      console.log('✅ Reconnected to game in progress');
     } else {
       // Another player joined or reconnected
       set({ players: data.players });
-
-      if (data.reconnected) {
+      const { gameState } = get();
+      if (data.reconnected && gameState !== 'waiting') {
+        get().showNotification(`${data.player?.name} reconnected`);
         console.log(`🔄 ${data.player?.name} reconnected`);
       }
     }
@@ -437,5 +480,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setTimeRemaining: (time) => {
     set({ timeRemaining: time });
+  },
+
+  showNotification: (message: string) => {
+    set({ notification: message });
+    setTimeout(() => {
+      // Only clear if still the same notification
+      if (get().notification === message) {
+        set({ notification: null });
+      }
+    }, 3000);
   }
 }));

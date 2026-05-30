@@ -135,6 +135,42 @@
   color: #718096;
 }
 
+.result-entry {
+  position: relative;
+}
+
+.result-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ready-check {
+  color: #48bb78;
+  font-weight: 800;
+  font-size: 20px;
+}
+
+.disconnect-icon {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.result-entry.disconnected {
+  opacity: 0.6;
+}
+
+.final-winner-banner {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 800;
+  color: #c05621;
+  margin-bottom: 16px;
+  padding: 20px;
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+  border-radius: 12px;
+}
+
 @keyframes slideUp {
   from {
     opacity: 0;

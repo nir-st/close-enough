@@ -1,14 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useGameStore } from '../stores/gameStore';
 import QuestionDisplay from '../components/QuestionDisplay';
 import AnswerInput from '../components/AnswerInput';
-import AnswerReveal from '../components/AnswerReveal';
 import Scoreboard from '../components/Scoreboard';
 import './Play.css';
 
 function Play() {
   const { roomCode } = useParams();
+  const navigate = useNavigate();
   const hasJoinedRef = useRef(false);
   const {
     connectSocket,
@@ -26,6 +26,7 @@ function Play() {
     readyPlayerIds,
     readyCount,
     totalCount,
+    notification,
     markReady
   } = useGameStore();
 
@@ -34,24 +35,22 @@ function Play() {
   }, [connectSocket]);
 
   useEffect(() => {
-    // Auto-join if we have a room code but haven't joined yet
-    console.log('Play useEffect - roomCode:', roomCode, 'playerName:', playerName, 'playerId:', playerId, 'hasJoinedRef:', hasJoinedRef.current);
-
     if (roomCode && !playerName && !playerId && !hasJoinedRef.current) {
-      console.log('⚠️  About to prompt for name');
-      hasJoinedRef.current = true; // Set BEFORE prompt to prevent double execution
+      hasJoinedRef.current = true;
 
-      // Check if we have a stored name for this room (reconnection)
       const storedName = localStorage.getItem(`player_name_${roomCode}`);
 
       if (storedName) {
-        console.log('🔄 Found stored name, reconnecting as:', storedName);
         joinRoom(roomCode, storedName);
       } else {
-        const name = prompt('Enter your name:');
-        console.log('✅ Name entered:', name);
-        if (name) {
-          joinRoom(roomCode, name);
+        // Keep prompting until a non-empty name is entered or the user cancels
+        let name: string | null = null;
+        while (!name || !name.trim()) {
+          name = prompt('Enter your name:');
+          if (name === null) break; // User cancelled
+        }
+        if (name && name.trim()) {
+          joinRoom(roomCode, name.trim());
         }
       }
     }
@@ -66,6 +65,11 @@ function Play() {
         <div className="connection-lost-banner">
           🔄 Reconnecting...
         </div>
+      )}
+
+      {/* In-game notification (#9) */}
+      {notification && (
+        <div className="play-notification">{notification}</div>
       )}
 
       <div className="play-header">
@@ -144,6 +148,12 @@ function Play() {
           <Scoreboard finalResults={finalResults} />
           <div className="game-over-message">
             <h3>Thanks for playing!</h3>
+            <button
+              className="btn-primary"
+              onClick={() => navigate('/')}
+            >
+              🏠 Go Home
+            </button>
           </div>
         </div>
       )}

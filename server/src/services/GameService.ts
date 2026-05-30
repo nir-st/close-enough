@@ -108,12 +108,15 @@ class GameService {
 
     const isLastQuestion = room.currentQuestionIndex >= room.questions.length - 1;
 
-    return {
+    const fullResult = {
       ...roundResult,
       questionNumber: room.currentQuestionIndex + 1,
       totalQuestions: room.questions.length,
       isLastQuestion
     };
+
+    room.lastRoundResult = fullResult;
+    return fullResult;
   }
 
   // Move to next question or end game
@@ -181,6 +184,16 @@ class GameService {
     }
 
     roomService.clearRoom();
+  }
+
+  // Restart game (same room, reset scores + state back to waiting)
+  restartGame(roomId: string): void {
+    const room = roomService.getRoom();
+    if (!room || room.id !== roomId) {
+      throw new Error('Room not found');
+    }
+
+    roomService.restartGame();
   }
 }
 

@@ -181,6 +181,60 @@
   background: #e53e3e;
 }
 
+.answered-status {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+}
+
+.finished-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.finished-actions .btn-primary,
+.finished-actions .btn-danger {
+  flex: 1;
+  min-width: 160px;
+  padding: 16px 24px;
+  font-size: 18px;
+}
+
+.waiting-reconnect-text {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ed8936;
+}
+
+.game-notification {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 10px 24px;
+  border-radius: 24px;
+  font-size: 16px;
+  font-weight: 600;
+  z-index: 1000;
+  animation: fadeInOut 3s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+  15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  75% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
 @media (max-width: 968px) {
   .waiting-view {
     grid-template-columns: 1fr;

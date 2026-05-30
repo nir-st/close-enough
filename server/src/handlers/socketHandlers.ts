@@ -40,7 +40,14 @@ export function setupSocketHandlers(io: Server) {
     // Join room
     socket.on('join-room', ({ roomCode, playerName }: { roomCode: string; playerName: string }) => {
       try {
-        console.log(`🔔 Join request: ${playerName} trying to join ${roomCode} (socket: ${socket.id})`);
+        const trimmedName = (playerName || '').trim();
+        if (!trimmedName) {
+          socket.emit('error', { message: 'Name cannot be empty' });
+          return;
+        }
+
+        console.log(`🔔 Join request: ${trimmedName} trying to join ${roomCode} (socket: ${socket.id})`);
+        playerName = trimmedName;
 
         const room = roomService.getRoomByCode(roomCode);
         if (!room) {
@@ -111,7 +118,10 @@ export function setupSocketHandlers(io: Server) {
 
           // Send results if in results phase
           if (room.state === 'results') {
-            // Player will see results when they're broadcast
+            // Re-send last round result so client can restore the results screen
+            if (room.lastRoundResult) {
+              socket.emit('question-ended', room.lastRoundResult);
+            }
             // Send current ready state
             socket.emit('player-ready-update', {
               playerId: player.id,
@@ -391,36 +401,60 @@ export function setupSocketHandlers(io: Server) {
 
         console.log(`✅ ${player.name} is ready (${readyCount}/${connectedCount})`);
 
-        // If all players are ready, proceed to next question
-        if (roomService.areAllPlayersReady() && !room.isProcessingReady) {
-          room.isProcessingReady = true; // Prevent duplicate processing
+        // Only auto-advance if at least 2 players are connected
+        if (roomService.areAllPlayersReady() && connectedCount >= 2 && !room.isProcessingReady) {
+          room.isProcessingReady = true;
           console.log(`🎯 All players ready! Moving to next question`);
 
-          // Clear ready state
           roomService.clearReadyPlayers();
 
-          // Brief delay before proceeding
           setTimeout(() => {
             gameService.nextQuestion(room.id);
 
             if (room.state === 'question') {
-              // More questions remaining
               setTimeout(() => {
                 sendCurrentQuestion(io, room.id);
-                room.isProcessingReady = false; // Reset flag after processing complete
+                room.isProcessingReady = false;
               }, 1000);
             } else if (room.state === 'finished') {
-              // Game finished
               const results = gameService.getFinalResults(room.id);
               io.to(room.id).emit('game-ended', results);
               console.log(`🏆 Game ended in room ${room.code}`);
-              room.isProcessingReady = false; // Reset flag
+              room.isProcessingReady = false;
             }
           }, 1000);
         }
       } catch (error: any) {
         socket.emit('error', { message: error.message });
         console.error('❌ Error marking player ready:', error.message);
+      }
+    });
+
+    // Restart game (same room, reset state and scores)
+    socket.on('restart-game', () => {
+      try {
+        const room = roomService.getRoom();
+        if (!room) {
+          socket.emit('error', { message: 'Room not found' });
+          return;
+        }
+
+        if (socket.id !== room.hostId) {
+          socket.emit('error', { message: 'Only host can restart the game' });
+          return;
+        }
+
+        gameService.restartGame(room.id);
+
+        io.to(room.id).emit('game-restarted', {
+          players: room.players,
+          settings: room.settings
+        });
+
+        console.log(`🔄 Game restarted in room ${room.code}`);
+      } catch (error: any) {
+        socket.emit('error', { message: error.message });
+        console.error('❌ Error restarting game:', error.message);
       }
     });
 
@@ -433,13 +467,12 @@ export function setupSocketHandlers(io: Server) {
           return;
         }
 
-        // Check if this socket is the host
         if (socket.id !== room.hostId) {
           socket.emit('error', { message: 'Only host can end the game' });
           return;
         }
 
-        gameService.endGame(room.id);
+        roomService.clearRoom(); // Clear directly regardless of state
         io.to(room.id).emit('game-ended', { reason: 'Host ended the game' });
 
         console.log(`🛑 Game ended by host in room ${room.code}`);
@@ -581,9 +614,8 @@ export function setupSocketHandlers(io: Server) {
             readyPlayerIds: Array.from(room.readyPlayers)
           });
 
-          // If all players are ready, proceed to next question
-          if (roomService.areAllPlayersReady() && !room.isProcessingReady) {
-            room.isProcessingReady = true; // Prevent duplicate processing
+          if (roomService.areAllPlayersReady() && connectedCount >= 2 && !room.isProcessingReady) {
+            room.isProcessingReady = true;
             console.log(`🎯 All players ready! Moving to next question`);
 
             roomService.clearReadyPlayers();
@@ -594,13 +626,13 @@ export function setupSocketHandlers(io: Server) {
               if (room.state === 'question') {
                 setTimeout(() => {
                   sendCurrentQuestion(io, room.id);
-                  room.isProcessingReady = false; // Reset flag after processing complete
+                  room.isProcessingReady = false;
                 }, 1000);
               } else if (room.state === 'finished') {
                 const finalResults = gameService.getFinalResults(room.id);
                 io.to(room.id).emit('game-ended', finalResults);
                 console.log(`🏆 Game ended in room ${room.code}`);
-                room.isProcessingReady = false; // Reset flag
+                room.isProcessingReady = false;
               }
             }, 1000);
           }
