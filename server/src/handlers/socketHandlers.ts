@@ -3,6 +3,8 @@ import { roomService } from '../services/RoomService';
 import { gameService } from '../services/GameService';
 import { botService } from '../services/BotService';
 import { localIP } from '../index';
+import fs from 'fs';
+import path from 'path';
 
 export function setupSocketHandlers(io: Server) {
   // Periodic cleanup of long-disconnected players (every 60 seconds)
@@ -522,6 +524,20 @@ export function setupSocketHandlers(io: Server) {
       } catch (error: any) {
         socket.emit('error', { message: error.message });
         console.error('❌ Error kicking player:', error.message);
+      }
+    });
+
+    // Report a question
+    socket.on('report-question', ({ questionId, questionText, playerName }: { questionId: string; questionText: string; playerName: string }) => {
+      try {
+        const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+        const line = `[${timestamp}] ID: ${questionId} | "${questionText}" | Reported by: ${playerName}\n`;
+        const filePath = path.join(process.cwd(), 'reported_questions.txt');
+        fs.appendFileSync(filePath, line, 'utf8');
+        console.log(`🚩 Question reported by ${playerName}: ${questionId}`);
+        socket.emit('question-reported', { success: true });
+      } catch (err) {
+        console.error('❌ Error writing report:', err);
       }
     });
 

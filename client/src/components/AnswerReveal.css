@@ -18,14 +18,13 @@
   position: relative;
   min-height: 300px;
   margin: 40px 0;
-  padding-top: 80px;
   background: linear-gradient(180deg,
-    #1e3a5f 0%,    /* Night sky */
-    #2d5a8e 15%,   /* Deep evening */
-    #4a90d9 30%,   /* Twilight */
-    #87ceeb 50%,   /* Sky blue */
-    #b5d8f0 70%,   /* Light sky */
-    #e8f4f8 100%   /* Horizon */
+    #1e3a5f 0%,
+    #2d5a8e 15%,
+    #4a90d9 30%,
+    #87ceeb 50%,
+    #b5d8f0 70%,
+    #e8f4f8 100%
   );
   border-radius: 16px;
   padding: 80px 20px 40px 20px;
@@ -98,12 +97,7 @@
 .number-line {
   position: relative;
   height: 120px;
-  opacity: 0;
-  transition: opacity 0.5s ease-out;
-}
-
-.number-line.visible {
-  opacity: 1;
+  /* Always visible — individual markers control their own opacity */
 }
 
 .line {
@@ -156,7 +150,8 @@
   align-items: center;
   gap: 4px;
   opacity: 0;
-  transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  /* left transitions smoothly when zoom changes */
+  transition: left 0.9s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 10;
 }
 
@@ -188,6 +183,7 @@
 }
 
 .marker.visible {
+  /* MUST set opacity: 1 here so it persists after dropIn animation ends */
   opacity: 1;
   animation: dropIn 0.6s ease-out;
 }
@@ -284,12 +280,8 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
-    transform: translate(-50%, -50%) scale(1);
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1.15);
-  }
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50%       { transform: translate(-50%, -50%) scale(1.15); }
 }
 
 @keyframes starPulse {

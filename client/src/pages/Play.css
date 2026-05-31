@@ -183,6 +183,34 @@
   margin: 0;
 }
 
+.report-row {
+  display: flex;
+  justify-content: center;
+  padding-top: 4px;
+}
+
+.btn-report {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-report:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+.btn-report.reported,
+.btn-report:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 .play-notification {
   position: fixed;
   top: 16px;

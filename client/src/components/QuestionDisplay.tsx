@@ -9,9 +9,9 @@ interface QuestionDisplayProps {
 function QuestionDisplay({ question, large = false }: QuestionDisplayProps) {
   const getDifficultyBadge = (difficulty: string) => {
     const badges = {
-      easy: { emoji: '🟢', label: 'Easy', color: '#48bb78' },
-      medium: { emoji: '🟡', label: 'Medium', color: '#ed8936' },
-      hard: { emoji: '🔴', label: 'Hard', color: '#f56565' }
+      easy:   { emoji: '🟢', label: 'Easy',   color: '#48bb78', pts: '3 / 6 pts' },
+      medium: { emoji: '🟡', label: 'Medium', color: '#ed8936', pts: '5 / 10 pts' },
+      hard:   { emoji: '🔴', label: 'Hard',   color: '#f56565', pts: '10 / 20 pts' }
     };
     return badges[difficulty as keyof typeof badges] || badges.easy;
   };
@@ -30,6 +30,9 @@ function QuestionDisplay({ question, large = false }: QuestionDisplayProps) {
           )}
           <span className="difficulty-badge" style={{ background: badge.color }}>
             {badge.emoji} {badge.label}
+          </span>
+          <span className="points-badge" style={{ background: badge.color }}>
+            {badge.pts}
           </span>
         </div>
       </div>

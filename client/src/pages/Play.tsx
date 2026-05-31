@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGameStore } from '../stores/gameStore';
 import QuestionDisplay from '../components/QuestionDisplay';
@@ -10,6 +10,7 @@ function Play() {
   const { roomCode } = useParams();
   const navigate = useNavigate();
   const hasJoinedRef = useRef(false);
+  const [reported, setReported] = useState(false);
   const {
     connectSocket,
     joinRoom,
@@ -27,8 +28,14 @@ function Play() {
     readyCount,
     totalCount,
     notification,
-    markReady
+    markReady,
+    reportQuestion
   } = useGameStore();
+
+  // Reset "reported" flag when a new question starts
+  useEffect(() => {
+    setReported(false);
+  }, [currentQuestion?.id]);
 
   useEffect(() => {
     connectSocket();
@@ -98,6 +105,15 @@ function Play() {
           <div className="waiting-message">
             <p>Get ready to answer!</p>
           </div>
+          <div className="report-row">
+            <button
+              className={`btn-report ${reported ? 'reported' : ''}`}
+              onClick={() => { reportQuestion(currentQuestion.id, currentQuestion.text); setReported(true); }}
+              disabled={reported}
+            >
+              {reported ? '✅ Reported' : '🚩 Report question'}
+            </button>
+          </div>
         </div>
       )}
 
@@ -108,38 +124,43 @@ function Play() {
             onSubmit={submitAnswer}
             hasAnswered={hasAnswered}
           />
+          <div className="report-row">
+            <button
+              className={`btn-report ${reported ? 'reported' : ''}`}
+              onClick={() => { reportQuestion(currentQuestion.id, currentQuestion.text); setReported(true); }}
+              disabled={reported}
+            >
+              {reported ? '✅ Reported' : '🚩 Report question'}
+            </button>
+          </div>
         </div>
       )}
 
       {gameState === 'results' && roundResult && (
         <div className="play-results">
-          {!roundResult.isLastQuestion ? (
-            <>
-              <div className="watch-host-screen">
-                <div className="watch-message">
-                  👀 Watch the host screen for results!
-                </div>
-              </div>
-              <div className="ready-section">
-                <button
-                  className={`btn-ready ${isReady ? 'ready' : ''}`}
-                  onClick={markReady}
-                  disabled={isReady}
-                >
-                  {isReady ? '✅ Ready!' : 'Ready for Next Question'}
-                </button>
-                <p className="ready-status">
-                  {readyCount} / {totalCount} players ready
-                </p>
-              </div>
-            </>
-          ) : (
-            <div className="watch-host-screen">
-              <div className="watch-message">
-                👀 Watch the host screen for final results!
-              </div>
+          <div className="watch-host-screen">
+            <div className="watch-message">
+              {roundResult.isLastQuestion
+                ? '👀 Watch the host screen for final results!'
+                : '👀 Watch the host screen for results!'}
             </div>
-          )}
+          </div>
+          <div className="ready-section">
+            <button
+              className={`btn-ready ${isReady ? 'ready' : ''}`}
+              onClick={markReady}
+              disabled={isReady}
+            >
+              {isReady
+                ? '✅ Ready!'
+                : roundResult.isLastQuestion
+                  ? 'See Final Results'
+                  : 'Ready for Next Question'}
+            </button>
+            <p className="ready-status">
+              {readyCount} / {totalCount} players ready
+            </p>
+          </div>
         </div>
       )}
 

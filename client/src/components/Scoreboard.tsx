@@ -55,7 +55,9 @@ function Scoreboard({ roundResult, finalResults, readyPlayerIds = [], disconnect
         </div>
         {roundResult.winner && (
           <div className="round-winner">
-            🎉 {roundResult.winner.playerAvatar} {roundResult.winner.playerName} wins this round!
+            {roundResult.winner.distance === 0
+              ? `🎯 ${roundResult.winner.playerAvatar} ${roundResult.winner.playerName} got it exactly right!`
+              : `🎉 ${roundResult.winner.playerAvatar} ${roundResult.winner.playerName} was closest!`}
           </div>
         )}
         <div className="results-table">

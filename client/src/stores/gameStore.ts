@@ -60,6 +60,7 @@ interface GameStore {
   removeBots: () => void;
   endGame: () => void;
   restartGame: () => void;
+  reportQuestion: (questionId: string, questionText: string) => void;
   kickPlayer: (playerId: string) => void;
   reset: () => void;
 
@@ -336,6 +337,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (!socket) return;
 
     socket.emit('restart-game');
+  },
+
+  // Report a bad question
+  reportQuestion: (questionId: string, questionText: string) => {
+    const { socket, playerName } = get();
+    if (!socket) return;
+    socket.emit('report-question', { questionId, questionText, playerName: playerName || 'Unknown' });
   },
 
   // Kick player

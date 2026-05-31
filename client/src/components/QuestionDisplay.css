@@ -31,7 +31,8 @@
 }
 
 .category-badge,
-.difficulty-badge {
+.difficulty-badge,
+.points-badge {
   padding: 4px 12px;
   border-radius: 16px;
   font-size: 12px;
@@ -41,6 +42,10 @@
 
 .category-badge {
   background: #667eea;
+}
+
+.points-badge {
+  opacity: 0.85;
 }
 
 .question-text {
