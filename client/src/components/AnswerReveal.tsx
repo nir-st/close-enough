@@ -38,13 +38,13 @@ function AnswerReveal({ correctAnswer, results, onComplete }: AnswerRevealProps)
 
     if (globalRange === 0) {
       // All values identical — just reveal everyone then the answer
-      const padding = Math.max(correctAnswer * 0.5, 10);
+      const padding = Math.max(Math.abs(correctAnswer) * 0.5, 10);
       steps.push({ type: 'zoom', zoomRange: { min: correctAnswer - padding, max: correctAnswer + padding } });
       sortedResults.forEach((_, i) => steps.push({ type: 'guess', guessIndex: i }));
       steps.push({ type: 'answer' });
       steps.push({ type: 'highlight' });
     } else {
-      // Cluster guesses and reveal cluster-by-cluster
+      // --- Step 1: cluster guesses by proximity ---
       const clusters: number[][] = [];
       let cur: number[] = [sortedResults[0].answer];
       for (let i = 1; i < sortedResults.length; i++) {
@@ -54,47 +54,63 @@ function AnswerReveal({ correctAnswer, results, onComplete }: AnswerRevealProps)
       }
       clusters.push(cur);
 
-      let revealed = 0;
-      for (let ci = 0; ci < clusters.length; ci++) {
-        const cluster = clusters[ci];
-        const cMin = Math.min(...cluster);
-        const cMax = Math.max(...cluster);
-        const pad = Math.max((cMax - cMin) * 0.3, globalRange * 0.06);
-
-        steps.push({ type: 'zoom', zoomRange: { min: cMin - pad, max: cMax + pad } });
-
-        for (let i = 0; i < cluster.length; i++) {
-          // Find the correct index in sortedResults for this cluster value
-          const val = cluster[i];
-          let found = -1;
-          let seen = 0;
+      // Helper: map a cluster (ordered by original answer) to sortedResults indices
+      const usedIndices = new Set<number>();
+      const clusterIndices = (clusterVals: number[]): number[] => {
+        return clusterVals.map(val => {
           for (let j = 0; j < sortedResults.length; j++) {
-            if (sortedResults[j].answer === val) {
-              if (seen === cluster.slice(0, i).filter(v => v === val).length) { found = j; break; }
-              seen++;
+            if (sortedResults[j].answer === val && !usedIndices.has(j)) {
+              usedIndices.add(j);
+              return j;
             }
           }
-          if (found === -1) found = revealed; // fallback
-          steps.push({ type: 'guess', guessIndex: found });
-          revealed++;
-        }
+          return -1; // shouldn't happen
+        }).filter(i => i !== -1);
+      };
 
-        // Between clusters: zoom out to show the gap
-        if (ci < clusters.length - 1) {
-          const nextMin = Math.min(...clusters[ci + 1]);
-          steps.push({ type: 'zoom', zoomRange: { min: cMin - pad, max: nextMin + pad } });
+      // --- Step 2: initial tight zoom around first cluster ---
+      const c0Min = Math.min(...clusters[0]);
+      const c0Max = Math.max(...clusters[0]);
+      const initPad = Math.max((c0Max - c0Min) * 0.4, globalRange * 0.1);
+      let zMin = c0Min - initPad;
+      let zMax = c0Max + initPad;
+      steps.push({ type: 'zoom', zoomRange: { min: zMin, max: zMax } });
+
+      // Reveal first cluster
+      for (const idx of clusterIndices(clusters[0])) {
+        steps.push({ type: 'guess', guessIndex: idx });
+      }
+
+      // --- Step 3: for each subsequent cluster, EXPAND outward (never re-center) ---
+      for (let ci = 1; ci < clusters.length; ci++) {
+        const cMin = Math.min(...clusters[ci]);
+        const cMax = Math.max(...clusters[ci]);
+        // Expand zoom only in the direction needed, with generous padding
+        // so the new guess doesn't land right at the edge
+        const expandPad = Math.max((cMax - cMin) * 0.3, globalRange * 0.14);
+        zMin = Math.min(zMin, cMin - expandPad);
+        zMax = Math.max(zMax, cMax + expandPad);
+        steps.push({ type: 'zoom', zoomRange: { min: zMin, max: zMax } });
+
+        for (const idx of clusterIndices(clusters[ci])) {
+          steps.push({ type: 'guess', guessIndex: idx });
         }
       }
 
-      // Final zoom: show everything including the correct answer
-      const finalPad = globalRange * 0.12;
-      steps.push({ type: 'zoom', zoomRange: { min: globalMin - finalPad, max: globalMax + finalPad } });
+      // --- Step 4: include correct answer if outside current view ---
+      const ansPad = (zMax - zMin) * 0.12;
+      if (correctAnswer < zMin || correctAnswer > zMax) {
+        zMin = Math.min(zMin, correctAnswer - ansPad);
+        zMax = Math.max(zMax, correctAnswer + ansPad);
+        steps.push({ type: 'zoom', zoomRange: { min: zMin, max: zMax } });
+      }
+
       steps.push({ type: 'answer' });
       steps.push({ type: 'highlight' });
     }
 
     setAnimationSteps(steps);
-    setCurrentStep(-1); // reset each time results change
+    setCurrentStep(-1);
   }, [results, correctAnswer]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Execute each step with delays
