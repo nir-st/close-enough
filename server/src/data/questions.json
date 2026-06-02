@@ -108,7 +108,7 @@
       "difficulty": "hard",
       "text": "What is the area of Russia in square kilometers?",
       "correctAnswer": 17100000,
-      "unit": "km\u00b2"
+      "unit": "km²"
     },
     {
       "id": "geo_hard_2",
@@ -148,7 +148,7 @@
       "difficulty": "hard",
       "text": "What is the area of the Sahara Desert in square kilometers?",
       "correctAnswer": 9200000,
-      "unit": "km\u00b2"
+      "unit": "km²"
     },
     {
       "id": "sport_easy_1",
@@ -206,7 +206,7 @@
         "Sports"
       ],
       "difficulty": "medium",
-      "text": "How many career goals did Pel\u00e9 score?",
+      "text": "How many career goals did Pelé score?",
       "correctAnswer": 1279,
       "unit": "goals"
     },
@@ -406,7 +406,7 @@
         "Entertainment"
       ],
       "difficulty": "hard",
-      "text": "How many Grammy Awards has Beyonc\u00e9 won?",
+      "text": "How many Grammy Awards has Beyoncé won?",
       "correctAnswer": 32,
       "unit": "Grammys"
     },
@@ -506,7 +506,7 @@
         "Food"
       ],
       "difficulty": "hard",
-      "text": "What is the price of a bottle of Roman\u00e9e-Conti wine in dollars?",
+      "text": "What is the price of a bottle of Romanée-Conti wine in dollars?",
       "correctAnswer": 19000,
       "unit": "dollars"
     },
@@ -698,7 +698,7 @@
       "difficulty": "easy",
       "text": "What is the boiling point of water in degrees Celsius?",
       "correctAnswer": 100,
-      "unit": "\u00b0C"
+      "unit": "°C"
     },
     {
       "id": "science_med_1",
@@ -788,7 +788,7 @@
       "difficulty": "hard",
       "text": "What is the temperature at the center of the Sun in degrees Celsius?",
       "correctAnswer": 15000000,
-      "unit": "\u00b0C"
+      "unit": "°C"
     },
     {
       "id": "guinness_easy_1",
@@ -1158,7 +1158,7 @@
       "difficulty": "easy",
       "text": "What is normal human body temperature in degrees Celsius?",
       "correctAnswer": 37,
-      "unit": "\u00b0C"
+      "unit": "°C"
     },
     {
       "id": "body_med_1",
@@ -1266,9 +1266,9 @@
         "Technology"
       ],
       "difficulty": "medium",
-      "text": "How many million photos are uploaded to Instagram daily?",
-      "correctAnswer": 95,
-      "unit": "million photos"
+      "text": "How many photos are uploaded to Instagram daily?",
+      "correctAnswer": 95000000,
+      "unit": "photos"
     },
     {
       "id": "tech_med_3",
@@ -1276,9 +1276,9 @@
         "Technology"
       ],
       "difficulty": "medium",
-      "text": "How many million apps are in the Apple App Store?",
-      "correctAnswer": 2,
-      "unit": "million apps"
+      "text": "How many apps are in the Apple App Store?",
+      "correctAnswer": 2000000,
+      "unit": "apps"
     },
     {
       "id": "tech_hard_1",
@@ -1296,9 +1296,9 @@
         "Technology"
       ],
       "difficulty": "hard",
-      "text": "How many million lines of code are in Windows 10?",
-      "correctAnswer": 50,
-      "unit": "million lines"
+      "text": "How many lines of code are in Windows 10?",
+      "correctAnswer": 50000000,
+      "unit": "lines of code"
     },
     {
       "id": "tech_hard_3",
@@ -1466,9 +1466,9 @@
         "Transportation"
       ],
       "difficulty": "hard",
-      "text": "How many million cars does Toyota produce per year?",
-      "correctAnswer": 10,
-      "unit": "million cars"
+      "text": "How many cars does Toyota produce per year?",
+      "correctAnswer": 10000000,
+      "unit": "cars"
     },
     {
       "id": "transport_hard_2",
@@ -1588,7 +1588,7 @@
       "difficulty": "easy",
       "text": "What is the average temperature in the Sahara Desert during the day in degrees Celsius?",
       "correctAnswer": 40,
-      "unit": "\u00b0C"
+      "unit": "°C"
     },
     {
       "id": "nature_easy_2",
@@ -1628,7 +1628,7 @@
       "difficulty": "medium",
       "text": "What is the temperature of lava in degrees Celsius?",
       "correctAnswer": 1200,
-      "unit": "\u00b0C"
+      "unit": "°C"
     },
     {
       "id": "nature_med_3",
@@ -1648,7 +1648,7 @@
       "difficulty": "hard",
       "text": "How many cubic meters of water flow through the Amazon River per second?",
       "correctAnswer": 209000,
-      "unit": "m\u00b3/s"
+      "unit": "m³/s"
     },
     {
       "id": "nature_hard_2",
@@ -1798,7 +1798,7 @@
       "difficulty": "hard",
       "text": "What is the temperature on Venus in degrees Celsius?",
       "correctAnswer": 465,
-      "unit": "\u00b0C"
+      "unit": "°C"
     },
     {
       "id": "space_hard_2",
@@ -2076,7 +2076,7 @@
         "Social Media"
       ],
       "difficulty": "hard",
-      "text": "How many million photos are shared on Snapchat daily?",
+      "text": "How many photos are shared on Snapchat daily?",
       "correctAnswer": 5,
       "unit": "billion photos"
     },
@@ -2086,9 +2086,9 @@
         "Social Media"
       ],
       "difficulty": "hard",
-      "text": "How many million content creators are on YouTube?",
-      "correctAnswer": 62,
-      "unit": "million creators"
+      "text": "How many content creators are on YouTube?",
+      "correctAnswer": 62000000,
+      "unit": "creators"
     },
     {
       "id": "ocean_easy_1",
@@ -2266,9 +2266,9 @@
         "Music"
       ],
       "difficulty": "hard",
-      "text": "How many million vinyl records were sold in the US in 2022?",
-      "correctAnswer": 41,
-      "unit": "million records"
+      "text": "How many vinyl records were sold in the US in 2022?",
+      "correctAnswer": 41000000,
+      "unit": "records"
     },
     {
       "id": "energy_easy_1",
@@ -2426,9 +2426,9 @@
         "Military"
       ],
       "difficulty": "hard",
-      "text": "How many million people died in World War II?",
-      "correctAnswer": 75,
-      "unit": "million people"
+      "text": "How many people died in World War II?",
+      "correctAnswer": 75000000,
+      "unit": "people"
     },
     {
       "id": "war_hard_2",
@@ -2596,9 +2596,9 @@
         "Gaming"
       ],
       "difficulty": "medium",
-      "text": "How many million copies did The Legend of Zelda: Breath of the Wild sell?",
-      "correctAnswer": 31,
-      "unit": "million copies"
+      "text": "How many copies did The Legend of Zelda: Breath of the Wild sell?",
+      "correctAnswer": 31000000,
+      "unit": "copies"
     },
     {
       "id": "gaming_hard_1",
@@ -2720,50 +2720,395 @@
       "correctAnswer": 486,
       "unit": "km/h"
     },
-
-    { "id": "geo_easy_8", "categories": ["Geography"], "difficulty": "easy", "text": "What is the population of the United Kingdom?", "correctAnswer": 67000000, "unit": "people" },
-    { "id": "geo_easy_9", "categories": ["Geography"], "difficulty": "easy", "text": "How many kilometers from Tel Aviv to New York?", "correctAnswer": 9100, "unit": "km" },
-    { "id": "geo_med_6", "categories": ["Geography"], "difficulty": "medium", "text": "What is the length of the Trans-Siberian Railway in kilometers?", "correctAnswer": 9289, "unit": "km" },
-    { "id": "geo_med_7", "categories": ["Geography"], "difficulty": "medium", "text": "What is the population of São Paulo?", "correctAnswer": 12300000, "unit": "people" },
-    { "id": "geo_hard_6", "categories": ["Geography"], "difficulty": "hard", "text": "What is the area of Canada in square kilometers?", "correctAnswer": 9985000, "unit": "km²" },
-    { "id": "geo_hard_7", "categories": ["Geography"], "difficulty": "hard", "text": "What is the total length of Canada's coastline in kilometers?", "correctAnswer": 202080, "unit": "km" },
-
-    { "id": "body_easy_4", "categories": ["Human Body"], "difficulty": "easy", "text": "How many hairs does the average person have on their head?", "correctAnswer": 100000, "unit": "hairs" },
-    { "id": "body_easy_5", "categories": ["Human Body"], "difficulty": "easy", "text": "What is the weight of the human brain in grams?", "correctAnswer": 1400, "unit": "grams" },
-    { "id": "body_med_4", "categories": ["Human Body"], "difficulty": "medium", "text": "What is the surface area of human skin in square centimeters?", "correctAnswer": 18000, "unit": "cm²" },
-    { "id": "body_med_5", "categories": ["Human Body"], "difficulty": "medium", "text": "How many sweat glands does the average human body have?", "correctAnswer": 2600000, "unit": "sweat glands" },
-    { "id": "body_hard_4", "categories": ["Human Body"], "difficulty": "hard", "text": "What is the total surface area of the human lungs in square meters?", "correctAnswer": 70, "unit": "m²" },
-    { "id": "body_hard_5", "categories": ["Human Body"], "difficulty": "hard", "text": "What is the length of the human small intestine in centimeters?", "correctAnswer": 700, "unit": "cm" },
-
-    { "id": "height_easy_1", "categories": ["Heights & Lengths"], "difficulty": "easy", "text": "What is the height of Mount Kilimanjaro in meters?", "correctAnswer": 5895, "unit": "meters" },
-    { "id": "height_easy_2", "categories": ["Heights & Lengths"], "difficulty": "easy", "text": "What is the height of the CN Tower in Toronto in meters?", "correctAnswer": 553, "unit": "meters" },
-    { "id": "height_med_1", "categories": ["Heights & Lengths"], "difficulty": "medium", "text": "What is the total length of the Golden Gate Bridge in meters?", "correctAnswer": 2737, "unit": "meters" },
-    { "id": "height_med_2", "categories": ["Heights & Lengths"], "difficulty": "medium", "text": "What is the maximum depth of Lake Baikal in meters?", "correctAnswer": 1642, "unit": "meters" },
-    { "id": "height_med_3", "categories": ["Heights & Lengths"], "difficulty": "medium", "text": "What is the height of the Petronas Towers in Malaysia in meters?", "correctAnswer": 452, "unit": "meters" },
-    { "id": "height_hard_1", "categories": ["Heights & Lengths"], "difficulty": "hard", "text": "What is the height of Olympus Mons, the largest volcano on Mars, in meters?", "correctAnswer": 21900, "unit": "meters" },
-    { "id": "height_hard_2", "categories": ["Heights & Lengths"], "difficulty": "hard", "text": "What is the total length of all roads in the USA in kilometers?", "correctAnswer": 6900000, "unit": "km" },
-    { "id": "height_hard_3", "categories": ["Heights & Lengths"], "difficulty": "hard", "text": "What is the length of the world's longest bridge, the Danyang-Kunshan Viaduct in China, in meters?", "correctAnswer": 164800, "unit": "meters" },
-
-    { "id": "age_easy_1", "categories": ["Ages"], "difficulty": "easy", "text": "How old is the Colosseum in Rome in years?", "correctAnswer": 1950, "unit": "years" },
-    { "id": "age_easy_2", "categories": ["Ages"], "difficulty": "easy", "text": "How many years ago were the ancient Olympic Games first held?", "correctAnswer": 2800, "unit": "years ago" },
-    { "id": "age_med_1", "categories": ["Ages"], "difficulty": "medium", "text": "How many years ago were the Great Pyramids of Giza built?", "correctAnswer": 4500, "unit": "years ago" },
-    { "id": "age_med_2", "categories": ["Ages"], "difficulty": "medium", "text": "How old is the oldest known living tree in years?", "correctAnswer": 4855, "unit": "years" },
-    { "id": "age_hard_1", "categories": ["Ages"], "difficulty": "hard", "text": "How many years ago did the dinosaurs go extinct?", "correctAnswer": 66000000, "unit": "years ago" },
-    { "id": "age_hard_2", "categories": ["Ages"], "difficulty": "hard", "text": "How old is the Earth in years?", "correctAnswer": 4540000000, "unit": "years" },
-    { "id": "age_hard_3", "categories": ["Ages"], "difficulty": "hard", "text": "How many years ago did modern humans first appear?", "correctAnswer": 300000, "unit": "years ago" },
-
-    { "id": "record_easy_1", "categories": ["Records"], "difficulty": "easy", "text": "What is the height of the tallest person ever recorded in centimeters?", "correctAnswer": 272, "unit": "cm" },
-    { "id": "record_easy_2", "categories": ["Records"], "difficulty": "easy", "text": "How many people attended the largest concert ever held, Rod Stewart in Rio de Janeiro in 1994?", "correctAnswer": 3500000, "unit": "people" },
-    { "id": "record_med_1", "categories": ["Records"], "difficulty": "medium", "text": "What is the world record for freediving depth in meters?", "correctAnswer": 214, "unit": "meters" },
-    { "id": "record_med_2", "categories": ["Records"], "difficulty": "medium", "text": "How many push-ups did the world record holder do in 24 hours?", "correctAnswer": 46001, "unit": "push-ups" },
-    { "id": "record_hard_1", "categories": ["Records"], "difficulty": "hard", "text": "How many people attended the largest single-day gathering in history, Kumbh Mela in India in 2013?", "correctAnswer": 30000000, "unit": "people" },
-    { "id": "record_hard_2", "categories": ["Records"], "difficulty": "hard", "text": "How many kilometers does the world's longest commercial flight cover, Singapore to New York?", "correctAnswer": 15349, "unit": "km" },
-
-    { "id": "dist_easy_1", "categories": ["Distances"], "difficulty": "easy", "text": "How many kilometers is it from London to Sydney?", "correctAnswer": 17000, "unit": "km" },
-    { "id": "dist_easy_2", "categories": ["Distances"], "difficulty": "easy", "text": "How many kilometers is it from New York to London?", "correctAnswer": 5570, "unit": "km" },
-    { "id": "dist_med_1", "categories": ["Distances"], "difficulty": "medium", "text": "How many kilometers does the International Space Station travel in one day?", "correctAnswer": 692000, "unit": "km" },
-    { "id": "dist_med_2", "categories": ["Distances"], "difficulty": "medium", "text": "How many kilometers does Earth travel around the Sun each year?", "correctAnswer": 940000000, "unit": "km" },
-    { "id": "dist_hard_1", "categories": ["Distances"], "difficulty": "hard", "text": "What is the average distance from Earth to the Sun in kilometers?", "correctAnswer": 149600000, "unit": "km" },
-    { "id": "dist_hard_2", "categories": ["Distances"], "difficulty": "hard", "text": "What is the average distance from Pluto to the Sun in kilometers?", "correctAnswer": 5906000000, "unit": "km" }
+    {
+      "id": "geo_easy_8",
+      "categories": [
+        "Geography"
+      ],
+      "difficulty": "easy",
+      "text": "What is the population of the United Kingdom?",
+      "correctAnswer": 67000000,
+      "unit": "people"
+    },
+    {
+      "id": "geo_easy_9",
+      "categories": [
+        "Geography"
+      ],
+      "difficulty": "easy",
+      "text": "How many kilometers from Tel Aviv to New York?",
+      "correctAnswer": 9100,
+      "unit": "km"
+    },
+    {
+      "id": "geo_med_6",
+      "categories": [
+        "Geography"
+      ],
+      "difficulty": "medium",
+      "text": "What is the length of the Trans-Siberian Railway in kilometers?",
+      "correctAnswer": 9289,
+      "unit": "km"
+    },
+    {
+      "id": "geo_med_7",
+      "categories": [
+        "Geography"
+      ],
+      "difficulty": "medium",
+      "text": "What is the population of São Paulo?",
+      "correctAnswer": 12300000,
+      "unit": "people"
+    },
+    {
+      "id": "geo_hard_6",
+      "categories": [
+        "Geography"
+      ],
+      "difficulty": "hard",
+      "text": "What is the area of Canada in square kilometers?",
+      "correctAnswer": 9985000,
+      "unit": "km²"
+    },
+    {
+      "id": "geo_hard_7",
+      "categories": [
+        "Geography"
+      ],
+      "difficulty": "hard",
+      "text": "What is the total length of Canada's coastline in kilometers?",
+      "correctAnswer": 202080,
+      "unit": "km"
+    },
+    {
+      "id": "body_easy_4",
+      "categories": [
+        "Human Body"
+      ],
+      "difficulty": "easy",
+      "text": "How many hairs does the average person have on their head?",
+      "correctAnswer": 100000,
+      "unit": "hairs"
+    },
+    {
+      "id": "body_easy_5",
+      "categories": [
+        "Human Body"
+      ],
+      "difficulty": "easy",
+      "text": "What is the weight of the human brain in grams?",
+      "correctAnswer": 1400,
+      "unit": "grams"
+    },
+    {
+      "id": "body_med_4",
+      "categories": [
+        "Human Body"
+      ],
+      "difficulty": "medium",
+      "text": "What is the surface area of human skin in square centimeters?",
+      "correctAnswer": 18000,
+      "unit": "cm²"
+    },
+    {
+      "id": "body_med_5",
+      "categories": [
+        "Human Body"
+      ],
+      "difficulty": "medium",
+      "text": "How many sweat glands does the average human body have?",
+      "correctAnswer": 2600000,
+      "unit": "sweat glands"
+    },
+    {
+      "id": "body_hard_4",
+      "categories": [
+        "Human Body"
+      ],
+      "difficulty": "hard",
+      "text": "What is the total surface area of the human lungs in square meters?",
+      "correctAnswer": 70,
+      "unit": "m²"
+    },
+    {
+      "id": "body_hard_5",
+      "categories": [
+        "Human Body"
+      ],
+      "difficulty": "hard",
+      "text": "What is the length of the human small intestine in centimeters?",
+      "correctAnswer": 700,
+      "unit": "cm"
+    },
+    {
+      "id": "height_easy_1",
+      "categories": [
+        "Heights & Lengths"
+      ],
+      "difficulty": "easy",
+      "text": "What is the height of Mount Kilimanjaro in meters?",
+      "correctAnswer": 5895,
+      "unit": "meters"
+    },
+    {
+      "id": "height_easy_2",
+      "categories": [
+        "Heights & Lengths"
+      ],
+      "difficulty": "easy",
+      "text": "What is the height of the CN Tower in Toronto in meters?",
+      "correctAnswer": 553,
+      "unit": "meters"
+    },
+    {
+      "id": "height_med_1",
+      "categories": [
+        "Heights & Lengths"
+      ],
+      "difficulty": "medium",
+      "text": "What is the total length of the Golden Gate Bridge in meters?",
+      "correctAnswer": 2737,
+      "unit": "meters"
+    },
+    {
+      "id": "height_med_2",
+      "categories": [
+        "Heights & Lengths"
+      ],
+      "difficulty": "medium",
+      "text": "What is the maximum depth of Lake Baikal in meters?",
+      "correctAnswer": 1642,
+      "unit": "meters"
+    },
+    {
+      "id": "height_med_3",
+      "categories": [
+        "Heights & Lengths"
+      ],
+      "difficulty": "medium",
+      "text": "What is the height of the Petronas Towers in Malaysia in meters?",
+      "correctAnswer": 452,
+      "unit": "meters"
+    },
+    {
+      "id": "height_hard_1",
+      "categories": [
+        "Heights & Lengths"
+      ],
+      "difficulty": "hard",
+      "text": "What is the height of Olympus Mons, the largest volcano on Mars, in meters?",
+      "correctAnswer": 21900,
+      "unit": "meters"
+    },
+    {
+      "id": "height_hard_2",
+      "categories": [
+        "Heights & Lengths"
+      ],
+      "difficulty": "hard",
+      "text": "What is the total length of all roads in the USA in kilometers?",
+      "correctAnswer": 6900000,
+      "unit": "km"
+    },
+    {
+      "id": "height_hard_3",
+      "categories": [
+        "Heights & Lengths"
+      ],
+      "difficulty": "hard",
+      "text": "What is the length of the world's longest bridge, the Danyang-Kunshan Viaduct in China, in meters?",
+      "correctAnswer": 164800,
+      "unit": "meters"
+    },
+    {
+      "id": "age_easy_1",
+      "categories": [
+        "Ages"
+      ],
+      "difficulty": "easy",
+      "text": "How old is the Colosseum in Rome in years?",
+      "correctAnswer": 1950,
+      "unit": "years"
+    },
+    {
+      "id": "age_easy_2",
+      "categories": [
+        "Ages"
+      ],
+      "difficulty": "easy",
+      "text": "How many years ago were the ancient Olympic Games first held?",
+      "correctAnswer": 2800,
+      "unit": "years ago"
+    },
+    {
+      "id": "age_med_1",
+      "categories": [
+        "Ages"
+      ],
+      "difficulty": "medium",
+      "text": "How many years ago were the Great Pyramids of Giza built?",
+      "correctAnswer": 4500,
+      "unit": "years ago"
+    },
+    {
+      "id": "age_med_2",
+      "categories": [
+        "Ages"
+      ],
+      "difficulty": "medium",
+      "text": "How old is the oldest known living tree in years?",
+      "correctAnswer": 4855,
+      "unit": "years"
+    },
+    {
+      "id": "age_hard_1",
+      "categories": [
+        "Ages"
+      ],
+      "difficulty": "hard",
+      "text": "How many years ago did the dinosaurs go extinct?",
+      "correctAnswer": 66000000,
+      "unit": "years ago"
+    },
+    {
+      "id": "age_hard_2",
+      "categories": [
+        "Ages"
+      ],
+      "difficulty": "hard",
+      "text": "How old is the Earth in years?",
+      "correctAnswer": 4540000000,
+      "unit": "years"
+    },
+    {
+      "id": "age_hard_3",
+      "categories": [
+        "Ages"
+      ],
+      "difficulty": "hard",
+      "text": "How many years ago did modern humans first appear?",
+      "correctAnswer": 300000,
+      "unit": "years ago"
+    },
+    {
+      "id": "record_easy_1",
+      "categories": [
+        "Records"
+      ],
+      "difficulty": "easy",
+      "text": "What is the height of the tallest person ever recorded in centimeters?",
+      "correctAnswer": 272,
+      "unit": "cm"
+    },
+    {
+      "id": "record_easy_2",
+      "categories": [
+        "Records"
+      ],
+      "difficulty": "easy",
+      "text": "How many people attended the largest concert ever held, Rod Stewart in Rio de Janeiro in 1994?",
+      "correctAnswer": 3500000,
+      "unit": "people"
+    },
+    {
+      "id": "record_med_1",
+      "categories": [
+        "Records"
+      ],
+      "difficulty": "medium",
+      "text": "What is the world record for freediving depth in meters?",
+      "correctAnswer": 214,
+      "unit": "meters"
+    },
+    {
+      "id": "record_med_2",
+      "categories": [
+        "Records"
+      ],
+      "difficulty": "medium",
+      "text": "How many push-ups did the world record holder do in 24 hours?",
+      "correctAnswer": 46001,
+      "unit": "push-ups"
+    },
+    {
+      "id": "record_hard_1",
+      "categories": [
+        "Records"
+      ],
+      "difficulty": "hard",
+      "text": "How many people attended the largest single-day gathering in history, Kumbh Mela in India in 2013?",
+      "correctAnswer": 30000000,
+      "unit": "people"
+    },
+    {
+      "id": "record_hard_2",
+      "categories": [
+        "Records"
+      ],
+      "difficulty": "hard",
+      "text": "How many kilometers does the world's longest commercial flight cover, Singapore to New York?",
+      "correctAnswer": 15349,
+      "unit": "km"
+    },
+    {
+      "id": "dist_easy_1",
+      "categories": [
+        "Distances"
+      ],
+      "difficulty": "easy",
+      "text": "How many kilometers is it from London to Sydney?",
+      "correctAnswer": 17000,
+      "unit": "km"
+    },
+    {
+      "id": "dist_easy_2",
+      "categories": [
+        "Distances"
+      ],
+      "difficulty": "easy",
+      "text": "How many kilometers is it from New York to London?",
+      "correctAnswer": 5570,
+      "unit": "km"
+    },
+    {
+      "id": "dist_med_1",
+      "categories": [
+        "Distances"
+      ],
+      "difficulty": "medium",
+      "text": "How many kilometers does the International Space Station travel in one day?",
+      "correctAnswer": 692000,
+      "unit": "km"
+    },
+    {
+      "id": "dist_med_2",
+      "categories": [
+        "Distances"
+      ],
+      "difficulty": "medium",
+      "text": "How many kilometers does Earth travel around the Sun each year?",
+      "correctAnswer": 940000000,
+      "unit": "km"
+    },
+    {
+      "id": "dist_hard_1",
+      "categories": [
+        "Distances"
+      ],
+      "difficulty": "hard",
+      "text": "What is the average distance from Earth to the Sun in kilometers?",
+      "correctAnswer": 149600000,
+      "unit": "km"
+    },
+    {
+      "id": "dist_hard_2",
+      "categories": [
+        "Distances"
+      ],
+      "difficulty": "hard",
+      "text": "What is the average distance from Pluto to the Sun in kilometers?",
+      "correctAnswer": 5906000000,
+      "unit": "km"
+    }
   ]
 }

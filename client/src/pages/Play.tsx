@@ -28,6 +28,7 @@ function Play() {
     readyCount,
     totalCount,
     notification,
+    answerRevealed,
     markReady,
     reportQuestion
   } = useGameStore();
@@ -145,22 +146,28 @@ function Play() {
                 : '👀 Watch the host screen for results!'}
             </div>
           </div>
-          <div className="ready-section">
-            <button
-              className={`btn-ready ${isReady ? 'ready' : ''}`}
-              onClick={markReady}
-              disabled={isReady}
-            >
-              {isReady
-                ? '✅ Ready!'
-                : roundResult.isLastQuestion
-                  ? 'See Final Results'
-                  : 'Ready for Next Question'}
-            </button>
-            <p className="ready-status">
-              {readyCount} / {totalCount} players ready
-            </p>
-          </div>
+
+          {/* Last question: no button needed — server auto-advances after animation */}
+          {!roundResult.isLastQuestion && (
+            <div className="ready-section">
+              {!answerRevealed ? (
+                <p className="ready-status">⏳ Waiting for answer reveal...</p>
+              ) : (
+                <>
+                  <button
+                    className={`btn-ready ${isReady ? 'ready' : ''}`}
+                    onClick={markReady}
+                    disabled={isReady}
+                  >
+                    {isReady ? '✅ Ready!' : 'Ready for Next Question'}
+                  </button>
+                  <p className="ready-status">
+                    {readyCount} / {totalCount} players ready
+                  </p>
+                </>
+              )}
+            </div>
+          )}
         </div>
       )}
 

@@ -16,7 +16,7 @@
 
 .number-line-container {
   position: relative;
-  min-height: 300px;
+  min-height: 360px;
   margin: 40px 0;
   background: linear-gradient(180deg,
     #1e3a5f 0%,
@@ -96,7 +96,7 @@
 
 .number-line {
   position: relative;
-  height: 120px;
+  height: 160px;
   /* Always visible — individual markers control their own opacity */
 }
 

@@ -120,11 +120,12 @@ export function setupSocketHandlers(io: Server) {
 
           // Send results if in results phase
           if (room.state === 'results') {
-            // Re-send last round result so client can restore the results screen
             if (room.lastRoundResult) {
               socket.emit('question-ended', room.lastRoundResult);
             }
-            // Send current ready state
+            if (room.answerRevealed) {
+              socket.emit('answer-revealed', {});
+            }
             socket.emit('player-ready-update', {
               playerId: player.id,
               playerName: player.name,
@@ -524,6 +525,31 @@ export function setupSocketHandlers(io: Server) {
       } catch (error: any) {
         socket.emit('error', { message: error.message });
         console.error('❌ Error kicking player:', error.message);
+      }
+    });
+
+    // Host signals animation is done — unlock ready buttons for players
+    socket.on('reveal-done', () => {
+      const room = roomService.getRoom();
+      if (!room || socket.id !== room.hostId) return;
+
+      room.answerRevealed = true;
+      io.to(room.id).emit('answer-revealed', {});
+      console.log(`🎬 Answer revealed in room ${room.code}`);
+
+      // On last question, auto-advance to finished after a short pause
+      const isLast = room.lastRoundResult?.isLastQuestion;
+      if (isLast) {
+        setTimeout(() => {
+          try {
+            gameService.nextQuestion(room.id); // sets state to 'finished'
+            const results = gameService.getFinalResults(room.id);
+            io.to(room.id).emit('game-ended', results);
+            console.log(`🏆 Game ended (last question auto-advance) in room ${room.code}`);
+          } catch (e: any) {
+            console.error('❌ Auto-advance error:', e.message);
+          }
+        }, 5000); // 5 seconds to see the answer before final screen
       }
     });
 

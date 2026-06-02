@@ -47,6 +47,9 @@ interface GameStore {
   // Notification (transient in-game messages)
   notification: string | null;
 
+  // True after host's animation completes — enables ready buttons on players
+  answerRevealed: boolean;
+
   // Actions
   connectSocket: () => void;
   createRoom: (playerName: string) => void;
@@ -108,6 +111,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   readyCount: 0,
   totalCount: 0,
   notification: null,
+  answerRevealed: false,
 
   // Connect to socket and setup listeners
   connectSocket: () => {
@@ -206,6 +210,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }
     });
 
+    socket.on('answer-revealed', () => {
+      set({ answerRevealed: true });
+    });
+
     socket.on('game-restarted', (data) => {
       set({
         gameState: 'waiting',
@@ -220,7 +228,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         readyPlayerIds: [],
         readyCount: 0,
         totalCount: 0,
-        timeRemaining: 0
+        timeRemaining: 0,
+        answerRevealed: false
       });
     });
 
@@ -436,7 +445,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       answeredPlayerIds: [],
       readyPlayerIds: [],
       readyCount: 0,
-      totalCount: 0
+      totalCount: 0,
+      answerRevealed: false
     });
   },
 

@@ -48,7 +48,8 @@ export interface Room {
   questionStartTime?: number;
   readyPlayers: Set<string>;
   isProcessingReady: boolean;
-  lastRoundResult?: any; // Stored so reconnecting players can receive it
+  lastRoundResult?: any;
+  answerRevealed: boolean; // True after host's animation completes
   createdAt: Date;
 }
 

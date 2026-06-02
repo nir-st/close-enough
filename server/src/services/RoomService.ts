@@ -39,6 +39,7 @@ class RoomService {
       answers: new Map(),
       readyPlayers: new Set(),
       isProcessingReady: false,
+      answerRevealed: false,
       createdAt: new Date()
     };
 
@@ -201,6 +202,7 @@ class RoomService {
     this.activeRoom.isProcessingReady = false;
     this.activeRoom.questionStartTime = undefined;
     this.activeRoom.lastRoundResult = undefined;
+    this.activeRoom.answerRevealed = false;
 
     // Reset player scores
     this.activeRoom.players.forEach(p => {
@@ -259,6 +261,7 @@ class RoomService {
   clearReadyPlayers(): void {
     if (!this.activeRoom) return;
     this.activeRoom.readyPlayers.clear();
+    this.activeRoom.answerRevealed = false; // Reset for next question
   }
 
   // Add bot players to room

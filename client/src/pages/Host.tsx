@@ -27,6 +27,7 @@ function Host() {
     totalCount,
     answeredPlayerIds,
     notification,
+    answerRevealed,
     updateSettings,
     startGame,
     endGame,
@@ -161,7 +162,10 @@ function Host() {
             <AnswerReveal
               correctAnswer={roundResult.correctAnswer}
               results={roundResult.results}
-              onComplete={() => setShowDetailedResults(true)}
+              onComplete={() => {
+                setShowDetailedResults(true);
+                useGameStore.getState().socket?.emit('reveal-done');
+              }}
             />
           ) : (
             <>
@@ -171,10 +175,14 @@ function Host() {
                 disconnectedPlayerIds={disconnectedPlayerIds}
               />
               <div className="ready-status-display">
-                {connectedCount < 2 ? (
+                {!answerRevealed ? (
+                  <p className="ready-text">⏳ Revealing answer to players...</p>
+                ) : connectedCount < 2 ? (
                   <p className="waiting-reconnect-text">
                     ⏳ Waiting for players to reconnect... ({connectedCount} connected)
                   </p>
+                ) : roundResult.isLastQuestion ? (
+                  <p className="ready-text">🏆 Moving to final results in a moment...</p>
                 ) : (
                   <p className="ready-text">
                     Waiting for players: {readyPlayerIds.length} / {totalCount} ready
