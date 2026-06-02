@@ -157,7 +157,7 @@ function Host() {
       )}
 
       {gameState === 'results' && roundResult && (
-        <div className="results-view">
+        <div className={showDetailedResults ? "results-view" : "reveal-view"}>
           {!showDetailedResults ? (
             <AnswerReveal
               correctAnswer={roundResult.correctAnswer}

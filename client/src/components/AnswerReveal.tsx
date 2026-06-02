@@ -68,12 +68,21 @@ function AnswerReveal({ correctAnswer, results, onComplete }: AnswerRevealProps)
         }).filter(i => i !== -1);
       };
 
-      // --- Step 2: initial tight zoom around first cluster ---
+      // --- Step 2: initial zoom around first cluster ---
       const c0Min = Math.min(...clusters[0]);
       const c0Max = Math.max(...clusters[0]);
-      const initPad = Math.max((c0Max - c0Min) * 0.4, globalRange * 0.1);
+      const initPad = Math.max((c0Max - c0Min) * 0.4, globalRange * 0.12);
       let zMin = c0Min - initPad;
       let zMax = c0Max + initPad;
+
+      // Ensure the span is wide enough for 5 tick marks to show distinct values
+      const minSpan = Math.max(globalRange * 0.15, 5);
+      if (zMax - zMin < minSpan) {
+        const center = (zMin + zMax) / 2;
+        zMin = center - minSpan / 2;
+        zMax = center + minSpan / 2;
+      }
+
       steps.push({ type: 'zoom', zoomRange: { min: zMin, max: zMax } });
 
       // Reveal first cluster
@@ -85,12 +94,19 @@ function AnswerReveal({ correctAnswer, results, onComplete }: AnswerRevealProps)
       for (let ci = 1; ci < clusters.length; ci++) {
         const cMin = Math.min(...clusters[ci]);
         const cMax = Math.max(...clusters[ci]);
-        // Expand zoom only in the direction needed, with generous padding
-        // so the new guess doesn't land right at the edge
-        const expandPad = Math.max((cMax - cMin) * 0.3, globalRange * 0.14);
+        const expandPad = Math.max((cMax - cMin) * 0.3, globalRange * 0.13);
+
+        const prevZMin = zMin;
+        const prevZMax = zMax;
         zMin = Math.min(zMin, cMin - expandPad);
         zMax = Math.max(zMax, cMax + expandPad);
-        steps.push({ type: 'zoom', zoomRange: { min: zMin, max: zMax } });
+
+        // Only emit a zoom step if the visible range actually changed meaningfully
+        // (skip if the next cluster was already visible in the current zoom)
+        const change = (zMax - prevZMax) + (prevZMin - zMin);
+        if (change > (zMax - zMin) * 0.04) {
+          steps.push({ type: 'zoom', zoomRange: { min: zMin, max: zMax } });
+        }
 
         for (const idx of clusterIndices(clusters[ci])) {
           steps.push({ type: 'guess', guessIndex: idx });
@@ -155,10 +171,13 @@ function AnswerReveal({ correctAnswer, results, onComplete }: AnswerRevealProps)
   const formatNum = (n: number) => Math.round(n).toLocaleString('en-US');
 
   const numTicks = 5;
+  const tickSpan = zoom.max - zoom.min;
   const ticks = Array.from({ length: numTicks }, (_, i) => {
-    const v = zoom.min + ((zoom.max - zoom.min) / (numTicks - 1)) * i;
+    const v = zoom.min + (tickSpan / (numTicks - 1)) * i;
     if (Math.abs(v) >= 1_000_000) return `${(v / 1_000_000).toFixed(1)}M`;
     if (Math.abs(v) >= 1_000)     return `${(v / 1_000).toFixed(1)}K`;
+    // Use decimal places for small ranges so labels stay distinct
+    if (tickSpan < 10) return v.toFixed(1);
     return formatNum(v);
   });
 
