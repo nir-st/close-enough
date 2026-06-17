@@ -12,8 +12,6 @@ import {
   validateSettings,
   validateBotCount
 } from '../middleware/validation';
-import fs from 'fs';
-import path from 'path';
 
 // Look up the room for a socket using the roomCode stored on socket.data
 function getRoomForSocket(socket: Socket) {
@@ -437,16 +435,8 @@ export function setupSocketHandlers(io: Server) {
         return;
       }
       if (typeof questionId !== 'string' || typeof questionText !== 'string') return;
-      try {
-        const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
-        const line = `[${timestamp}] ID: ${questionId} | "${questionText}" | Reported by: ${playerName}\n`;
-        const filePath = path.join(process.cwd(), 'reported_questions.txt');
-        fs.appendFileSync(filePath, line, 'utf8');
-        console.log(`🚩 Question reported by ${playerName}: ${questionId}`);
-        socket.emit('question-reported', { success: true });
-      } catch (err) {
-        console.error('❌ Error writing report:', err);
-      }
+      console.log(`🚩 REPORTED_QUESTION id=${questionId} text="${questionText}" player="${playerName}" time=${new Date().toISOString()}`);
+      socket.emit('question-reported', { success: true });
     });
 
     // ── Disconnect ───────────────────────────────────────────────────────────

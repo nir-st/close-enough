@@ -52,7 +52,6 @@ export const localIP = getLocalIP();
 // ── Health check ─────────────────────────────────────────────────────────────
 app.get('/health', (_req, res) => {
   const mem = process.memoryUsage();
-  const clientDist = path.join(__dirname, '..', '..', 'client', 'dist');
   res.json({
     status: 'ok',
     rooms: roomService.getRoomCount(),
@@ -60,10 +59,7 @@ app.get('/health', (_req, res) => {
     uptime: Math.floor(process.uptime()),
     memoryMB: Math.round(mem.rss / 1024 / 1024),
     localIP,
-    port: config.PORT,
-    clientDist,
-    clientDistExists: require('fs').existsSync(clientDist),
-    indexExists: require('fs').existsSync(path.join(clientDist, 'index.html'))
+    port: config.PORT
   });
 });
 
