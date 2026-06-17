@@ -3109,6 +3109,290 @@
       "text": "What is the average distance from Pluto to the Sun in kilometers?",
       "correctAnswer": 5906000000,
       "unit": "km"
+    },
+    {
+      "id": "sports_med_snooker_1",
+      "categories": [
+        "Sports"
+      ],
+      "difficulty": "medium",
+      "text": "What is the maximum possible break in snooker?",
+      "correctAnswer": 147,
+      "unit": "points"
+    },
+    {
+      "id": "sports_med_nba_wilt_1",
+      "categories": [
+        "Sports"
+      ],
+      "difficulty": "medium",
+      "text": "What is the highest points scored by a single player in one NBA game? (Wilt Chamberlain, 1962)",
+      "correctAnswer": 100,
+      "unit": "points"
+    },
+    {
+      "id": "sports_hard_nba_team_1",
+      "categories": [
+        "Sports"
+      ],
+      "difficulty": "hard",
+      "text": "What is the highest score ever recorded by a single team in one NBA game? (Detroit Pistons, 1983)",
+      "correctAnswer": 186,
+      "unit": "points"
+    },
+    {
+      "id": "sports_med_jordan_1",
+      "categories": [
+        "Sports"
+      ],
+      "difficulty": "medium",
+      "text": "How many career points did Michael Jordan score in the NBA?",
+      "correctAnswer": 32292,
+      "unit": "points"
+    },
+    {
+      "id": "sports_hard_kareem_1",
+      "categories": [
+        "Sports"
+      ],
+      "difficulty": "hard",
+      "text": "How many career points did Kareem Abdul-Jabbar score — the NBA record he held for 39 years?",
+      "correctAnswer": 38387,
+      "unit": "points"
+    },
+    {
+      "id": "music_med_beatles_songs_1",
+      "categories": [
+        "Music"
+      ],
+      "difficulty": "medium",
+      "text": "How many songs did The Beatles officially record across their entire career?",
+      "correctAnswer": 213,
+      "unit": "songs"
+    },
+    {
+      "id": "music_hard_ledzep_1",
+      "categories": [
+        "Music"
+      ],
+      "difficulty": "hard",
+      "text": "How many songs did Led Zeppelin release across all their studio albums?",
+      "correctAnswer": 91,
+      "unit": "songs"
+    },
+    {
+      "id": "geo_med_volcanoes_world_1",
+      "categories": [
+        "Geography"
+      ],
+      "difficulty": "medium",
+      "text": "How many active volcanoes are there on Earth?",
+      "correctAnswer": 1500,
+      "unit": "volcanoes"
+    },
+    {
+      "id": "geo_hard_volcanoes_indonesia_1",
+      "categories": [
+        "Geography"
+      ],
+      "difficulty": "hard",
+      "text": "How many active volcanoes does Indonesia have — more than any other country on Earth?",
+      "correctAnswer": 127,
+      "unit": "volcanoes"
+    },
+    {
+      "id": "records_hard_heaviest_person_1",
+      "categories": [
+        "Records"
+      ],
+      "difficulty": "hard",
+      "text": "What was the peak weight in kg of Jon Brower Minnoch, the heaviest person ever recorded?",
+      "correctAnswer": 635,
+      "unit": "kg"
+    },
+    {
+      "id": "records_hard_most_children_1",
+      "categories": [
+        "Records"
+      ],
+      "difficulty": "hard",
+      "text": "What is the most children ever born to one woman? (18th-century Russia, through multiple births)",
+      "correctAnswer": 69,
+      "unit": "children"
+    },
+    {
+      "id": "food_med_mcdonalds_usa_1",
+      "categories": [
+        "Food",
+        "Business"
+      ],
+      "difficulty": "medium",
+      "text": "How many McDonald's restaurants are there in the United States?",
+      "correctAnswer": 13500,
+      "unit": "restaurants"
+    },
+    {
+      "id": "food_hard_burgerking_world_1",
+      "categories": [
+        "Food",
+        "Business"
+      ],
+      "difficulty": "hard",
+      "text": "How many Burger King restaurants are there worldwide?",
+      "correctAnswer": 18700,
+      "unit": "restaurants"
+    },
+    {
+      "id": "math_hard_pow32_1",
+      "categories": [
+        "Math"
+      ],
+      "difficulty": "hard",
+      "text": "What is 2 to the power of 32?",
+      "correctAnswer": 4294967296,
+      "unit": ""
+    },
+    {
+      "id": "math_med_seconds_year_1",
+      "categories": [
+        "Math"
+      ],
+      "difficulty": "medium",
+      "text": "How many seconds are there in a year?",
+      "correctAnswer": 31536000,
+      "unit": "seconds"
+    },
+    {
+      "id": "math_hard_mult_999_1",
+      "categories": [
+        "Math"
+      ],
+      "difficulty": "hard",
+      "text": "What is 999 × 999?",
+      "correctAnswer": 998001,
+      "unit": ""
+    },
+    {
+      "id": "math_hard_mult_123_456_1",
+      "categories": [
+        "Math"
+      ],
+      "difficulty": "hard",
+      "text": "What is 123 × 456?",
+      "correctAnswer": 56088,
+      "unit": ""
+    },
+    {
+      "id": "math_hard_mult_1111_1",
+      "categories": [
+        "Math"
+      ],
+      "difficulty": "hard",
+      "text": "What is 1,111 × 1,111?",
+      "correctAnswer": 1234321,
+      "unit": ""
+    },
+    {
+      "id": "history_easy_napoleon_birth_1",
+      "categories": [
+        "History"
+      ],
+      "difficulty": "easy",
+      "text": "What year was Napoleon Bonaparte born?",
+      "correctAnswer": 1769,
+      "unit": ""
+    },
+    {
+      "id": "history_med_genghis_birth_1",
+      "categories": [
+        "History"
+      ],
+      "difficulty": "medium",
+      "text": "What year was Genghis Khan born?",
+      "correctAnswer": 1162,
+      "unit": ""
+    },
+    {
+      "id": "history_med_shakespeare_birth_1",
+      "categories": [
+        "History"
+      ],
+      "difficulty": "medium",
+      "text": "What year was William Shakespeare born?",
+      "correctAnswer": 1564,
+      "unit": ""
+    },
+    {
+      "id": "history_hard_davinci_birth_1",
+      "categories": [
+        "History"
+      ],
+      "difficulty": "hard",
+      "text": "What year was Leonardo da Vinci born?",
+      "correctAnswer": 1452,
+      "unit": ""
+    },
+    {
+      "id": "sports_med_olympics_count_1",
+      "categories": [
+        "Sports",
+        "Olympics"
+      ],
+      "difficulty": "medium",
+      "text": "How many Summer Olympic Games have been held in total, as of Paris 2024?",
+      "correctAnswer": 33,
+      "unit": "games"
+    },
+    {
+      "id": "geo_med_earth_circumference_1",
+      "categories": [
+        "Geography",
+        "Science"
+      ],
+      "difficulty": "medium",
+      "text": "What is the circumference of the Earth at the equator, in kilometers?",
+      "correctAnswer": 40075,
+      "unit": "km"
+    },
+    {
+      "id": "science_med_moon_distance_1",
+      "categories": [
+        "Science"
+      ],
+      "difficulty": "medium",
+      "text": "What is the average distance from Earth to the Moon, in kilometers?",
+      "correctAnswer": 384400,
+      "unit": "km"
+    },
+    {
+      "id": "science_hard_speed_light_1",
+      "categories": [
+        "Science"
+      ],
+      "difficulty": "hard",
+      "text": "What is the speed of light in kilometers per second?",
+      "correctAnswer": 299792,
+      "unit": "km/s"
+    },
+    {
+      "id": "geo_hard_russia_area_1",
+      "categories": [
+        "Geography"
+      ],
+      "difficulty": "hard",
+      "text": "What is the total area of Russia, the world's largest country, in square kilometers?",
+      "correctAnswer": 17098242,
+      "unit": "km²"
+    },
+    {
+      "id": "science_easy_speed_sound_1",
+      "categories": [
+        "Science"
+      ],
+      "difficulty": "easy",
+      "text": "What is the speed of sound in air at sea level, in meters per second?",
+      "correctAnswer": 343,
+      "unit": "m/s"
     }
   ]
 }

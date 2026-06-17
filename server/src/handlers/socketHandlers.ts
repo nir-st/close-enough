@@ -3,8 +3,23 @@ import { roomService } from '../services/RoomService';
 import { gameService } from '../services/GameService';
 import { botService } from '../services/BotService';
 import { localIP } from '../index';
+import { config } from '../config';
+import * as rl from '../middleware/socketRateLimiter';
+import {
+  validatePlayerName,
+  validateRoomCode,
+  validateAnswer,
+  validateSettings,
+  validateBotCount
+} from '../middleware/validation';
 import fs from 'fs';
 import path from 'path';
+
+// Look up the room for a socket using the roomCode stored on socket.data
+function getRoomForSocket(socket: Socket) {
+  const code: string | undefined = socket.data.roomCode;
+  return code ? roomService.getRoom(code) : null;
+}
 
 export function setupSocketHandlers(io: Server) {
   // Periodic cleanup of long-disconnected players (every 60 seconds)
@@ -15,13 +30,19 @@ export function setupSocketHandlers(io: Server) {
   io.on('connection', (socket: Socket) => {
     console.log(`🔌 Client connected: ${socket.id}`);
 
-    // Create room
+    // ── Create room ──────────────────────────────────────────────────────────
     socket.on('create-room', ({ playerName }: { playerName: string }) => {
+      if (!rl.allow(socket.id, 'create-room', 5, 15 * 60_000)) {
+        socket.emit('error', { message: 'Too many rooms created. Please wait.' });
+        return;
+      }
       try {
         const room = roomService.createRoom(playerName, socket.id);
-        const clientPort = process.env.CLIENT_PORT || 5173;
-        const joinUrl = `http://${localIP}:${clientPort}/join/${room.code}`;
+        const joinUrl = config.APP_URL
+          ? `${config.APP_URL}/join/${room.code}`
+          : `http://${localIP}:${config.CLIENT_PORT}/join/${room.code}`;
 
+        socket.data.roomCode = room.code;
         socket.join(room.id);
 
         socket.emit('room-created', {
@@ -39,17 +60,21 @@ export function setupSocketHandlers(io: Server) {
       }
     });
 
-    // Join room
+    // ── Join room ────────────────────────────────────────────────────────────
     socket.on('join-room', ({ roomCode, playerName }: { roomCode: string; playerName: string }) => {
+      if (!rl.allow(socket.id, 'join-room', 10, 60_000)) {
+        socket.emit('error', { message: 'Too many join attempts. Please wait.' });
+        return;
+      }
+      const codeErr = validateRoomCode(roomCode);
+      if (codeErr) { socket.emit('error', { message: codeErr }); return; }
+      const nameErr = validatePlayerName(playerName);
+      if (nameErr) { socket.emit('error', { message: nameErr }); return; }
       try {
-        const trimmedName = (playerName || '').trim();
-        if (!trimmedName) {
-          socket.emit('error', { message: 'Name cannot be empty' });
-          return;
-        }
-
-        console.log(`🔔 Join request: ${trimmedName} trying to join ${roomCode} (socket: ${socket.id})`);
+        const trimmedName = playerName.trim();
         playerName = trimmedName;
+
+        console.log(`🔔 Join request: ${playerName} trying to join ${roomCode} (socket: ${socket.id})`);
 
         const room = roomService.getRoomByCode(roomCode);
         if (!room) {
@@ -57,11 +82,10 @@ export function setupSocketHandlers(io: Server) {
           return;
         }
 
-        let player;
         const isReconnecting = roomService.isPlayerNameTaken(roomCode, playerName);
+        let player;
 
         if (isReconnecting) {
-          // Reconnect existing player
           player = roomService.reconnectPlayer(roomCode, playerName, socket.id);
           if (!player) {
             socket.emit('error', { message: 'Failed to reconnect' });
@@ -69,18 +93,17 @@ export function setupSocketHandlers(io: Server) {
           }
           console.log(`🔄 ${playerName} reconnected to room ${roomCode}`);
         } else {
-          // New player joining
           player = roomService.addPlayer(roomCode, playerName, socket.id);
           if (!player) {
             socket.emit('error', { message: 'Failed to join room' });
             return;
           }
-          console.log(`✅ ${playerName} joined room ${roomCode} (${room.players.length} players total)`);
+          console.log(`✅ ${playerName} joined room ${roomCode} (${room.players.length} players)`);
         }
 
+        socket.data.roomCode = roomCode;
         socket.join(room.id);
 
-        // Notify the player they joined/reconnected
         socket.emit('player-joined', {
           playerId: player.id,
           roomId: room.id,
@@ -89,9 +112,8 @@ export function setupSocketHandlers(io: Server) {
           reconnected: isReconnecting
         });
 
-        // If reconnecting mid-game, send current game state
+        // Restore state for reconnecting mid-game players
         if (isReconnecting && room.state !== 'waiting') {
-          // Send current question if in question/answering phase
           if ((room.state === 'question' || room.state === 'answering') && room.currentQuestionIndex < room.questions.length) {
             const question = room.questions[room.currentQuestionIndex];
             socket.emit('question-started', {
@@ -109,23 +131,15 @@ export function setupSocketHandlers(io: Server) {
 
             if (room.state === 'answering') {
               socket.emit('answering-started', {});
-
-              // Check if player already submitted answer
-              const hasAnswered = room.answers.has(player.id);
-              if (hasAnswered) {
+              if (room.answers.has(player.id)) {
                 socket.emit('answer-already-submitted', {});
               }
             }
           }
 
-          // Send results if in results phase
           if (room.state === 'results') {
-            if (room.lastRoundResult) {
-              socket.emit('question-ended', room.lastRoundResult);
-            }
-            if (room.answerRevealed) {
-              socket.emit('answer-revealed', {});
-            }
+            if (room.lastRoundResult) socket.emit('question-ended', room.lastRoundResult);
+            if (room.answerRevealed) socket.emit('answer-revealed', {});
             socket.emit('player-ready-update', {
               playerId: player.id,
               playerName: player.name,
@@ -136,7 +150,6 @@ export function setupSocketHandlers(io: Server) {
           }
         }
 
-        // Notify all other players in the room
         socket.to(room.id).emit('player-joined', {
           player,
           players: room.players,
@@ -149,56 +162,35 @@ export function setupSocketHandlers(io: Server) {
       }
     });
 
-    // Update game settings
+    // ── Update settings ──────────────────────────────────────────────────────
     socket.on('update-settings', ({ settings }: { settings: any }) => {
+      const err = validateSettings(settings);
+      if (err) { socket.emit('error', { message: err }); return; }
       try {
-        const room = roomService.getRoom();
-        if (!room) {
-          socket.emit('error', { message: 'Room not found' });
-          return;
-        }
+        const room = getRoomForSocket(socket);
+        if (!room) { socket.emit('error', { message: 'Room not found' }); return; }
+        if (socket.id !== room.hostId) { socket.emit('error', { message: 'Only host can update settings' }); return; }
 
-        // Check if this socket is the host
-        if (socket.id !== room.hostId) {
-          socket.emit('error', { message: 'Only host can update settings' });
-          return;
-        }
-
-        roomService.updateSettings(settings);
-
-        // Broadcast updated settings to all players
+        roomService.updateSettings(settings, room.code);
         io.to(room.id).emit('settings-updated', { settings: room.settings });
-
-        console.log(`⚙️  Settings updated:`, room.settings);
+        console.log(`⚙️  Settings updated in ${room.code}:`, room.settings);
       } catch (error: any) {
         socket.emit('error', { message: error.message });
         console.error('❌ Error updating settings:', error.message);
       }
     });
 
-    // Add bots
+    // ── Add bots ─────────────────────────────────────────────────────────────
     socket.on('add-bots', ({ count }: { count: number }) => {
+      const err = validateBotCount(count);
+      if (err) { socket.emit('error', { message: err }); return; }
       try {
-        const room = roomService.getRoom();
-        if (!room) {
-          socket.emit('error', { message: 'Room not found' });
-          return;
-        }
+        const room = getRoomForSocket(socket);
+        if (!room) { socket.emit('error', { message: 'Room not found' }); return; }
+        if (socket.id !== room.hostId) { socket.emit('error', { message: 'Only host can add bots' }); return; }
 
-        // Check if this socket is the host
-        if (socket.id !== room.hostId) {
-          socket.emit('error', { message: 'Only host can add bots' });
-          return;
-        }
-
-        const bots = roomService.addBots(count);
-
-        // Notify all players about new bots
-        io.to(room.id).emit('bots-added', {
-          bots,
-          players: room.players
-        });
-
+        const bots = roomService.addBots(count, room.code);
+        io.to(room.id).emit('bots-added', { bots, players: room.players });
         console.log(`🤖 Added ${bots.length} bots to room ${room.code}`);
       } catch (error: any) {
         socket.emit('error', { message: error.message });
@@ -206,28 +198,15 @@ export function setupSocketHandlers(io: Server) {
       }
     });
 
-    // Remove bots
+    // ── Remove bots ──────────────────────────────────────────────────────────
     socket.on('remove-bots', () => {
       try {
-        const room = roomService.getRoom();
-        if (!room) {
-          socket.emit('error', { message: 'Room not found' });
-          return;
-        }
+        const room = getRoomForSocket(socket);
+        if (!room) { socket.emit('error', { message: 'Room not found' }); return; }
+        if (socket.id !== room.hostId) { socket.emit('error', { message: 'Only host can remove bots' }); return; }
 
-        // Check if this socket is the host
-        if (socket.id !== room.hostId) {
-          socket.emit('error', { message: 'Only host can remove bots' });
-          return;
-        }
-
-        roomService.removeBots();
-
-        // Notify all players about bot removal
-        io.to(room.id).emit('bots-removed', {
-          players: room.players
-        });
-
+        roomService.removeBots(room.code);
+        io.to(room.id).emit('bots-removed', { players: room.players });
         console.log(`🤖 Removed all bots from room ${room.code}`);
       } catch (error: any) {
         socket.emit('error', { message: error.message });
@@ -235,80 +214,59 @@ export function setupSocketHandlers(io: Server) {
       }
     });
 
-    // Start game
+    // ── Start game ───────────────────────────────────────────────────────────
     socket.on('start-game', () => {
       try {
-        const room = roomService.getRoom();
-        if (!room) {
-          socket.emit('error', { message: 'Room not found' });
-          return;
-        }
+        const room = getRoomForSocket(socket);
+        if (!room) { socket.emit('error', { message: 'Room not found' }); return; }
+        if (socket.id !== room.hostId) { socket.emit('error', { message: 'Only host can start the game' }); return; }
 
-        // Check if this socket is the host
-        if (socket.id !== room.hostId) {
-          socket.emit('error', { message: 'Only host can start the game' });
-          return;
-        }
-
-        gameService.startGame(room.id);
-
-        // Notify all players game has started
+        gameService.startGame(room.code);
         io.to(room.id).emit('game-started', {});
-
         console.log(`🎮 Game started in room ${room.code}`);
 
-        // Start first question after a brief delay
-        setTimeout(() => {
-          sendCurrentQuestion(io, room.id);
-        }, 2000);
+        setTimeout(() => { sendCurrentQuestion(io, room.code); }, 2000);
       } catch (error: any) {
         socket.emit('error', { message: error.message });
         console.error('❌ Error starting game:', error.message);
       }
     });
 
-    // Start answering phase
+    // ── Start answering phase ────────────────────────────────────────────────
     socket.on('start-answering', () => {
-      const room = roomService.getRoom();
+      const room = getRoomForSocket(socket);
       if (!room) return;
-
       try {
-        gameService.startAnswering(room.id);
-        console.log(`⏱️  Answering phase started for question ${room.currentQuestionIndex + 1}`);
+        gameService.startAnswering(room.code);
+        console.log(`⏱️  Answering phase started for question ${room.currentQuestionIndex + 1} in ${room.code}`);
       } catch (error: any) {
         console.error('❌ Error starting answering phase:', error.message);
       }
     });
 
-    // Submit answer
+    // ── Submit answer ────────────────────────────────────────────────────────
     socket.on('submit-answer', ({ answer }: { answer: number }) => {
+      const err = validateAnswer(answer);
+      if (err) { socket.emit('error', { message: err }); return; }
+      if (!rl.allow(socket.id, 'submit-answer', 2, 60_000)) {
+        socket.emit('error', { message: 'Answer already submitted' });
+        return;
+      }
       try {
-        const player = roomService.getPlayerBySocketId(socket.id);
-        if (!player) {
-          socket.emit('error', { message: 'Player not found' });
-          return;
-        }
+        const room = getRoomForSocket(socket);
+        if (!room) { socket.emit('error', { message: 'Room not found' }); return; }
 
-        const room = roomService.getRoom();
-        if (!room) {
-          socket.emit('error', { message: 'Room not found' });
-          return;
-        }
+        const player = roomService.getPlayerBySocketId(socket.id, room.code);
+        if (!player) { socket.emit('error', { message: 'Player not found' }); return; }
 
-        gameService.submitAnswer(room.id, player.id, answer);
-
-        // Confirm to the player
+        gameService.submitAnswer(room.code, player.id, answer);
         socket.emit('answer-received', { playerId: player.id });
-
-        // Notify host about answer submission
         socket.to(room.id).emit('answer-received', { playerId: player.id });
+        console.log(`📝 ${player.name} submitted answer: ${answer} in ${room.code}`);
 
-        console.log(`📝 ${player.name} submitted answer: ${answer}`);
-
-        // Check if all players have answered
         if (gameService.haveAllPlayersAnswered(room)) {
-          console.log(`✅ All players answered, ending question`);
-          endCurrentQuestion(io, room.id);
+          console.log(`✅ All players answered in ${room.code}, ending question`);
+          endCurrentQuestion(io, room.code);
         }
       } catch (error: any) {
         socket.emit('error', { message: error.message });
@@ -316,46 +274,28 @@ export function setupSocketHandlers(io: Server) {
       }
     });
 
-    // Timer expired (force end question)
+    // ── Timer expired ────────────────────────────────────────────────────────
     socket.on('timer-expired', () => {
-      const room = roomService.getRoom();
-      if (!room || room.state !== 'answering') return;
-
-      // Check if this socket is the host
-      if (socket.id !== room.hostId) return;
-
-      console.log(`⏰ Timer expired for question ${room.currentQuestionIndex + 1}`);
-      endCurrentQuestion(io, room.id);
+      const room = getRoomForSocket(socket);
+      if (!room || room.state !== 'answering' || socket.id !== room.hostId) return;
+      console.log(`⏰ Timer expired for question ${room.currentQuestionIndex + 1} in ${room.code}`);
+      endCurrentQuestion(io, room.code);
     });
 
-    // Next question
+    // ── Next question ────────────────────────────────────────────────────────
     socket.on('next-question', () => {
       try {
-        const room = roomService.getRoom();
-        if (!room) {
-          socket.emit('error', { message: 'Room not found' });
-          return;
-        }
+        const room = getRoomForSocket(socket);
+        if (!room) { socket.emit('error', { message: 'Room not found' }); return; }
+        if (socket.id !== room.hostId) { socket.emit('error', { message: 'Only host can proceed' }); return; }
 
-        // Check if this socket is the host
-        if (socket.id !== room.hostId) {
-          socket.emit('error', { message: 'Only host can proceed to next question' });
-          return;
-        }
-
-        // Clear ready state
-        roomService.clearReadyPlayers();
-
-        gameService.nextQuestion(room.id);
+        roomService.clearReadyPlayers(room.code);
+        gameService.nextQuestion(room.code);
 
         if (room.state === 'question') {
-          // More questions remaining
-          setTimeout(() => {
-            sendCurrentQuestion(io, room.id);
-          }, 1000);
+          setTimeout(() => { sendCurrentQuestion(io, room.code); }, 1000);
         } else if (room.state === 'finished') {
-          // Game finished
-          const results = gameService.getFinalResults(room.id);
+          const results = gameService.getFinalResults(room.code);
           io.to(room.id).emit('game-ended', results);
           console.log(`🏆 Game ended in room ${room.code}`);
         }
@@ -365,32 +305,18 @@ export function setupSocketHandlers(io: Server) {
       }
     });
 
-    // Player ready for next question
+    // ── Player ready ─────────────────────────────────────────────────────────
     socket.on('player-ready', ({ playerId }: { playerId: string }) => {
       try {
-        // First try to find by provided playerId, fallback to socket.id
-        let player = roomService.getPlayerById(playerId);
+        const room = getRoomForSocket(socket);
+        if (!room) { socket.emit('error', { message: 'Room not found' }); return; }
 
-        if (!player) {
-          // Fallback: try finding by socket ID (for backward compatibility)
-          player = roomService.getPlayerBySocketId(socket.id);
-        }
+        let player = roomService.getPlayerById(playerId, room.code);
+        if (!player) player = roomService.getPlayerBySocketId(socket.id, room.code);
+        if (!player) { socket.emit('error', { message: 'Player not found' }); return; }
 
-        if (!player) {
-          socket.emit('error', { message: 'Player not found' });
-          return;
-        }
+        roomService.markPlayerReady(player.id, room.code);
 
-        const room = roomService.getRoom();
-        if (!room) {
-          socket.emit('error', { message: 'Room not found' });
-          return;
-        }
-
-        // Mark player as ready
-        roomService.markPlayerReady(player.id);
-
-        // Notify everyone about ready status update
         const readyCount = room.readyPlayers.size;
         const connectedCount = room.players.filter(p => p.connected).length;
 
@@ -402,25 +328,21 @@ export function setupSocketHandlers(io: Server) {
           readyPlayerIds: Array.from(room.readyPlayers)
         });
 
-        console.log(`✅ ${player.name} is ready (${readyCount}/${connectedCount})`);
+        console.log(`✅ ${player.name} is ready (${readyCount}/${connectedCount}) in ${room.code}`);
 
-        // Only auto-advance if at least 2 players are connected
-        if (roomService.areAllPlayersReady() && connectedCount >= 2 && !room.isProcessingReady) {
+        if (roomService.areAllPlayersReady(room.code) && connectedCount >= 2 && !room.isProcessingReady) {
           room.isProcessingReady = true;
-          console.log(`🎯 All players ready! Moving to next question`);
-
-          roomService.clearReadyPlayers();
+          roomService.clearReadyPlayers(room.code);
 
           setTimeout(() => {
-            gameService.nextQuestion(room.id);
-
+            gameService.nextQuestion(room.code);
             if (room.state === 'question') {
               setTimeout(() => {
-                sendCurrentQuestion(io, room.id);
+                sendCurrentQuestion(io, room.code);
                 room.isProcessingReady = false;
               }, 1000);
             } else if (room.state === 'finished') {
-              const results = gameService.getFinalResults(room.id);
+              const results = gameService.getFinalResults(room.code);
               io.to(room.id).emit('game-ended', results);
               console.log(`🏆 Game ended in room ${room.code}`);
               room.isProcessingReady = false;
@@ -433,27 +355,38 @@ export function setupSocketHandlers(io: Server) {
       }
     });
 
-    // Restart game (same room, reset state and scores)
+    // ── Reveal done (animation complete on host) ─────────────────────────────
+    socket.on('reveal-done', () => {
+      const room = getRoomForSocket(socket);
+      if (!room || socket.id !== room.hostId) return;
+
+      room.answerRevealed = true;
+      io.to(room.id).emit('answer-revealed', {});
+      console.log(`🎬 Answer revealed in room ${room.code}`);
+
+      if (room.lastRoundResult?.isLastQuestion) {
+        setTimeout(() => {
+          try {
+            gameService.nextQuestion(room.code);
+            const results = gameService.getFinalResults(room.code);
+            io.to(room.id).emit('game-ended', results);
+            console.log(`🏆 Game ended (last question auto-advance) in room ${room.code}`);
+          } catch (e: any) {
+            console.error('❌ Auto-advance error:', e.message);
+          }
+        }, 5000);
+      }
+    });
+
+    // ── Restart game ─────────────────────────────────────────────────────────
     socket.on('restart-game', () => {
       try {
-        const room = roomService.getRoom();
-        if (!room) {
-          socket.emit('error', { message: 'Room not found' });
-          return;
-        }
+        const room = getRoomForSocket(socket);
+        if (!room) { socket.emit('error', { message: 'Room not found' }); return; }
+        if (socket.id !== room.hostId) { socket.emit('error', { message: 'Only host can restart' }); return; }
 
-        if (socket.id !== room.hostId) {
-          socket.emit('error', { message: 'Only host can restart the game' });
-          return;
-        }
-
-        gameService.restartGame(room.id);
-
-        io.to(room.id).emit('game-restarted', {
-          players: room.players,
-          settings: room.settings
-        });
-
+        roomService.restartGame(room.code);
+        io.to(room.id).emit('game-restarted', { players: room.players, settings: room.settings });
         console.log(`🔄 Game restarted in room ${room.code}`);
       } catch (error: any) {
         socket.emit('error', { message: error.message });
@@ -461,23 +394,15 @@ export function setupSocketHandlers(io: Server) {
       }
     });
 
-    // End game
+    // ── End game ─────────────────────────────────────────────────────────────
     socket.on('end-game', () => {
       try {
-        const room = roomService.getRoom();
-        if (!room) {
-          socket.emit('error', { message: 'Room not found' });
-          return;
-        }
+        const room = getRoomForSocket(socket);
+        if (!room) { socket.emit('error', { message: 'Room not found' }); return; }
+        if (socket.id !== room.hostId) { socket.emit('error', { message: 'Only host can end the game' }); return; }
 
-        if (socket.id !== room.hostId) {
-          socket.emit('error', { message: 'Only host can end the game' });
-          return;
-        }
-
-        roomService.clearRoom(); // Clear directly regardless of state
         io.to(room.id).emit('game-ended', { reason: 'Host ended the game' });
-
+        roomService.deleteRoom(room.code);
         console.log(`🛑 Game ended by host in room ${room.code}`);
       } catch (error: any) {
         socket.emit('error', { message: error.message });
@@ -485,42 +410,19 @@ export function setupSocketHandlers(io: Server) {
       }
     });
 
-    // Kick player
+    // ── Kick player ──────────────────────────────────────────────────────────
     socket.on('kick-player', ({ playerId }: { playerId: string }) => {
       try {
-        const room = roomService.getRoom();
-        if (!room) {
-          socket.emit('error', { message: 'Room not found' });
-          return;
-        }
+        const room = getRoomForSocket(socket);
+        if (!room) { socket.emit('error', { message: 'Room not found' }); return; }
+        if (socket.id !== room.hostId) { socket.emit('error', { message: 'Only host can kick players' }); return; }
 
-        // Check if this socket is the host
-        if (socket.id !== room.hostId) {
-          socket.emit('error', { message: 'Only host can kick players' });
-          return;
-        }
+        const player = roomService.getPlayerById(playerId, room.code);
+        if (!player) { socket.emit('error', { message: 'Player not found' }); return; }
 
-        const player = roomService.getPlayerById(playerId);
-        if (!player) {
-          socket.emit('error', { message: 'Player not found' });
-          return;
-        }
-
-        // Remove player
-        roomService.removePlayer(playerId);
-
-        // Notify the kicked player
-        io.to(player.socketId).emit('kicked', {
-          message: 'You have been kicked by the host'
-        });
-
-        // Notify all remaining players
-        io.to(room.id).emit('player-left', {
-          playerId: player.id,
-          playerName: player.name,
-          players: room.players
-        });
-
+        io.to(player.socketId).emit('kicked', { message: 'You have been kicked by the host' });
+        roomService.removePlayer(playerId, room.code);
+        io.to(room.id).emit('player-left', { playerId: player.id, playerName: player.name, players: room.players });
         console.log(`👢 ${player.name} was kicked from room ${room.code}`);
       } catch (error: any) {
         socket.emit('error', { message: error.message });
@@ -528,33 +430,13 @@ export function setupSocketHandlers(io: Server) {
       }
     });
 
-    // Host signals animation is done — unlock ready buttons for players
-    socket.on('reveal-done', () => {
-      const room = roomService.getRoom();
-      if (!room || socket.id !== room.hostId) return;
-
-      room.answerRevealed = true;
-      io.to(room.id).emit('answer-revealed', {});
-      console.log(`🎬 Answer revealed in room ${room.code}`);
-
-      // On last question, auto-advance to finished after a short pause
-      const isLast = room.lastRoundResult?.isLastQuestion;
-      if (isLast) {
-        setTimeout(() => {
-          try {
-            gameService.nextQuestion(room.id); // sets state to 'finished'
-            const results = gameService.getFinalResults(room.id);
-            io.to(room.id).emit('game-ended', results);
-            console.log(`🏆 Game ended (last question auto-advance) in room ${room.code}`);
-          } catch (e: any) {
-            console.error('❌ Auto-advance error:', e.message);
-          }
-        }, 5000); // 5 seconds to see the answer before final screen
-      }
-    });
-
-    // Report a question
+    // ── Report question ──────────────────────────────────────────────────────
     socket.on('report-question', ({ questionId, questionText, playerName }: { questionId: string; questionText: string; playerName: string }) => {
+      if (!rl.allow(socket.id, 'report-question', 3, 60 * 60_000)) {
+        socket.emit('error', { message: 'Report limit reached' });
+        return;
+      }
+      if (typeof questionId !== 'string' || typeof questionText !== 'string') return;
       try {
         const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
         const line = `[${timestamp}] ID: ${questionId} | "${questionText}" | Reported by: ${playerName}\n`;
@@ -567,119 +449,111 @@ export function setupSocketHandlers(io: Server) {
       }
     });
 
-    // Disconnect
+    // ── Disconnect ───────────────────────────────────────────────────────────
     socket.on('disconnect', () => {
+      rl.cleanup(socket.id);
       console.log(`🔌 Client disconnected: ${socket.id}`);
 
-      const player = roomService.getPlayerBySocketId(socket.id);
+      const roomCode: string | undefined = socket.data.roomCode;
+      if (!roomCode) return;
+
+      const room = roomService.getRoom(roomCode);
+      if (!room) return;
+
+      const player = roomService.getPlayerBySocketId(socket.id, roomCode);
       if (player) {
-        const room = roomService.getRoom();
-
-        // Mark player as disconnected (don't remove)
-        roomService.markPlayerDisconnected(socket.id);
-
-        if (room) {
-          // Notify others that player went offline
-          io.to(room.id).emit('player-disconnected', {
-            playerId: player.id,
-            playerName: player.name,
-            players: room.players
-          });
-
-          console.log(`⚠️  ${player.name} disconnected from room ${room.code} (marked offline)`);
+        roomService.markPlayerDisconnected(socket.id, roomCode);
+        io.to(room.id).emit('player-disconnected', {
+          playerId: player.id,
+          playerName: player.name,
+          players: room.players
+        });
+        console.log(`⚠️  ${player.name} disconnected from room ${roomCode} (marked offline)`);
+      } else {
+        // Host disconnected — if no players remain, clean up the room
+        if (socket.id === room.hostId && room.players.length === 0) {
+          roomService.deleteRoom(roomCode);
+          console.log(`🗑️  Room ${roomCode} deleted — host left with no players`);
         }
       }
     });
   });
 
-  // Helper: Send current question to all players
-  function sendCurrentQuestion(io: Server, roomId: string) {
-    const room = roomService.getRoom();
-    if (!room || room.id !== roomId) return;
+  // ── Helper: send current question to all in room ───────────────────────────
+  function sendCurrentQuestion(io: Server, roomCode: string) {
+    const room = roomService.getRoom(roomCode);
+    if (!room) return;
 
     const question = gameService.getCurrentQuestion(room);
     if (!question) return;
 
-    io.to(roomId).emit('question-started', {
-      question,
-      timeLimit: room.settings.timePerQuestion
-    });
+    io.to(room.id).emit('question-started', { question, timeLimit: room.settings.timePerQuestion });
+    console.log(`❓ [${roomCode}] Q${question.questionNumber}/${question.totalQuestions}: ${question.text}`);
 
-    console.log(`❓ Question ${question.questionNumber}/${question.totalQuestions}: ${question.text}`);
-
-    // Automatically start answering phase after showing question briefly
     setTimeout(() => {
-      gameService.startAnswering(roomId);
-      io.to(roomId).emit('answering-started', {});
+      gameService.startAnswering(room.code);
+      io.to(room.id).emit('answering-started', {});
 
-      // Submit bot answers
       const currentQ = room.questions[room.currentQuestionIndex];
       botService.submitBotAnswers(room, currentQ, (botId, answer) => {
         try {
-          gameService.submitAnswer(room.id, botId, answer);
-          console.log(`🤖 Bot ${room.players.find(p => p.id === botId)?.name} submitted: ${answer}`);
-
-          // Check if all players have answered
+          gameService.submitAnswer(room.code, botId, answer);
+          console.log(`🤖 [${roomCode}] Bot ${room.players.find(p => p.id === botId)?.name} answered: ${answer}`);
           if (gameService.haveAllPlayersAnswered(room)) {
-            console.log(`✅ All players answered, ending question`);
-            endCurrentQuestion(io, room.id);
+            console.log(`✅ [${roomCode}] All players answered, ending question`);
+            endCurrentQuestion(io, roomCode);
           }
         } catch (error) {
           console.error('❌ Error submitting bot answer:', error);
         }
       });
-    }, 3000); // 3 second delay to show question before accepting answers
+    }, 3000);
   }
 
-  // Helper: End current question and send results
-  function endCurrentQuestion(io: Server, roomId: string) {
+  // ── Helper: end question and send results ──────────────────────────────────
+  function endCurrentQuestion(io: Server, roomCode: string) {
+    const room = roomService.getRoom(roomCode);
+    if (!room) return;
+
     try {
-      const results = gameService.endQuestion(roomId);
-      io.to(roomId).emit('question-ended', results);
+      const results = gameService.endQuestion(room.code);
+      io.to(room.id).emit('question-ended', results);
+      console.log(`📊 [${roomCode}] Question ended. Winner: ${results.winner?.playerName || 'None'}`);
 
-      console.log(`📊 Question ended. Winner: ${results.winner?.playerName || 'None'}`);
+      botService.markBotsReady(room, (botId) => {
+        roomService.markPlayerReady(botId, roomCode);
 
-      // Make bots ready after a delay
-      const room = roomService.getRoom();
-      if (room) {
-        botService.markBotsReady(room, (botId) => {
-          roomService.markPlayerReady(botId);
+        const readyCount = room.readyPlayers.size;
+        const connectedCount = room.players.filter(p => p.connected).length;
 
-          const readyCount = room.readyPlayers.size;
-          const connectedCount = room.players.filter(p => p.connected).length;
-
-          io.to(room.id).emit('player-ready-update', {
-            playerId: botId,
-            playerName: room.players.find(p => p.id === botId)?.name || 'Bot',
-            readyCount,
-            totalCount: connectedCount,
-            readyPlayerIds: Array.from(room.readyPlayers)
-          });
-
-          if (roomService.areAllPlayersReady() && connectedCount >= 2 && !room.isProcessingReady) {
-            room.isProcessingReady = true;
-            console.log(`🎯 All players ready! Moving to next question`);
-
-            roomService.clearReadyPlayers();
-
-            setTimeout(() => {
-              gameService.nextQuestion(room.id);
-
-              if (room.state === 'question') {
-                setTimeout(() => {
-                  sendCurrentQuestion(io, room.id);
-                  room.isProcessingReady = false;
-                }, 1000);
-              } else if (room.state === 'finished') {
-                const finalResults = gameService.getFinalResults(room.id);
-                io.to(room.id).emit('game-ended', finalResults);
-                console.log(`🏆 Game ended in room ${room.code}`);
-                room.isProcessingReady = false;
-              }
-            }, 1000);
-          }
+        io.to(room.id).emit('player-ready-update', {
+          playerId: botId,
+          playerName: room.players.find(p => p.id === botId)?.name || 'Bot',
+          readyCount,
+          totalCount: connectedCount,
+          readyPlayerIds: Array.from(room.readyPlayers)
         });
-      }
+
+        if (roomService.areAllPlayersReady(roomCode) && connectedCount >= 2 && !room.isProcessingReady) {
+          room.isProcessingReady = true;
+          roomService.clearReadyPlayers(roomCode);
+
+          setTimeout(() => {
+            gameService.nextQuestion(room.code);
+            if (room.state === 'question') {
+              setTimeout(() => {
+                sendCurrentQuestion(io, roomCode);
+                room.isProcessingReady = false;
+              }, 1000);
+            } else if (room.state === 'finished') {
+              const finalResults = gameService.getFinalResults(room.code);
+              io.to(room.id).emit('game-ended', finalResults);
+              console.log(`🏆 [${roomCode}] Game ended`);
+              room.isProcessingReady = false;
+            }
+          }, 1000);
+        }
+      });
     } catch (error: any) {
       console.error('❌ Error ending question:', error.message);
     }

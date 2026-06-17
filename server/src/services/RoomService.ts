@@ -2,31 +2,17 @@ import { Room, Player, GameSettings } from '../models/Game';
 import { getRandomAvatar, releaseAvatar } from '../utils/avatars';
 
 class RoomService {
-  private activeRoom: Room | null = null;
+  private rooms: Map<string, Room> = new Map();
 
-  // Room code generation
-  private generateRoomCode(): string {
-    const CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // No I, O, 0, 1
-    const CODE_LENGTH = 6;
-    let code = '';
-    for (let i = 0; i < CODE_LENGTH; i++) {
-      code += CHARS[Math.floor(Math.random() * CHARS.length)];
-    }
-    return code;
-  }
+  // ─── Room lifecycle ────────────────────────────────────────────────────────
 
-  // Create a new room
   createRoom(hostName: string, hostSocketId: string): Room {
-    // Block if game already in progress
-    if (this.activeRoom) {
-      throw new Error('Game already in progress');
-    }
-
+    const code = this.generateUniqueCode();
     const room: Room = {
       id: this.generateRoomId(),
-      code: this.generateRoomCode(),
-      hostId: hostSocketId, // Just store the socket ID, don't create a player
-      players: [], // Host is NOT a player
+      code,
+      hostId: hostSocketId,
+      players: [],
       state: 'waiting',
       settings: {
         questionCount: 10,
@@ -40,42 +26,54 @@ class RoomService {
       readyPlayers: new Set(),
       isProcessingReady: false,
       answerRevealed: false,
-      createdAt: new Date()
+      createdAt: new Date(),
+      lastActivity: new Date()
     };
 
-    this.activeRoom = room;
+    this.rooms.set(code, room);
     return room;
   }
 
-  // Get active room
-  getRoom(): Room | null {
-    return this.activeRoom;
+  getRoom(roomCode: string): Room | null {
+    return this.rooms.get(roomCode) || null;
   }
 
-  // Get room by code
+  // Alias kept for call sites that use it
   getRoomByCode(code: string): Room | null {
-    if (this.activeRoom && this.activeRoom.code === code) {
-      return this.activeRoom;
-    }
-    return null;
+    return this.rooms.get(code) || null;
   }
 
-  // Add player to room (only during waiting phase)
+  deleteRoom(roomCode: string): void {
+    const room = this.rooms.get(roomCode);
+    if (room) {
+      room.players.forEach(p => releaseAvatar(p.avatar));
+      this.rooms.delete(roomCode);
+    }
+  }
+
+  getRoomCount(): number {
+    return this.rooms.size;
+  }
+
+  getTotalPlayerCount(): number {
+    let count = 0;
+    this.rooms.forEach(r => { count += r.players.filter(p => p.connected).length; });
+    return count;
+  }
+
+  touch(roomCode: string): void {
+    const room = this.rooms.get(roomCode);
+    if (room) room.lastActivity = new Date();
+  }
+
+  // ─── Player management ────────────────────────────────────────────────────
+
   addPlayer(roomCode: string, playerName: string, socketId: string): Player | null {
-    const room = this.getRoomByCode(roomCode);
-    if (!room) {
-      return null;
-    }
+    const room = this.rooms.get(roomCode);
+    if (!room) return null;
 
-    // Only allow new players in waiting phase
-    if (room.state !== 'waiting') {
-      throw new Error("Can't join game in progress");
-    }
-
-    // Check if room is full (max 10 players)
-    if (room.players.length >= 10) {
-      throw new Error('Room is full');
-    }
+    if (room.state !== 'waiting') throw new Error("Can't join game in progress");
+    if (room.players.length >= 10) throw new Error('Room is full');
 
     const player: Player = {
       id: this.generatePlayerId(),
@@ -90,186 +88,130 @@ class RoomService {
     };
 
     room.players.push(player);
+    room.lastActivity = new Date();
     return player;
   }
 
-  // Remove player from room
-  removePlayer(playerId: string): void {
-    if (!this.activeRoom) return;
+  removePlayer(playerId: string, roomCode: string): void {
+    const room = this.rooms.get(roomCode);
+    if (!room) return;
 
-    const playerIndex = this.activeRoom.players.findIndex(p => p.id === playerId);
-    if (playerIndex !== -1) {
-      const player = this.activeRoom.players[playerIndex];
+    const index = room.players.findIndex(p => p.id === playerId);
+    if (index === -1) return;
 
-      // Release avatar back to pool
-      releaseAvatar(player.avatar);
+    releaseAvatar(room.players[index].avatar);
+    room.players.splice(index, 1);
 
-      this.activeRoom.players.splice(playerIndex, 1);
-
-      // If no players left, clear the room
-      if (this.activeRoom.players.length === 0) {
-        this.clearRoom();
-      }
+    if (room.players.length === 0) {
+      this.deleteRoom(roomCode);
     }
   }
 
-  // Update player socket ID (for reconnection)
-  updatePlayerSocketId(playerId: string, socketId: string): void {
-    if (!this.activeRoom) return;
+  reconnectPlayer(roomCode: string, playerName: string, socketId: string): Player | null {
+    const room = this.rooms.get(roomCode);
+    if (!room) return null;
 
-    const player = this.activeRoom.players.find(p => p.id === playerId);
+    const player = room.players.find(p => p.name === playerName);
+    if (!player) return null;
+
+    player.socketId = socketId;
+    player.connected = true;
+    player.lastSeen = new Date();
+    room.lastActivity = new Date();
+    return player;
+  }
+
+  isPlayerNameTaken(roomCode: string, playerName: string): boolean {
+    const room = this.rooms.get(roomCode);
+    return room ? room.players.some(p => p.name === playerName) : false;
+  }
+
+  getPlayerBySocketId(socketId: string, roomCode: string): Player | null {
+    const room = this.rooms.get(roomCode);
+    if (!room) return null;
+    return room.players.find(p => p.socketId === socketId) || null;
+  }
+
+  getPlayerById(playerId: string, roomCode: string): Player | null {
+    const room = this.rooms.get(roomCode);
+    if (!room) return null;
+    return room.players.find(p => p.id === playerId) || null;
+  }
+
+  updatePlayerSocketId(playerId: string, socketId: string, roomCode: string): void {
+    const room = this.rooms.get(roomCode);
+    if (!room) return;
+    const player = room.players.find(p => p.id === playerId);
     if (player) {
       player.socketId = socketId;
       player.connected = true;
     }
   }
 
-  // Mark player as disconnected
-  markPlayerDisconnected(socketId: string): void {
-    if (!this.activeRoom) return;
-
-    const player = this.activeRoom.players.find(p => p.socketId === socketId);
+  markPlayerDisconnected(socketId: string, roomCode: string): void {
+    const room = this.rooms.get(roomCode);
+    if (!room) return;
+    const player = room.players.find(p => p.socketId === socketId);
     if (player) {
       player.connected = false;
       player.lastSeen = new Date();
     }
   }
 
-  // Reconnect a player (find by name and update socket ID)
-  reconnectPlayer(roomCode: string, playerName: string, socketId: string): Player | null {
-    const room = this.getRoomByCode(roomCode);
-    if (!room) {
-      return null;
-    }
+  // ─── Settings & state ─────────────────────────────────────────────────────
 
-    // Find existing player by name (allow reconnection during game)
-    const player = room.players.find(p => p.name === playerName);
-    if (!player) {
-      return null;
-    }
-
-    // Update socket ID and mark as connected
-    player.socketId = socketId;
-    player.connected = true;
-    player.lastSeen = new Date();
-
-    return player;
+  updateSettings(settings: Partial<GameSettings>, roomCode: string): void {
+    const room = this.rooms.get(roomCode);
+    if (!room) return;
+    if (room.state !== 'waiting') throw new Error('Cannot change settings after game has started');
+    room.settings = { ...room.settings, ...settings };
+    room.lastActivity = new Date();
   }
 
-  // Check if player name already exists in room (for reconnection)
-  isPlayerNameTaken(roomCode: string, playerName: string): boolean {
-    const room = this.getRoomByCode(roomCode);
+  markPlayerReady(playerId: string, roomCode: string): void {
+    const room = this.rooms.get(roomCode);
+    if (room) room.readyPlayers.add(playerId);
+  }
+
+  areAllPlayersReady(roomCode: string): boolean {
+    const room = this.rooms.get(roomCode);
     if (!room) return false;
-
-    return room.players.some(p => p.name === playerName);
+    const connected = room.players.filter(p => p.connected);
+    return connected.length > 0 && connected.every(p => room.readyPlayers.has(p.id));
   }
 
-  // Get player by socket ID
-  getPlayerBySocketId(socketId: string): Player | null {
-    if (!this.activeRoom) return null;
-    return this.activeRoom.players.find(p => p.socketId === socketId) || null;
-  }
-
-  // Get player by ID
-  getPlayerById(playerId: string): Player | null {
-    if (!this.activeRoom) return null;
-    return this.activeRoom.players.find(p => p.id === playerId) || null;
-  }
-
-  // Update game settings
-  updateSettings(settings: Partial<GameSettings>): void {
-    if (!this.activeRoom) return;
-    if (this.activeRoom.state !== 'waiting') {
-      throw new Error('Cannot change settings after game has started');
-    }
-    this.activeRoom.settings = { ...this.activeRoom.settings, ...settings };
-  }
-
-  // Clear room (game ended)
-  clearRoom(): void {
-    this.activeRoom = null;
-  }
-
-  // Restart game with same players - reset state back to waiting, clear scores
-  restartGame(): void {
-    if (!this.activeRoom) return;
-
-    this.activeRoom.state = 'waiting';
-    this.activeRoom.currentQuestionIndex = 0;
-    this.activeRoom.questions = [];
-    this.activeRoom.answers.clear();
-    this.activeRoom.readyPlayers.clear();
-    this.activeRoom.isProcessingReady = false;
-    this.activeRoom.questionStartTime = undefined;
-    this.activeRoom.lastRoundResult = undefined;
-    this.activeRoom.answerRevealed = false;
-
-    // Reset player scores
-    this.activeRoom.players.forEach(p => {
-      p.score = 0;
-    });
-  }
-
-  // Clean up players disconnected for more than 5 minutes
-  cleanupDisconnectedPlayers(): void {
-    if (!this.activeRoom) return;
-
-    const FIVE_MINUTES = 5 * 60 * 1000;
-    const now = new Date();
-
-    const playersToRemove: string[] = [];
-
-    this.activeRoom.players.forEach(player => {
-      if (!player.connected) {
-        const timeSinceLastSeen = now.getTime() - player.lastSeen.getTime();
-        if (timeSinceLastSeen > FIVE_MINUTES) {
-          playersToRemove.push(player.id);
-        }
-      }
-    });
-
-    // Remove expired players
-    playersToRemove.forEach(playerId => {
-      const player = this.activeRoom?.players.find(p => p.id === playerId);
-      if (player) {
-        releaseAvatar(player.avatar);
-        this.activeRoom!.players = this.activeRoom!.players.filter(p => p.id !== playerId);
-      }
-    });
-
-    // If no players left, clear the room
-    if (this.activeRoom && this.activeRoom.players.length === 0) {
-      this.clearRoom();
+  clearReadyPlayers(roomCode: string): void {
+    const room = this.rooms.get(roomCode);
+    if (room) {
+      room.readyPlayers.clear();
+      room.answerRevealed = false;
     }
   }
 
-  // Mark player as ready for next question
-  markPlayerReady(playerId: string): void {
-    if (!this.activeRoom) return;
-    this.activeRoom.readyPlayers.add(playerId);
+  restartGame(roomCode: string): void {
+    const room = this.rooms.get(roomCode);
+    if (!room) return;
+
+    room.state = 'waiting';
+    room.currentQuestionIndex = 0;
+    room.questions = [];
+    room.answers.clear();
+    room.readyPlayers.clear();
+    room.isProcessingReady = false;
+    room.questionStartTime = undefined;
+    room.lastRoundResult = undefined;
+    room.answerRevealed = false;
+    room.lastActivity = new Date();
+
+    room.players.forEach(p => { p.score = 0; });
   }
 
-  // Check if all connected players are ready
-  areAllPlayersReady(): boolean {
-    if (!this.activeRoom) return false;
-    const connectedPlayers = this.activeRoom.players.filter(p => p.connected);
-    return connectedPlayers.length > 0 &&
-           connectedPlayers.every(p => this.activeRoom!.readyPlayers.has(p.id));
-  }
+  // ─── Bots ──────────────────────────────────────────────────────────────────
 
-  // Clear ready state (when moving to next question)
-  clearReadyPlayers(): void {
-    if (!this.activeRoom) return;
-    this.activeRoom.readyPlayers.clear();
-    this.activeRoom.answerRevealed = false; // Reset for next question
-  }
-
-  // Add bot players to room
-  addBots(count: number): Player[] {
-    if (!this.activeRoom) return [];
-    if (this.activeRoom.state !== 'waiting') {
-      throw new Error("Can't add bots after game has started");
-    }
+  addBots(count: number, roomCode: string): Player[] {
+    const room = this.rooms.get(roomCode);
+    if (!room) return [];
+    if (room.state !== 'waiting') throw new Error("Can't add bots after game has started");
 
     const botNames = [
       'Bot Alpha', 'Bot Beta', 'Bot Gamma', 'Bot Delta', 'Bot Epsilon',
@@ -277,14 +219,14 @@ class RoomService {
     ];
 
     const bots: Player[] = [];
-    const availableSlots = 10 - this.activeRoom.players.length;
-    const botsToAdd = Math.min(count, availableSlots, botNames.length);
+    const slots = 10 - room.players.length;
+    const toAdd = Math.min(count, slots, botNames.length);
 
-    for (let i = 0; i < botsToAdd; i++) {
+    for (let i = 0; i < toAdd; i++) {
       const bot: Player = {
         id: this.generatePlayerId(),
         name: botNames[i],
-        socketId: 'bot', // Bots don't have real socket IDs
+        socketId: 'bot',
         score: 0,
         isHost: false,
         connected: true,
@@ -292,32 +234,60 @@ class RoomService {
         lastSeen: new Date(),
         isBot: true
       };
-
-      this.activeRoom.players.push(bot);
+      room.players.push(bot);
       bots.push(bot);
     }
 
     return bots;
   }
 
-  // Remove all bots from room
-  removeBots(): void {
-    if (!this.activeRoom) return;
-
-    const removedBots = this.activeRoom.players.filter(p => p.isBot);
-    removedBots.forEach(bot => releaseAvatar(bot.avatar));
-
-    this.activeRoom.players = this.activeRoom.players.filter(p => !p.isBot);
+  removeBots(roomCode: string): void {
+    const room = this.rooms.get(roomCode);
+    if (!room) return;
+    const bots = room.players.filter(p => p.isBot);
+    bots.forEach(b => releaseAvatar(b.avatar));
+    room.players = room.players.filter(p => !p.isBot);
   }
 
-  // Helper: Generate unique player ID
-  private generatePlayerId(): string {
-    return `player_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  // ─── Cleanup ───────────────────────────────────────────────────────────────
+
+  // Called every 60s — removes players gone > 5 min, deletes empty rooms
+  cleanupDisconnectedPlayers(): void {
+    const FIVE_MINUTES = 5 * 60 * 1000;
+    const now = Date.now();
+
+    for (const [code, room] of this.rooms) {
+      const stale = room.players.filter(
+        p => !p.connected && now - p.lastSeen.getTime() > FIVE_MINUTES
+      );
+      stale.forEach(p => {
+        releaseAvatar(p.avatar);
+        room.players = room.players.filter(q => q.id !== p.id);
+      });
+
+      if (room.players.length === 0) {
+        this.rooms.delete(code);
+      }
+    }
   }
 
-  // Helper: Generate unique room ID
+  // ─── Helpers ───────────────────────────────────────────────────────────────
+
+  private generateUniqueCode(): string {
+    const CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let code: string;
+    do {
+      code = Array.from({ length: 6 }, () => CHARS[Math.floor(Math.random() * CHARS.length)]).join('');
+    } while (this.rooms.has(code));
+    return code;
+  }
+
   private generateRoomId(): string {
     return `room_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  }
+
+  private generatePlayerId(): string {
+    return `player_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 }
 

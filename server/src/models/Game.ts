@@ -51,6 +51,7 @@ export interface Room {
   lastRoundResult?: any;
   answerRevealed: boolean; // True after host's animation completes
   createdAt: Date;
+  lastActivity: Date;
 }
 
 export interface ScoreResult {

@@ -1,0 +1,14 @@
+{
+  "name": "close-enough",
+  "version": "1.0.0",
+  "description": "Close Enough — multiplayer numeric trivia game",
+  "scripts": {
+    "build": "npm install --prefix client && npm install --prefix server && npm run build --prefix client && npm run build --prefix server",
+    "start": "node server/dist/index.js",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

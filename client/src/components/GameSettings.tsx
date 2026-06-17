@@ -93,6 +93,10 @@ function GameSettings({ settings, onUpdate, disabled }: GameSettingsProps) {
           <option value="Ages">Ages</option>
           <option value="Records">Records</option>
           <option value="Distances">Distances</option>
+          <option value="Math">Math</option>
+          <option value="Music">Music</option>
+          <option value="Food">Food</option>
+          <option value="Olympics">Olympics</option>
           <option value="Pop Culture">Pop Culture</option>
           <option value="Israel">Israel</option>
         </select>

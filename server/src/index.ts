@@ -2,68 +2,93 @@ import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
+import helmet from 'helmet';
+import { rateLimit } from 'express-rate-limit';
 import dotenv from 'dotenv';
 import os from 'os';
-import './utils/logger'; // Import logger to enable timestamps
+import path from 'path';
+import './utils/logger';
 import { setupSocketHandlers } from './handlers/socketHandlers';
+import { config } from './config';
+import { roomService } from './services/RoomService';
 
 dotenv.config();
 
 const app = express();
 const httpServer = createServer(app);
+
 const io = new Server(httpServer, {
   cors: {
-    origin: '*', // Allow all origins for local network
+    origin: config.isProduction ? (config.APP_URL || false) : '*',
     methods: ['GET', 'POST']
   },
-  pingInterval: 10000, // Send ping every 10 seconds
-  pingTimeout: 5000,   // Wait 5 seconds for pong response
-  upgradeTimeout: 30000 // Allow 30 seconds for connection upgrade
+  pingInterval: 10000,
+  pingTimeout: 5000,
+  upgradeTimeout: 30000
 });
 
-// Middleware
-app.use(cors());
+app.use(helmet({ contentSecurityPolicy: false })); // CSP off — we serve our own SPA assets
+app.use(cors({ origin: config.isProduction ? (config.APP_URL || false) : '*' }));
 app.use(express.json());
 
-// Get local IP address for QR code generation
+// HTTP rate limiting
+app.use(rateLimit({ windowMs: 60_000, max: 200, standardHeaders: true, legacyHeaders: false }));
+
+// ── Local IP detection (used for QR codes in local mode) ─────────────────────
 function getLocalIP(): string {
   const interfaces = os.networkInterfaces();
   for (const name of Object.keys(interfaces)) {
     const iface = interfaces[name];
     if (!iface) continue;
-
     for (const alias of iface) {
-      // Skip internal and non-IPv4 addresses
-      if (alias.family === 'IPv4' && !alias.internal) {
-        return alias.address;
-      }
+      if (alias.family === 'IPv4' && !alias.internal) return alias.address;
     }
   }
   return 'localhost';
 }
 
-const localIP = getLocalIP();
-const PORT = process.env.PORT || 3000;
+export const localIP = getLocalIP();
 
-// Health check endpoint
-app.get('/health', (req, res) => {
+// ── Health check ─────────────────────────────────────────────────────────────
+app.get('/health', (_req, res) => {
+  const mem = process.memoryUsage();
   res.json({
     status: 'ok',
+    rooms: roomService.getRoomCount(),
+    activePlayers: roomService.getTotalPlayerCount(),
+    uptime: Math.floor(process.uptime()),
+    memoryMB: Math.round(mem.rss / 1024 / 1024),
     localIP,
-    port: PORT
+    port: config.PORT
   });
 });
 
-// Setup Socket.io handlers
+// ── Static client (production only) ──────────────────────────────────────────
+if (config.isProduction) {
+  // server/dist is two levels below the repo root; client/dist is at repo root level
+  const clientDist = path.join(__dirname, '..', '..', 'client', 'dist');
+  app.use(express.static(clientDist));
+
+  // React Router catch-all — must come AFTER /health and socket.io
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(clientDist, 'index.html'));
+  });
+}
+
+// ── Socket.io ─────────────────────────────────────────────────────────────────
 setupSocketHandlers(io);
 
-// Start server
-httpServer.listen(PORT, () => {
+// ── Start ─────────────────────────────────────────────────────────────────────
+httpServer.listen(config.PORT, () => {
   console.log('\n🎮 Close Enough Server Running!');
   console.log('================================');
-  console.log(`Local:   http://localhost:${PORT}`);
-  console.log(`Network: http://${localIP}:${PORT}`);
+  if (config.isProduction) {
+    console.log(`Production: ${config.APP_URL || `port ${config.PORT}`}`);
+  } else {
+    console.log(`Local:   http://localhost:${config.PORT}`);
+    console.log(`Network: http://${localIP}:${config.PORT}`);
+  }
   console.log('================================\n');
 });
 
-export { io, localIP };
+export { io };
