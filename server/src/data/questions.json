@@ -3393,6 +3393,552 @@
       "text": "What is the speed of sound in air at sea level, in meters per second?",
       "correctAnswer": 343,
       "unit": "m/s"
+    },
+    {
+      "id": "math_hard_1",
+      "categories": [
+        "Math"
+      ],
+      "difficulty": "hard",
+      "text": "What is the square root of 1,048,576?",
+      "correctAnswer": 1024
+    },
+    {
+      "id": "math_hard_2",
+      "categories": [
+        "Math"
+      ],
+      "difficulty": "hard",
+      "text": "How many prime numbers are there below 1,000?",
+      "correctAnswer": 168
+    },
+    {
+      "id": "olympics_easy_1",
+      "categories": [
+        "Olympics",
+        "History"
+      ],
+      "difficulty": "easy",
+      "text": "In what year were the first modern Olympic Games held?",
+      "correctAnswer": 1896
+    },
+    {
+      "id": "olympics_medium_1",
+      "categories": [
+        "Olympics"
+      ],
+      "difficulty": "medium",
+      "text": "How many countries participated in the 2024 Paris Olympics?",
+      "correctAnswer": 206
+    },
+    {
+      "id": "olympics_medium_2",
+      "categories": [
+        "Olympics"
+      ],
+      "difficulty": "medium",
+      "text": "How many different sports were contested at the first modern Olympics in Athens 1896?",
+      "correctAnswer": 9
+    },
+    {
+      "id": "olympics_medium_3",
+      "categories": [
+        "Olympics"
+      ],
+      "difficulty": "medium",
+      "text": "How many athletes competed in the 2024 Paris Olympics?",
+      "correctAnswer": 10500
+    },
+    {
+      "id": "olympics_hard_1",
+      "categories": [
+        "Olympics"
+      ],
+      "difficulty": "hard",
+      "text": "How many individual events were contested at the 2024 Paris Olympics?",
+      "correctAnswer": 329
+    },
+    {
+      "id": "space_easy_1",
+      "categories": [
+        "Space"
+      ],
+      "difficulty": "easy",
+      "text": "How many moons does Mars have?",
+      "correctAnswer": 2
+    },
+    {
+      "id": "space_hard_4",
+      "categories": [
+        "Space"
+      ],
+      "difficulty": "hard",
+      "text": "How many moons does Saturn have?",
+      "correctAnswer": 146
+    },
+    {
+      "id": "space_hard_5",
+      "categories": [
+        "Space"
+      ],
+      "difficulty": "hard",
+      "text": "How many Earth years does it take Pluto to complete one orbit around the Sun?",
+      "correctAnswer": 248
+    },
+    {
+      "id": "space_medium_1",
+      "categories": [
+        "Space"
+      ],
+      "difficulty": "medium",
+      "text": "How many kilometers above Earth does the International Space Station orbit?",
+      "correctAnswer": 400
+    },
+    {
+      "id": "space_medium_2",
+      "categories": [
+        "Space"
+      ],
+      "difficulty": "medium",
+      "text": "How many astronauts have walked on the Moon?",
+      "correctAnswer": 12
+    },
+    {
+      "id": "space_hard_6",
+      "categories": [
+        "Space"
+      ],
+      "difficulty": "hard",
+      "text": "What is the diameter of the Sun in kilometers?",
+      "correctAnswer": 1392000
+    },
+    {
+      "id": "space_hard_7",
+      "categories": [
+        "Space"
+      ],
+      "difficulty": "hard",
+      "text": "How many Earth years does it take Neptune to orbit the Sun?",
+      "correctAnswer": 165
+    },
+    {
+      "id": "ages_medium_1",
+      "categories": [
+        "Ages",
+        "History"
+      ],
+      "difficulty": "medium",
+      "text": "How old was Alexander the Great when he died?",
+      "correctAnswer": 32
+    },
+    {
+      "id": "ages_medium_2",
+      "categories": [
+        "Ages",
+        "Entertainment"
+      ],
+      "difficulty": "medium",
+      "text": "How old was Elvis Presley when he died?",
+      "correctAnswer": 42
+    },
+    {
+      "id": "ages_medium_3",
+      "categories": [
+        "Ages",
+        "Entertainment"
+      ],
+      "difficulty": "medium",
+      "text": "How old was Michael Jackson when he died?",
+      "correctAnswer": 50
+    },
+    {
+      "id": "ages_medium_4",
+      "categories": [
+        "Ages",
+        "Music"
+      ],
+      "difficulty": "medium",
+      "text": "How old was Freddie Mercury when he died?",
+      "correctAnswer": 45
+    },
+    {
+      "id": "ages_medium_5",
+      "categories": [
+        "Ages",
+        "History"
+      ],
+      "difficulty": "medium",
+      "text": "How old was John F. Kennedy when he was assassinated?",
+      "correctAnswer": 46
+    },
+    {
+      "id": "science_medium_1",
+      "categories": [
+        "Science"
+      ],
+      "difficulty": "medium",
+      "text": "What is the atomic number of gold?",
+      "correctAnswer": 79
+    },
+    {
+      "id": "science_hard_6",
+      "categories": [
+        "Science"
+      ],
+      "difficulty": "hard",
+      "text": "How many watts does the human brain use?",
+      "correctAnswer": 20
+    },
+    {
+      "id": "entertainment_medium_1",
+      "categories": [
+        "Entertainment"
+      ],
+      "difficulty": "medium",
+      "text": "How many episodes are in the Friends TV series in total?",
+      "correctAnswer": 236
+    },
+    {
+      "id": "entertainment_medium_2",
+      "categories": [
+        "Entertainment"
+      ],
+      "difficulty": "medium",
+      "text": "How many official James Bond films have been made?",
+      "correctAnswer": 25
+    },
+    {
+      "id": "entertainment_medium_3",
+      "categories": [
+        "Entertainment"
+      ],
+      "difficulty": "medium",
+      "text": "How many Oscars did Titanic win at the 1998 Academy Awards?",
+      "correctAnswer": 11
+    },
+    {
+      "id": "food_medium_1",
+      "categories": [
+        "Food"
+      ],
+      "difficulty": "medium",
+      "text": "How many calories are in a Big Mac?",
+      "correctAnswer": 550
+    },
+    {
+      "id": "food_medium_2",
+      "categories": [
+        "Food"
+      ],
+      "difficulty": "medium",
+      "text": "How many grams of sugar are in a 330ml can of Coca-Cola?",
+      "correctAnswer": 35
+    },
+    {
+      "id": "food_hard_5",
+      "categories": [
+        "Food"
+      ],
+      "difficulty": "hard",
+      "text": "How many named varieties of apple exist worldwide?",
+      "correctAnswer": 7500
+    },
+    {
+      "id": "human_body_medium_1",
+      "categories": [
+        "Human Body"
+      ],
+      "difficulty": "medium",
+      "text": "How many milliliters of blood are in the human body?",
+      "correctAnswer": 5000
+    },
+    {
+      "id": "human_body_hard_1",
+      "categories": [
+        "Human Body"
+      ],
+      "difficulty": "hard",
+      "text": "How many hairs are on the average human head?",
+      "correctAnswer": 100000
+    },
+    {
+      "id": "human_body_hard_2",
+      "categories": [
+        "Human Body"
+      ],
+      "difficulty": "hard",
+      "text": "How many muscles are in the human body?",
+      "correctAnswer": 600
+    },
+    {
+      "id": "history_easy_1",
+      "categories": [
+        "History"
+      ],
+      "difficulty": "easy",
+      "text": "How many US presidents have been assassinated?",
+      "correctAnswer": 4
+    },
+    {
+      "id": "history_medium_1",
+      "categories": [
+        "History"
+      ],
+      "difficulty": "medium",
+      "text": "How many years did Apartheid last in South Africa?",
+      "correctAnswer": 46
+    },
+    {
+      "id": "history_easy_2",
+      "categories": [
+        "History"
+      ],
+      "difficulty": "easy",
+      "text": "In what year did the Berlin Wall fall?",
+      "correctAnswer": 1989
+    },
+    {
+      "id": "history_medium_2",
+      "categories": [
+        "History"
+      ],
+      "difficulty": "medium",
+      "text": "How many people signed the US Declaration of Independence?",
+      "correctAnswer": 56
+    },
+    {
+      "id": "history_hard_1",
+      "categories": [
+        "History"
+      ],
+      "difficulty": "hard",
+      "text": "How many years did the Hundred Years War actually last?",
+      "correctAnswer": 116
+    },
+    {
+      "id": "technology_medium_1",
+      "categories": [
+        "Technology"
+      ],
+      "difficulty": "medium",
+      "text": "How many gigabytes are in a terabyte?",
+      "correctAnswer": 1024
+    },
+    {
+      "id": "technology_easy_1",
+      "categories": [
+        "Technology"
+      ],
+      "difficulty": "easy",
+      "text": "In what year was the first iPhone released?",
+      "correctAnswer": 2007
+    },
+    {
+      "id": "technology_hard_1",
+      "categories": [
+        "Technology"
+      ],
+      "difficulty": "hard",
+      "text": "How many pixels does a 4K screen have?",
+      "correctAnswer": 8294400
+    },
+    {
+      "id": "buildings_medium_1",
+      "categories": [
+        "Buildings"
+      ],
+      "difficulty": "medium",
+      "text": "How many floors does the Empire State Building have?",
+      "correctAnswer": 102
+    },
+    {
+      "id": "buildings_hard_1",
+      "categories": [
+        "Buildings"
+      ],
+      "difficulty": "hard",
+      "text": "How many steps are there in the Eiffel Tower?",
+      "correctAnswer": 1665
+    },
+    {
+      "id": "buildings_hard_2",
+      "categories": [
+        "Buildings"
+      ],
+      "difficulty": "hard",
+      "text": "How many rooms are in Buckingham Palace?",
+      "correctAnswer": 775
+    },
+    {
+      "id": "buildings_medium_2",
+      "categories": [
+        "Buildings"
+      ],
+      "difficulty": "medium",
+      "text": "In what year was the Eiffel Tower completed?",
+      "correctAnswer": 1889
+    },
+    {
+      "id": "buildings_medium_3",
+      "categories": [
+        "Buildings"
+      ],
+      "difficulty": "medium",
+      "text": "How tall is the Empire State Building in meters?",
+      "correctAnswer": 443
+    },
+    {
+      "id": "transportation_hard_1",
+      "categories": [
+        "Transportation"
+      ],
+      "difficulty": "hard",
+      "text": "How many passengers can a Boeing 747 carry?",
+      "correctAnswer": 416
+    },
+    {
+      "id": "transportation_hard_2",
+      "categories": [
+        "Transportation"
+      ],
+      "difficulty": "hard",
+      "text": "How many kilometers of roads are there in the United States?",
+      "correctAnswer": 6800000
+    },
+    {
+      "id": "nature_hard_4",
+      "categories": [
+        "Nature"
+      ],
+      "difficulty": "hard",
+      "text": "How tall is Hyperion, the world tallest known tree, in meters?",
+      "correctAnswer": 116
+    },
+    {
+      "id": "nature_hard_5",
+      "categories": [
+        "Nature"
+      ],
+      "difficulty": "hard",
+      "text": "How many years old is Methuselah, the oldest known living tree?",
+      "correctAnswer": 5000
+    },
+    {
+      "id": "nature_hard_6",
+      "categories": [
+        "Nature"
+      ],
+      "difficulty": "hard",
+      "text": "How many earthquakes occur worldwide every year?",
+      "correctAnswer": 500000
+    },
+    {
+      "id": "distances_hard_1",
+      "categories": [
+        "Distances"
+      ],
+      "difficulty": "hard",
+      "text": "How long is the Great Wall of China in kilometers?",
+      "correctAnswer": 21196
+    },
+    {
+      "id": "distances_medium_1",
+      "categories": [
+        "Distances"
+      ],
+      "difficulty": "medium",
+      "text": "How long is the Amazon River in kilometers?",
+      "correctAnswer": 6992
+    },
+    {
+      "id": "distances_medium_2",
+      "categories": [
+        "Distances"
+      ],
+      "difficulty": "medium",
+      "text": "How tall is Mount Kilimanjaro in meters?",
+      "correctAnswer": 5895
+    },
+    {
+      "id": "geography_medium_1",
+      "categories": [
+        "Geography"
+      ],
+      "difficulty": "medium",
+      "text": "How many countries are in the European Union?",
+      "correctAnswer": 27
+    },
+    {
+      "id": "geography_medium_2",
+      "categories": [
+        "Geography"
+      ],
+      "difficulty": "medium",
+      "text": "How many time zones does Russia have?",
+      "correctAnswer": 11
+    },
+    {
+      "id": "geography_hard_1",
+      "categories": [
+        "Geography"
+      ],
+      "difficulty": "hard",
+      "text": "How many islands does Indonesia have?",
+      "correctAnswer": 17508
+    },
+    {
+      "id": "geography_medium_3",
+      "categories": [
+        "Geography"
+      ],
+      "difficulty": "medium",
+      "text": "How many countries are there in Africa?",
+      "correctAnswer": 54
+    },
+    {
+      "id": "money_hard_4",
+      "categories": [
+        "Money"
+      ],
+      "difficulty": "hard",
+      "text": "How many currencies are there in the world?",
+      "correctAnswer": 180
+    },
+    {
+      "id": "population_medium_1",
+      "categories": [
+        "Population"
+      ],
+      "difficulty": "medium",
+      "text": "What is the population of New York City?",
+      "correctAnswer": 8300000
+    },
+    {
+      "id": "records_hard_1",
+      "categories": [
+        "Records"
+      ],
+      "difficulty": "hard",
+      "text": "What is the world record for the most hot dogs eaten in 10 minutes?",
+      "correctAnswer": 76
+    },
+    {
+      "id": "records_hard_2",
+      "categories": [
+        "Records"
+      ],
+      "difficulty": "hard",
+      "text": "What is the world record distance for a paper airplane throw in meters?",
+      "correctAnswer": 69
+    },
+    {
+      "id": "records_hard_3",
+      "categories": [
+        "Records"
+      ],
+      "difficulty": "hard",
+      "text": "How many languages has the full Bible been officially translated into?",
+      "correctAnswer": 736
     }
   ]
 }
