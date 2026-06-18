@@ -89,7 +89,6 @@ function GameSettings({ settings, onUpdate, disabled }: GameSettingsProps) {
           <option value="Science">Science</option>
           <option value="Sports">Sports</option>
           <option value="Human Body">Human Body</option>
-          <option value="Heights & Lengths">Heights &amp; Lengths</option>
           <option value="Ages">Ages</option>
           <option value="Records">Records</option>
           <option value="Distances">Distances</option>

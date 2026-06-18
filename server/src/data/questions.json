@@ -793,7 +793,7 @@
     {
       "id": "guinness_easy_1",
       "categories": [
-        "Guinness World Records"
+        "Records"
       ],
       "difficulty": "easy",
       "text": "How many hot dogs did Joey Chestnut eat in 10 minutes (2021 record)?",
@@ -803,7 +803,7 @@
     {
       "id": "guinness_easy_2",
       "categories": [
-        "Guinness World Records"
+        "Records"
       ],
       "difficulty": "easy",
       "text": "What is the world record for the 100-meter sprint in seconds?",
@@ -813,7 +813,7 @@
     {
       "id": "guinness_easy_3",
       "categories": [
-        "Guinness World Records"
+        "Records"
       ],
       "difficulty": "easy",
       "text": "What is the tallest building in the world in meters (Burj Khalifa)?",
@@ -823,7 +823,7 @@
     {
       "id": "guinness_med_1",
       "categories": [
-        "Guinness World Records"
+        "Records"
       ],
       "difficulty": "medium",
       "text": "What is the world record for holding breath underwater in minutes?",
@@ -833,7 +833,7 @@
     {
       "id": "guinness_med_2",
       "categories": [
-        "Guinness World Records"
+        "Records"
       ],
       "difficulty": "medium",
       "text": "What is the longest recorded flight time for a paper airplane in seconds?",
@@ -843,7 +843,7 @@
     {
       "id": "guinness_med_3",
       "categories": [
-        "Guinness World Records"
+        "Records"
       ],
       "difficulty": "medium",
       "text": "What is the world record for marathon running in minutes?",
@@ -853,7 +853,7 @@
     {
       "id": "guinness_med_4",
       "categories": [
-        "Guinness World Records"
+        "Records"
       ],
       "difficulty": "medium",
       "text": "How many push-ups were done in one hour (world record)?",
@@ -863,7 +863,7 @@
     {
       "id": "guinness_hard_1",
       "categories": [
-        "Guinness World Records"
+        "Records"
       ],
       "difficulty": "hard",
       "text": "How many hours is the longest flight ever recorded (distance record)?",
@@ -873,7 +873,7 @@
     {
       "id": "guinness_hard_2",
       "categories": [
-        "Guinness World Records"
+        "Records"
       ],
       "difficulty": "hard",
       "text": "What is the heaviest weight ever lifted by a human in kilograms?",
@@ -883,7 +883,7 @@
     {
       "id": "guinness_hard_3",
       "categories": [
-        "Guinness World Records"
+        "Records"
       ],
       "difficulty": "hard",
       "text": "How many dominoes were toppled in the largest domino chain reaction?",
@@ -893,7 +893,7 @@
     {
       "id": "guinness_hard_4",
       "categories": [
-        "Guinness World Records"
+        "Records"
       ],
       "difficulty": "hard",
       "text": "What is the oldest person ever recorded in years?",
@@ -1023,7 +1023,7 @@
     {
       "id": "guinness_easy_4",
       "categories": [
-        "Guinness World Records"
+        "Records"
       ],
       "difficulty": "easy",
       "text": "What is the world record for most t-shirts worn at once?",
@@ -1033,7 +1033,7 @@
     {
       "id": "guinness_easy_5",
       "categories": [
-        "Guinness World Records"
+        "Records"
       ],
       "difficulty": "easy",
       "text": "What is the record for most burgers eaten in 3 minutes?",
@@ -1823,7 +1823,7 @@
     {
       "id": "industry_easy_1",
       "categories": [
-        "Industry"
+        "Business"
       ],
       "difficulty": "easy",
       "text": "How many Coca-Cola products are consumed per second worldwide?",
@@ -1833,7 +1833,7 @@
     {
       "id": "industry_easy_2",
       "categories": [
-        "Industry"
+        "Business"
       ],
       "difficulty": "easy",
       "text": "How many countries have IKEA stores?",
@@ -1843,7 +1843,7 @@
     {
       "id": "industry_easy_3",
       "categories": [
-        "Industry"
+        "Business"
       ],
       "difficulty": "easy",
       "text": "How many pieces are in a typical LEGO Millennium Falcon set?",
@@ -1853,7 +1853,7 @@
     {
       "id": "industry_med_1",
       "categories": [
-        "Industry"
+        "Business"
       ],
       "difficulty": "medium",
       "text": "How many pizzas does Pizza Hut sell per day worldwide?",
@@ -1863,7 +1863,7 @@
     {
       "id": "industry_med_2",
       "categories": [
-        "Industry"
+        "Business"
       ],
       "difficulty": "medium",
       "text": "How many IKEA stores exist worldwide?",
@@ -1873,7 +1873,7 @@
     {
       "id": "industry_med_3",
       "categories": [
-        "Industry"
+        "Business"
       ],
       "difficulty": "medium",
       "text": "How many billion Big Macs does McDonald sell per year?",
@@ -1883,7 +1883,7 @@
     {
       "id": "industry_hard_1",
       "categories": [
-        "Industry"
+        "Business"
       ],
       "difficulty": "hard",
       "text": "How many billion iPhones has Apple sold all-time?",
@@ -1893,7 +1893,7 @@
     {
       "id": "industry_hard_2",
       "categories": [
-        "Industry"
+        "Business"
       ],
       "difficulty": "hard",
       "text": "How many million pairs of shoes does Nike produce per year?",
@@ -1903,7 +1903,7 @@
     {
       "id": "industry_hard_3",
       "categories": [
-        "Industry"
+        "Business"
       ],
       "difficulty": "hard",
       "text": "How many billion LEGO bricks are produced per year?",
@@ -2093,7 +2093,7 @@
     {
       "id": "ocean_easy_1",
       "categories": [
-        "Oceans"
+        "Geography"
       ],
       "difficulty": "easy",
       "text": "What percentage of Earth's surface is covered by oceans?",
@@ -2103,7 +2103,7 @@
     {
       "id": "ocean_easy_2",
       "categories": [
-        "Oceans"
+        "Geography"
       ],
       "difficulty": "easy",
       "text": "How many oceans are there on Earth?",
@@ -2113,7 +2113,7 @@
     {
       "id": "ocean_easy_3",
       "categories": [
-        "Oceans"
+        "Geography"
       ],
       "difficulty": "easy",
       "text": "What is the average depth of the ocean in meters?",
@@ -2123,7 +2123,7 @@
     {
       "id": "ocean_med_1",
       "categories": [
-        "Oceans"
+        "Geography"
       ],
       "difficulty": "medium",
       "text": "How many species of fish live in the ocean?",
@@ -2133,7 +2133,7 @@
     {
       "id": "ocean_med_2",
       "categories": [
-        "Oceans"
+        "Geography"
       ],
       "difficulty": "medium",
       "text": "What is the maximum diving depth of a sperm whale in meters?",
@@ -2143,7 +2143,7 @@
     {
       "id": "ocean_med_3",
       "categories": [
-        "Oceans"
+        "Geography"
       ],
       "difficulty": "medium",
       "text": "How many tons of plastic enter the oceans each year?",
@@ -2153,7 +2153,7 @@
     {
       "id": "ocean_hard_1",
       "categories": [
-        "Oceans"
+        "Geography"
       ],
       "difficulty": "hard",
       "text": "How many cubic kilometers of water are in Earth's oceans?",
@@ -2163,7 +2163,7 @@
     {
       "id": "ocean_hard_2",
       "categories": [
-        "Oceans"
+        "Geography"
       ],
       "difficulty": "hard",
       "text": "What is the area of the Pacific Ocean in square kilometers?",
@@ -2173,7 +2173,7 @@
     {
       "id": "ocean_hard_3",
       "categories": [
-        "Oceans"
+        "Geography"
       ],
       "difficulty": "hard",
       "text": "How many tons does the largest recorded blue whale weigh?",
@@ -2843,7 +2843,7 @@
     {
       "id": "height_easy_1",
       "categories": [
-        "Heights & Lengths"
+        "Distances"
       ],
       "difficulty": "easy",
       "text": "What is the height of Mount Kilimanjaro in meters?",
@@ -2853,7 +2853,7 @@
     {
       "id": "height_easy_2",
       "categories": [
-        "Heights & Lengths"
+        "Distances"
       ],
       "difficulty": "easy",
       "text": "What is the height of the CN Tower in Toronto in meters?",
@@ -2863,7 +2863,7 @@
     {
       "id": "height_med_1",
       "categories": [
-        "Heights & Lengths"
+        "Distances"
       ],
       "difficulty": "medium",
       "text": "What is the total length of the Golden Gate Bridge in meters?",
@@ -2873,7 +2873,7 @@
     {
       "id": "height_med_2",
       "categories": [
-        "Heights & Lengths"
+        "Distances"
       ],
       "difficulty": "medium",
       "text": "What is the maximum depth of Lake Baikal in meters?",
@@ -2883,7 +2883,7 @@
     {
       "id": "height_med_3",
       "categories": [
-        "Heights & Lengths"
+        "Distances"
       ],
       "difficulty": "medium",
       "text": "What is the height of the Petronas Towers in Malaysia in meters?",
@@ -2893,7 +2893,7 @@
     {
       "id": "height_hard_1",
       "categories": [
-        "Heights & Lengths"
+        "Distances"
       ],
       "difficulty": "hard",
       "text": "What is the height of Olympus Mons, the largest volcano on Mars, in meters?",
@@ -2903,7 +2903,7 @@
     {
       "id": "height_hard_2",
       "categories": [
-        "Heights & Lengths"
+        "Distances"
       ],
       "difficulty": "hard",
       "text": "What is the total length of all roads in the USA in kilometers?",
@@ -2913,7 +2913,7 @@
     {
       "id": "height_hard_3",
       "categories": [
-        "Heights & Lengths"
+        "Distances"
       ],
       "difficulty": "hard",
       "text": "What is the length of the world's longest bridge, the Danyang-Kunshan Viaduct in China, in meters?",
