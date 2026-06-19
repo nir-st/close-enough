@@ -119,21 +119,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     socket.on('connect', () => {
       set({ connected: true });
+      // `connect` fires on the initial connection AND on every reconnection
+      // (in socket.io v4 the `reconnect` event lives on the Manager, not the
+      // socket, so a `socket.on('reconnect')` handler never fires). If we were
+      // already in a room as a player, re-emit join-room so the server attaches
+      // this new socket id to our existing player and restores game state.
+      // On the very first connect roomCode/playerName are still null (joinRoom
+      // hasn't run yet), so this only triggers on genuine reconnects.
+      const { roomCode, playerName, isHost } = get();
+      if (roomCode && playerName && !isHost) {
+        console.log('🔄 Reconnected — rejoining room', roomCode);
+        socket.emit('join-room', { roomCode, playerName });
+      }
     });
 
     socket.on('disconnect', () => {
       set({ connected: false });
       console.log('⚠️  Connection lost, will attempt to reconnect...');
-    });
-
-    socket.on('reconnect', () => {
-      set({ connected: true });
-      console.log('✅ Reconnected successfully!');
-      // Re-join the room so the server knows the new socket ID
-      const { roomCode, playerName } = get();
-      if (roomCode && playerName) {
-        socket.emit('join-room', { roomCode, playerName });
-      }
     });
 
     socket.on('room-created', (data) => {
