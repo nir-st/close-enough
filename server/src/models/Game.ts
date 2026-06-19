@@ -39,6 +39,7 @@ export interface Room {
   id: string;
   code: string;
   hostId: string;
+  hostConnected: boolean; // False while the host socket is disconnected (grace period for reconnect)
   players: Player[];
   state: GameState;
   settings: GameSettings;

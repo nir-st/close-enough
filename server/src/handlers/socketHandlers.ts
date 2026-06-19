@@ -160,6 +160,64 @@ export function setupSocketHandlers(io: Server) {
       }
     });
 
+    // ── Host reconnect ─────────────────────────────────────────────────────────
+    // The host (laptop / Chromecast) re-attaches after its socket dropped. The
+    // room outlives the disconnect for a grace period, so re-bind the new socket
+    // as host and restore whatever screen the game is currently on.
+    socket.on('host-reconnect', ({ roomCode }: { roomCode: string }) => {
+      const codeErr = validateRoomCode(roomCode);
+      if (codeErr) { socket.emit('host-reconnect-failed', { message: codeErr }); return; }
+
+      const room = roomService.reconnectHost(roomCode, socket.id);
+      if (!room) {
+        socket.emit('host-reconnect-failed', { message: 'Room no longer exists' });
+        console.log(`🚫 Host reconnect failed — room ${roomCode} gone`);
+        return;
+      }
+
+      socket.data.roomCode = room.code;
+      socket.join(room.id);
+
+      const joinUrl = config.APP_URL
+        ? `${config.APP_URL}/join/${room.code}`
+        : `http://${localIP}:${config.CLIENT_PORT}/join/${room.code}`;
+
+      socket.emit('host-reconnected', {
+        roomId: room.id,
+        roomCode: room.code,
+        joinUrl,
+        settings: room.settings,
+        players: room.players,
+        gameState: room.state
+      });
+      console.log(`🔄 Host reconnected to room ${roomCode} (state: ${room.state})`);
+
+      // Restore the in-progress screen so the host display matches the game.
+      if (room.state !== 'waiting') {
+        if ((room.state === 'question' || room.state === 'answering') && room.currentQuestionIndex < room.questions.length) {
+          const question = room.questions[room.currentQuestionIndex];
+          socket.emit('question-started', {
+            question: {
+              id: question.id,
+              categories: question.categories,
+              difficulty: question.difficulty,
+              text: question.text,
+              unit: question.unit,
+              questionNumber: room.currentQuestionIndex + 1,
+              totalQuestions: room.questions.length
+            },
+            timeLimit: room.settings.timePerQuestion
+          });
+          if (room.state === 'answering') socket.emit('answering-started', {});
+        }
+
+        if (room.state === 'results' && room.lastRoundResult) {
+          socket.emit('question-ended', room.lastRoundResult);
+          if (room.answerRevealed) socket.emit('answer-revealed', {});
+        }
+      }
+    });
+
     // ── Update settings ──────────────────────────────────────────────────────
     socket.on('update-settings', ({ settings }: { settings: any }) => {
       const err = validateSettings(settings);
@@ -459,12 +517,13 @@ export function setupSocketHandlers(io: Server) {
           players: room.players
         });
         console.log(`⚠️  ${player.name} disconnected from room ${roomCode} (marked offline)`);
-      } else {
-        // Host disconnected — if no players remain, clean up the room
-        if (socket.id === room.hostId && room.players.length === 0) {
-          roomService.deleteRoom(roomCode);
-          console.log(`🗑️  Room ${roomCode} deleted — host left with no players`);
-        }
+      } else if (socket.id === room.hostId) {
+        // Host disconnected — keep the room alive for a grace period so the host
+        // (laptop / Chromecast) can reconnect. Truly abandoned empty rooms are
+        // reaped by cleanupDisconnectedPlayers once the host grace elapses.
+        roomService.markHostDisconnected(roomCode);
+        io.to(room.id).emit('host-disconnected', {});
+        console.log(`⚠️  Host disconnected from room ${roomCode} (grace period started)`);
       }
     });
   });

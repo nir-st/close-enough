@@ -127,7 +127,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // On the very first connect roomCode/playerName are still null (joinRoom
       // hasn't run yet), so this only triggers on genuine reconnects.
       const { roomCode, playerName, isHost } = get();
-      if (roomCode && playerName && !isHost) {
+      if (roomCode && isHost) {
+        console.log('🔄 Host reconnected — re-attaching to room', roomCode);
+        socket.emit('host-reconnect', { roomCode });
+      } else if (roomCode && playerName) {
         console.log('🔄 Reconnected — rejoining room', roomCode);
         socket.emit('join-room', { roomCode, playerName });
       }
@@ -140,6 +143,33 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     socket.on('room-created', (data) => {
       get().setRoomCreated(data);
+    });
+
+    // Host re-attached after a reconnect — restore lobby/game state. Any
+    // in-progress screen (question/results) is restored by the follow-up events.
+    socket.on('host-reconnected', (data) => {
+      console.log('✅ Host re-attached to room', data.roomCode);
+      set({
+        connected: true,
+        roomId: data.roomId,
+        roomCode: data.roomCode,
+        joinUrl: data.joinUrl,
+        settings: data.settings,
+        players: data.players,
+        gameState: data.gameState || get().gameState
+      });
+    });
+
+    // Room is genuinely gone (reaped after the grace period). Send the host home.
+    socket.on('host-reconnect-failed', (data) => {
+      console.warn('🚫 Host reconnect failed:', data?.message);
+      window.location.href = '/';
+    });
+
+    // A player's view: the host display dropped. Informational only — the server
+    // keeps the game running; the host has a grace period to come back.
+    socket.on('host-disconnected', () => {
+      get().showNotification('Host disconnected — reconnecting…');
     });
 
     socket.on('player-joined', (data) => {

@@ -13,6 +13,7 @@ class RoomService {
       id: this.generateRoomId(),
       code,
       hostId: hostSocketId,
+      hostConnected: true,
       players: [],
       state: 'waiting',
       settings: {
@@ -120,6 +121,24 @@ class RoomService {
     player.lastSeen = new Date();
     room.lastActivity = new Date();
     return player;
+  }
+
+  // Re-attach the host to its room after a reconnect (new socket id).
+  reconnectHost(roomCode: string, socketId: string): Room | null {
+    const room = this.rooms.get(roomCode);
+    if (!room) return null;
+    room.hostId = socketId;
+    room.hostConnected = true;
+    room.lastActivity = new Date();
+    return room;
+  }
+
+  markHostDisconnected(roomCode: string): void {
+    const room = this.rooms.get(roomCode);
+    if (room) {
+      room.hostConnected = false;
+      room.lastActivity = new Date();
+    }
   }
 
   isPlayerNameTaken(roomCode: string, playerName: string): boolean {
@@ -256,6 +275,7 @@ class RoomService {
   cleanupDisconnectedPlayers(): void {
     const FIVE_MINUTES = 5 * 60 * 1000;
     const ROOM_TTL = config.ROOM_TTL_MINUTES * 60 * 1000;
+    const HOST_GRACE = config.PLAYER_DISCONNECT_GRACE_MINUTES * 60 * 1000;
     const now = Date.now();
 
     for (const [code, room] of this.rooms) {
@@ -267,12 +287,16 @@ class RoomService {
         room.players = room.players.filter(q => q.id !== p.id);
       });
 
-      // Only reap an empty room once it has been idle past the TTL. A freshly
-      // created lobby has no players yet (the host isn't a player), so deleting
-      // on emptiness alone would destroy the room before anyone can join.
-      if (room.players.length === 0 && now - room.lastActivity.getTime() > ROOM_TTL) {
+      // Reap an empty room if either:
+      //  - the host has been gone past the disconnect grace (host abandoned it), or
+      //  - it has simply been idle past the long TTL.
+      // A freshly created lobby has no players yet (the host isn't a player) but a
+      // CONNECTED host, so it is never reaped while the host is present.
+      const hostGone = !room.hostConnected && now - room.lastActivity.getTime() > HOST_GRACE;
+      const idle = now - room.lastActivity.getTime() > ROOM_TTL;
+      if (room.players.length === 0 && (hostGone || idle)) {
         this.rooms.delete(code);
-        console.log(`🧹 Reaped idle empty room: ${code}`);
+        console.log(`🧹 Reaped empty room: ${code} (${hostGone ? 'host gone' : 'idle TTL'})`);
       }
     }
   }
