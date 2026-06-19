@@ -1,5 +1,6 @@
 import { Room, Player, GameSettings } from '../models/Game';
 import { getRandomAvatar, releaseAvatar } from '../utils/avatars';
+import { config } from '../config';
 
 class RoomService {
   private rooms: Map<string, Room> = new Map();
@@ -254,6 +255,7 @@ class RoomService {
   // Called every 60s — removes players gone > 5 min, deletes empty rooms
   cleanupDisconnectedPlayers(): void {
     const FIVE_MINUTES = 5 * 60 * 1000;
+    const ROOM_TTL = config.ROOM_TTL_MINUTES * 60 * 1000;
     const now = Date.now();
 
     for (const [code, room] of this.rooms) {
@@ -265,8 +267,12 @@ class RoomService {
         room.players = room.players.filter(q => q.id !== p.id);
       });
 
-      if (room.players.length === 0) {
+      // Only reap an empty room once it has been idle past the TTL. A freshly
+      // created lobby has no players yet (the host isn't a player), so deleting
+      // on emptiness alone would destroy the room before anyone can join.
+      if (room.players.length === 0 && now - room.lastActivity.getTime() > ROOM_TTL) {
         this.rooms.delete(code);
+        console.log(`🧹 Reaped idle empty room: ${code}`);
       }
     }
   }
