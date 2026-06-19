@@ -1,9 +1,15 @@
 import { io, Socket } from 'socket.io-client';
 
-// Use env override if set, otherwise derive from window hostname so mobile devices
-// automatically connect to the same machine that served the page.
+// Resolve the Socket.io server URL:
+// 1. Explicit override via VITE_SERVER_URL (used for custom dev setups).
+// 2. Production: same origin as the page (Railway serves client + server together,
+//    so window.location.origin is correct — https + the right port automatically).
+// 3. Local dev: the page is served by Vite on :5173, but the server runs on :3000,
+//    so target the same host on :3000 (works for localhost and LAN mobile testing).
 const SERVER_URL = import.meta.env.VITE_SERVER_URL ||
-  `http://${window.location.hostname}:3000`;
+  (import.meta.env.PROD
+    ? window.location.origin
+    : `http://${window.location.hostname}:3000`);
 
 class SocketService {
   private socket: Socket | null = null;
