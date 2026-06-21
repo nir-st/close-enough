@@ -170,16 +170,35 @@ function AnswerReveal({ correctAnswer, results, onComplete }: AnswerRevealProps)
 
   const formatNum = (n: number) => Math.round(n).toLocaleString('en-US');
 
-  const numTicks = 5;
-  const tickSpan = zoom.max - zoom.min;
-  const ticks = Array.from({ length: numTicks }, (_, i) => {
-    const v = zoom.min + (tickSpan / (numTicks - 1)) * i;
-    if (Math.abs(v) >= 1_000_000) return `${(v / 1_000_000).toFixed(1)}M`;
-    if (Math.abs(v) >= 1_000)     return `${(v / 1_000).toFixed(1)}K`;
-    // Use decimal places for small ranges so labels stay distinct
-    if (tickSpan < 10) return v.toFixed(1);
+  // Format a tick value compactly with round K/M suffixes (e.g. 1.5M, 21K, 500).
+  const formatTick = (v: number): string => {
+    const trim = (x: number) => Number(x.toFixed(1)).toString(); // 1.0 -> "1", 1.5 -> "1.5"
+    if (Math.abs(v) >= 1_000_000) return `${trim(v / 1_000_000)}M`;
+    if (Math.abs(v) >= 1_000)     return `${trim(v / 1_000)}K`;
     return formatNum(v);
-  });
+  };
+
+  // Pick "nice" round tick values (multiples of 1/2/5 × 10^k) inside the visible
+  // range, so the axis reads 0, 5, 10, 15 … instead of interpolated 3.2, 6.7, 10.1 …
+  // Each tick is then positioned at its real coordinate via getPos().
+  const niceTickValues = (min: number, max: number, target: number): number[] => {
+    const range = max - min;
+    if (!isFinite(range) || range <= 0) return [min];
+    const rawStep = range / (target - 1);
+    const mag = Math.pow(10, Math.floor(Math.log10(rawStep)));
+    const norm = rawStep / mag; // 1..10
+    const niceStep = (norm <= 1 ? 1 : norm <= 2 ? 2 : norm <= 5 ? 5 : 10) * mag;
+    const start = Math.ceil(min / niceStep) * niceStep;
+    const out: number[] = [];
+    for (let v = start; v <= max + niceStep * 1e-9; v += niceStep) {
+      const snapped = Math.round(v / niceStep) * niceStep; // snap off floating-point drift
+      out.push(snapped === 0 ? 0 : snapped); // normalize -0 to 0
+    }
+    return out;
+  };
+
+  const numTicks = 5;
+  const tickValues = niceTickValues(zoom.min, zoom.max, numTicks);
 
   // Vertical stagger for overlapping answers (based on value proximity, not zoom %)
   const getStagger = (index: number): number => {
@@ -244,10 +263,10 @@ function AnswerReveal({ correctAnswer, results, onComplete }: AnswerRevealProps)
           <div className="line" />
 
           <div className="ticks">
-            {ticks.map((tick, i) => (
-              <div key={i} className="tick" style={{ left: `${(i / (numTicks - 1)) * 100}%` }}>
+            {tickValues.map((v, i) => (
+              <div key={i} className="tick" style={{ left: `${getPos(v)}%` }}>
                 <div className="tick-mark" />
-                <div className="tick-label">{tick}</div>
+                <div className="tick-label">{formatTick(v)}</div>
               </div>
             ))}
           </div>
