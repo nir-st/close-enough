@@ -30,7 +30,8 @@ function Play() {
     notification,
     answerRevealed,
     markReady,
-    reportQuestion
+    reportQuestion,
+    startGame
   } = useGameStore();
 
   // Reset "reported" flag when a new question starts
@@ -94,8 +95,14 @@ function Play() {
         <div className="play-waiting">
           <div className="card">
             <h3>✅ Joined!</h3>
-            <p>Waiting for host to start the game...</p>
             <div className="player-count">{players.length} players connected</div>
+            {players.length >= 2 ? (
+              <button className="btn-primary start-game-btn" onClick={startGame}>
+                🚀 Start Game ({players.length} players)
+              </button>
+            ) : (
+              <p>Waiting for more players… (need at least 2)</p>
+            )}
           </div>
         </div>
       )}

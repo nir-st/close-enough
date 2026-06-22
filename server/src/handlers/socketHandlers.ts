@@ -275,7 +275,10 @@ export function setupSocketHandlers(io: Server) {
       try {
         const room = getRoomForSocket(socket);
         if (!room) { socket.emit('error', { message: 'Room not found' }); return; }
-        if (socket.id !== room.hostId) { socket.emit('error', { message: 'Only host can start the game' }); return; }
+        // Any participant may start (host on a laptop, or any player on their
+        // phone when the host is a Chromecast that can't be clicked).
+        // getRoomForSocket already confirms this socket belongs to the room;
+        // gameService.startGame enforces waiting-state and the 2-player minimum.
 
         gameService.startGame(room.code);
         io.to(room.id).emit('game-started', {});

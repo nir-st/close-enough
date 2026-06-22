@@ -10,8 +10,11 @@ import AnswerReveal from '../components/AnswerReveal';
 import Scoreboard from '../components/Scoreboard';
 import './Host.css';
 
-function Host() {
-  const { roomCode } = useParams();
+// roomCode can come from the route (/host/:roomCode) or be passed directly by
+// the Cast receiver, which creates the room itself and reuses this screen.
+function Host({ roomCode: roomCodeProp }: { roomCode?: string } = {}) {
+  const params = useParams();
+  const roomCode = roomCodeProp ?? params.roomCode;
   const navigate = useNavigate();
   const [showDetailedResults, setShowDetailedResults] = useState(false);
   const {

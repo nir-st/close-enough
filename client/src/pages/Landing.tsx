@@ -1,25 +1,53 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '../stores/gameStore';
+import { loadCastSender, requestCastSession, onRoomReady } from '../services/cast';
 import './Landing.css';
 
 function Landing() {
   const navigate = useNavigate();
   const { connectSocket, createRoom, roomCode: storeRoomCode } = useGameStore();
+  const [castAvailable, setCastAvailable] = useState(false);
+  const [casting, setCasting] = useState(false);
 
   useEffect(() => {
     connectSocket();
   }, [connectSocket]);
 
   useEffect(() => {
-    // When room is created, navigate to host page
+    // When WE create a room (laptop host), go to the host screen.
     if (storeRoomCode) {
       navigate(`/host/${storeRoomCode}`);
     }
   }, [storeRoomCode, navigate]);
 
+  // Set up Cast: show the button if the browser supports Cast, and when the
+  // TV (receiver) hands back a room code, join it as a player on this phone.
+  useEffect(() => {
+    let unsubscribe: (() => void) | undefined;
+    loadCastSender().then((available) => {
+      setCastAvailable(available);
+      if (available) {
+        unsubscribe = onRoomReady((code) => {
+          navigate(`/play/${code}`);
+        });
+      }
+    });
+    return () => { if (unsubscribe) unsubscribe(); };
+  }, [navigate]);
+
   const handleCreateRoom = () => {
     createRoom('Host'); // Host doesn't need a name
+  };
+
+  const handleCast = async () => {
+    try {
+      setCasting(true);
+      await requestCastSession(); // opens device picker; receiver creates the room
+    } catch (err) {
+      console.error('Cast failed or cancelled:', err);
+      setCasting(false);
+    }
   };
 
   return (
@@ -35,6 +63,16 @@ function Landing() {
           >
             🎮 Create New Game
           </button>
+
+          {castAvailable && (
+            <button
+              className="btn-secondary mode-btn"
+              onClick={handleCast}
+              disabled={casting}
+            >
+              {casting ? '📺 Connecting to TV…' : '📺 Play on TV'}
+            </button>
+          )}
         </div>
       </div>
     </div>
