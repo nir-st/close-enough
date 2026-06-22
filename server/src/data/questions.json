@@ -3939,6 +3939,205 @@
       "difficulty": "hard",
       "text": "How many languages has the full Bible been officially translated into?",
       "correctAnswer": 736
+    },
+    {
+      "id": "geography_medium_4",
+      "categories": [
+        "Geography"
+      ],
+      "difficulty": "medium",
+      "text": "What is the area of the United States in square kilometers?",
+      "correctAnswer": 9834000,
+      "unit": "km²"
+    },
+    {
+      "id": "geography_medium_5",
+      "categories": [
+        "Geography"
+      ],
+      "difficulty": "medium",
+      "text": "What is the area of China in square kilometers?",
+      "correctAnswer": 9597000,
+      "unit": "km²"
+    },
+    {
+      "id": "geography_medium_6",
+      "categories": [
+        "Geography"
+      ],
+      "difficulty": "medium",
+      "text": "What is the area of Brazil in square kilometers?",
+      "correctAnswer": 8516000,
+      "unit": "km²"
+    },
+    {
+      "id": "geography_medium_7",
+      "categories": [
+        "Geography"
+      ],
+      "difficulty": "medium",
+      "text": "What is the area of Australia in square kilometers?",
+      "correctAnswer": 7692000,
+      "unit": "km²"
+    },
+    {
+      "id": "geography_medium_8",
+      "categories": [
+        "Geography"
+      ],
+      "difficulty": "medium",
+      "text": "What is the area of India in square kilometers?",
+      "correctAnswer": 3287000,
+      "unit": "km²"
+    },
+    {
+      "id": "geography_hard_2",
+      "categories": [
+        "Geography"
+      ],
+      "difficulty": "hard",
+      "text": "What is the area of France (metropolitan) in square kilometers?",
+      "correctAnswer": 551695,
+      "unit": "km²"
+    },
+    {
+      "id": "geography_hard_3",
+      "categories": [
+        "Geography"
+      ],
+      "difficulty": "hard",
+      "text": "What is the area of Japan in square kilometers?",
+      "correctAnswer": 377975,
+      "unit": "km²"
+    },
+    {
+      "id": "geography_hard_4",
+      "categories": [
+        "Geography"
+      ],
+      "difficulty": "hard",
+      "text": "What is the area of Israel in square kilometers?",
+      "correctAnswer": 22072,
+      "unit": "km²"
+    },
+    {
+      "id": "geography_medium_9",
+      "categories": [
+        "Geography",
+        "Distances"
+      ],
+      "difficulty": "medium",
+      "text": "How many kilometers is it from Paris to Berlin?",
+      "correctAnswer": 878,
+      "unit": "km"
+    },
+    {
+      "id": "geography_medium_10",
+      "categories": [
+        "Geography",
+        "Distances"
+      ],
+      "difficulty": "medium",
+      "text": "How many kilometers is it from Madrid to Rome?",
+      "correctAnswer": 1364,
+      "unit": "km"
+    },
+    {
+      "id": "geography_medium_11",
+      "categories": [
+        "Geography",
+        "Distances"
+      ],
+      "difficulty": "medium",
+      "text": "How many kilometers is it from Berlin to Moscow?",
+      "correctAnswer": 1609,
+      "unit": "km"
+    },
+    {
+      "id": "geography_hard_5",
+      "categories": [
+        "Geography",
+        "Distances"
+      ],
+      "difficulty": "hard",
+      "text": "How many kilometers is it from Tokyo to Beijing?",
+      "correctAnswer": 2096,
+      "unit": "km"
+    },
+    {
+      "id": "geography_medium_12",
+      "categories": [
+        "Geography",
+        "Distances"
+      ],
+      "difficulty": "medium",
+      "text": "How many kilometers is it from Cairo to Athens?",
+      "correctAnswer": 1119,
+      "unit": "km"
+    },
+    {
+      "id": "geography_hard_6",
+      "categories": [
+        "Geography",
+        "Distances"
+      ],
+      "difficulty": "hard",
+      "text": "How many kilometers is it from Washington D.C. to Moscow?",
+      "correctAnswer": 7826,
+      "unit": "km"
+    },
+    {
+      "id": "geography_hard_7",
+      "categories": [
+        "Geography",
+        "Distances"
+      ],
+      "difficulty": "hard",
+      "text": "How many kilometers is it from Rome to Cairo?",
+      "correctAnswer": 2133,
+      "unit": "km"
+    },
+    {
+      "id": "geography_medium_13",
+      "categories": [
+        "Geography",
+        "Distances"
+      ],
+      "difficulty": "medium",
+      "text": "How many kilometers is it from Jerusalem to Cairo?",
+      "correctAnswer": 424,
+      "unit": "km"
+    },
+    {
+      "id": "geography_hard_8",
+      "categories": [
+        "Geography",
+        "Distances"
+      ],
+      "difficulty": "hard",
+      "text": "How many kilometers is it from Jerusalem to Athens?",
+      "correctAnswer": 1260,
+      "unit": "km"
+    },
+    {
+      "id": "geography_medium_14",
+      "categories": [
+        "Geography"
+      ],
+      "difficulty": "medium",
+      "text": "How many kilometers from Tel Aviv to Haifa?",
+      "correctAnswer": 95,
+      "unit": "km"
+    },
+    {
+      "id": "geography_medium_15",
+      "categories": [
+        "Geography"
+      ],
+      "difficulty": "medium",
+      "text": "How many kilometers from Tel Aviv to Be'er Sheva?",
+      "correctAnswer": 105,
+      "unit": "km"
     }
   ]
 }
