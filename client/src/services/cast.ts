@@ -61,6 +61,31 @@ export async function requestCastSession(): Promise<any> {
   return context.getCurrentSession();
 }
 
+// Extract the raw Cast error code (for logging).
+export function castErrorCode(err: any): string {
+  if (typeof err === 'string') return err;
+  return err?.code || err?.description || err?.message || 'unknown';
+}
+
+// Map a Cast error to a human-readable message.
+export function describeCastError(err: any): string {
+  const code = castErrorCode(err);
+  switch (code) {
+    case 'cancel':
+      return ''; // user dismissed the picker — not an error worth showing
+    case 'receiver_unavailable':
+      return 'No compatible Cast device found. Until the receiver app is published, the TV must be registered as a test device AND rebooted.';
+    case 'timeout':
+      return 'Cast timed out. Make sure the TV is on and on the same Wi-Fi.';
+    case 'api_not_initialized':
+      return 'Cast isn’t ready yet — try again in a moment.';
+    case 'session_error':
+      return 'Could not start the Cast session (the receiver may have failed to load).';
+    default:
+      return `Cast error: ${code}`;
+  }
+}
+
 // Listen for the room code coming back from the receiver. Returns an unsubscribe.
 export function onRoomReady(handler: (roomCode: string) => void): () => void {
   const context = cast.framework.CastContext.getInstance();

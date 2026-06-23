@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '../stores/gameStore';
-import { loadCastSender, requestCastSession, onRoomReady } from '../services/cast';
+import { loadCastSender, requestCastSession, onRoomReady, castErrorCode, describeCastError } from '../services/cast';
 import './Landing.css';
 
 function Landing() {
@@ -9,6 +9,7 @@ function Landing() {
   const { connectSocket, createRoom, roomCode: storeRoomCode } = useGameStore();
   const [castAvailable, setCastAvailable] = useState(false);
   const [casting, setCasting] = useState(false);
+  const [castError, setCastError] = useState('');
 
   useEffect(() => {
     connectSocket();
@@ -43,9 +44,11 @@ function Landing() {
   const handleCast = async () => {
     try {
       setCasting(true);
+      setCastError('');
       await requestCastSession(); // opens device picker; receiver creates the room
     } catch (err) {
-      console.error('Cast failed or cancelled:', err);
+      console.error('Cast failed:', castErrorCode(err), err);
+      setCastError(describeCastError(err)); // empty string for user-cancel
       setCasting(false);
     }
   };
@@ -74,6 +77,8 @@ function Landing() {
             </button>
           )}
         </div>
+
+        {castError && <p className="cast-error">{castError}</p>}
       </div>
     </div>
   );
