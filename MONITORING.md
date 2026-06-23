@@ -138,8 +138,14 @@ https://yourdomain.com/health
 ```
 
 UptimeRobot pings it every 5 minutes. If it returns anything other than
-`200 OK`, you get an email (and optionally SMS). No code needed beyond
-the `/health` endpoint already planned in `SERVER_MIGRATION.md`.
+`200 OK`, you get an email (and optionally SMS). The `/health` endpoint is
+already implemented (returns rooms, active players, uptime, memory).
+
+> **Status:** Sentry (via `server/src/instrument.ts`) and structured game-event
+> logs (`room_created` / `game_started` / `game_ended`, prefixed `📈` in the
+> Railway logs) are implemented. Set `SENTRY_DSN` in Railway to activate Sentry.
+> Question reports also log to Railway as `🚩 REPORTED_QUESTION`. UptimeRobot and
+> PostHog remain optional/manual.
 
 ---
 

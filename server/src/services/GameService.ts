@@ -2,6 +2,7 @@ import { Room, Answer } from '../models/Game';
 import { roomService } from './RoomService';
 import { questionService } from './QuestionService';
 import { scoreService } from './ScoreService';
+import { logEvent } from '../utils/logger';
 
 class GameService {
   startGame(roomCode: string): void {
@@ -18,6 +19,15 @@ class GameService {
     room.state = 'question';
     room.questionStartTime = Date.now();
     room.lastActivity = new Date();
+
+    logEvent('game_started', {
+      roomCode: room.code,
+      playerCount: room.players.length,
+      botCount: room.players.filter(p => p.isBot).length,
+      questionCount: room.questions.length,
+      difficulty: room.settings.difficulty,
+      category: room.settings.categoryFilter || 'mixed'
+    });
   }
 
   getCurrentQuestion(room: Room) {
@@ -87,6 +97,12 @@ class GameService {
       room.questionStartTime = Date.now();
     } else {
       room.state = 'finished';
+      logEvent('game_ended', {
+        roomCode: room.code,
+        playerCount: room.players.length,
+        questionCount: room.questions.length,
+        durationSeconds: Math.round((Date.now() - room.createdAt.getTime()) / 1000)
+      });
     }
     room.lastActivity = new Date();
   }

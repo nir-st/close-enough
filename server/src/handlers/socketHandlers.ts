@@ -5,6 +5,7 @@ import { botService } from '../services/BotService';
 import { localIP } from '../index';
 import { config } from '../config';
 import * as rl from '../middleware/socketRateLimiter';
+import { logEvent } from '../utils/logger';
 import {
   validatePlayerName,
   validateRoomCode,
@@ -52,6 +53,7 @@ export function setupSocketHandlers(io: Server) {
         });
 
         console.log(`✅ Room created: ${room.code} by ${playerName}`);
+        logEvent('room_created', { roomCode: room.code, host: playerName });
       } catch (error: any) {
         socket.emit('error', { message: error.message });
         console.error('❌ Error creating room:', error.message);

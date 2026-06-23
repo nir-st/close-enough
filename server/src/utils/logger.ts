@@ -23,3 +23,9 @@ const originalWarn = console.warn;
 console.warn = function(...args: any[]) {
   originalWarn(getTimestamp(), ...args);
 };
+
+// Emit a structured JSON event line for product metrics. Searchable in the
+// Railway log viewer (e.g. filter for "event":"game_started" and count lines).
+export function logEvent(event: string, props: Record<string, unknown> = {}): void {
+  console.log(`📈 ${JSON.stringify({ event, ...props, timestamp: new Date().toISOString() })}`);
+}

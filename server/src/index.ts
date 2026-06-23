@@ -1,3 +1,5 @@
+import './instrument'; // must be first — initializes Sentry before other modules load
+import * as Sentry from '@sentry/node';
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
@@ -74,6 +76,9 @@ if (config.isProduction) {
     res.sendFile(path.join(clientDist, 'index.html'));
   });
 }
+
+// ── Sentry error handler (after routes) ────────────────────────────────────────
+Sentry.setupExpressErrorHandler(app);
 
 // ── Socket.io ─────────────────────────────────────────────────────────────────
 setupSocketHandlers(io);
