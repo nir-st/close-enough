@@ -47,6 +47,13 @@
   line-height: 1.4;
 }
 
+.cast-note {
+  margin-top: 20px;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
 .card {
   margin-top: 24px;
 }

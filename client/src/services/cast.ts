@@ -19,6 +19,15 @@ export type CastMessage =
 
 let senderScriptLoading: Promise<void> | null = null;
 
+// The Google Cast web sender does not exist on iOS — neither Safari nor
+// Chrome-for-iOS can cast from a web page. Detect so we can show guidance
+// instead of a button that always fails. Covers iPadOS 13+ (reports as Mac).
+export function isIOS(): boolean {
+  if (typeof navigator === 'undefined') return false;
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
 // ── Sender (phone) ───────────────────────────────────────────────────────────
 
 // Load the Cast Sender framework and initialize the CastContext. Resolves to

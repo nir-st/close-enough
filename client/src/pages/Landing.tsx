@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '../stores/gameStore';
-import { loadCastSender, requestCastSession, onRoomReady, castErrorCode, describeCastError } from '../services/cast';
+import { loadCastSender, requestCastSession, onRoomReady, castErrorCode, describeCastError, isIOS } from '../services/cast';
+
+const IS_IOS = isIOS();
 import './Landing.css';
 
 function Landing() {
@@ -25,6 +27,7 @@ function Landing() {
   // Set up Cast: show the button if the browser supports Cast, and when the
   // TV (receiver) hands back a room code, join it as a player on this phone.
   useEffect(() => {
+    if (IS_IOS) return; // web Cast sender is unsupported on iOS — don't load it
     let unsubscribe: (() => void) | undefined;
     loadCastSender().then((available) => {
       setCastAvailable(available);
@@ -77,6 +80,13 @@ function Landing() {
             </button>
           )}
         </div>
+
+        {IS_IOS && (
+          <p className="cast-note">
+            📺 Casting to a TV isn’t supported on iPhone or iPad. To play on a TV,
+            open this page in Chrome on Android or a computer.
+          </p>
+        )}
 
         {castError && <p className="cast-error">{castError}</p>}
       </div>
