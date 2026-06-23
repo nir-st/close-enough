@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ScoreResult } from '../types/game';
+import * as sound from '../services/sound';
 import './AnswerReveal.css';
 
 interface AnswerRevealProps {
@@ -153,6 +154,19 @@ function AnswerReveal({ correctAnswer, results, onComplete }: AnswerRevealProps)
 
     return () => timers.forEach(clearTimeout);
   }, [animationSteps, onComplete]);
+
+  // Sound: roll into the reveal, ding when the answer lands, sting on the winner.
+  useEffect(() => {
+    if (currentStep < 0 || animationSteps.length === 0) return;
+    const step = animationSteps[currentStep];
+    const next = animationSteps[currentStep + 1];
+    if (next?.type === 'answer') sound.startDrumroll();
+    if (step?.type === 'answer') sound.playAnswerReveal(); // also stops the drumroll
+    if (step?.type === 'highlight') sound.playWinner();
+  }, [currentStep, animationSteps]);
+
+  // Safety: stop any drumroll if we unmount mid-roll.
+  useEffect(() => () => sound.stopDrumroll(), []);
 
   // Derive visible state from steps played so far
   const stepsPlayed = animationSteps.slice(0, currentStep + 1);

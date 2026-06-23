@@ -8,6 +8,7 @@ import QuestionDisplay from '../components/QuestionDisplay';
 import Timer from '../components/Timer';
 import AnswerReveal from '../components/AnswerReveal';
 import Scoreboard from '../components/Scoreboard';
+import * as sound from '../services/sound';
 import './Host.css';
 
 // roomCode can come from the route (/host/:roomCode) or be passed directly by
@@ -17,6 +18,7 @@ function Host({ roomCode: roomCodeProp }: { roomCode?: string } = {}) {
   const roomCode = roomCodeProp ?? params.roomCode;
   const navigate = useNavigate();
   const [showDetailedResults, setShowDetailedResults] = useState(false);
+  const [muted, setMuted] = useState(sound.isMuted());
   const {
     gameState,
     players,
@@ -69,11 +71,37 @@ function Host({ roomCode: roomCodeProp }: { roomCode?: string } = {}) {
     }
   }, [gameState, timeRemaining]);
 
+  // ── Sound effects (host/TV only) ───────────────────────────────────────────
+  // Question appears
+  useEffect(() => {
+    if (gameState === 'question') sound.playQuestionAppear();
+  }, [gameState, currentQuestion?.id]);
+
+  // Final-seconds tick + time's up
+  useEffect(() => {
+    if (gameState !== 'answering') return;
+    if (timeRemaining > 0 && timeRemaining <= 5) sound.playTick();
+    else if (timeRemaining === 0) sound.playTimeUp();
+  }, [gameState, timeRemaining]);
+
+  // Game over fanfare
+  useEffect(() => {
+    if (gameState === 'finished') sound.playGameOver();
+  }, [gameState]);
+
+  const handleToggleMute = () => {
+    const next = !muted;
+    sound.setMuted(next);
+    setMuted(next);
+    if (!next) sound.unlockAudio(); // resume audio from this gesture
+  };
+
   const handleStartGame = () => {
     if (players.length < 2) {
       alert('Need at least 2 players to start the game');
       return;
     }
+    sound.unlockAudio(); // user gesture — enable audio for the rest of the game
     startGame();
   };
 
@@ -87,6 +115,14 @@ function Host({ roomCode: roomCodeProp }: { roomCode?: string } = {}) {
       <div className="host-header">
         <h1>🎮 Close Enough</h1>
         <div className="room-code-badge">Room: {roomCode}</div>
+        <button
+          className="mute-toggle"
+          onClick={handleToggleMute}
+          aria-label={muted ? 'Unmute sound effects' : 'Mute sound effects'}
+          title={muted ? 'Unmute' : 'Mute'}
+        >
+          {muted ? '🔇' : '🔊'}
+        </button>
       </div>
 
       {/* In-game notification toast (#9) */}
