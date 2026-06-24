@@ -45,12 +45,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
   flex-shrink: 0;
+  width: 320px;
 }
 
 .cast-join-hint {
-  font-size: 24px;
+  font-size: 20px;
   color: rgba(255, 255, 255, 0.9);
   text-align: center;
 }
@@ -59,34 +60,36 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 12px;
   overflow: hidden;
+  max-height: 100%;
 }
 
 .cast-settings-display {
   background: rgba(255, 255, 255, 0.15);
-  border-radius: 16px;
-  padding: 20px 28px;
+  border-radius: 12px;
+  padding: 14px 20px;
   color: white;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .cast-settings-display h3 {
-  font-size: 24px;
-  margin-bottom: 8px;
+  font-size: 18px;
+  margin-bottom: 4px;
 }
 
 .cast-settings-display p {
-  font-size: 20px;
-  margin: 4px 0;
+  font-size: 16px;
+  margin: 2px 0;
   opacity: 0.9;
 }
 
 .cast-status-text {
-  font-size: 28px;
+  font-size: 22px;
   color: rgba(255, 255, 255, 0.85);
   text-align: center;
-  margin-top: auto;
-  padding: 16px 0;
+  padding: 8px 0;
 }
 
 /* ── In-game ─────────────────────────────────────────────────────────────── */
@@ -123,8 +126,6 @@
   align-items: center;
   justify-content: center;
   gap: 24px;
-  max-width: 1200px;
-  margin: 0 auto;
   width: 100%;
 }
 
@@ -153,6 +154,64 @@
   padding: 10px 14px;
 }
 
-.cast-container .timer-display {
-  font-size: 64px;
+/* Timer: full-width bar across the screen */
+.cast-container .timer-container {
+  width: 100%;
+  margin: 0;
+}
+
+.cast-container .timer {
+  background: transparent;
+  box-shadow: none;
+  padding: 12px 0;
+}
+
+.cast-container .timer-value {
+  font-size: 48px;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.cast-container .timer-bar-container {
+  height: 12px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+}
+
+.cast-container .timer.low .timer-value,
+.cast-container .timer.very-low .timer-value {
+  color: #f56565;
+}
+
+/* Answer reveal: stretch to full width */
+.cast-container .answer-reveal {
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+}
+
+.cast-container .number-line-container {
+  min-height: 300px;
+}
+
+/* Scoreboard: full width, constrain height so all players fit */
+.cast-container .scoreboard {
+  width: 100%;
+  max-width: none;
+  max-height: calc(100vh - 200px);
+  overflow: hidden;
+}
+
+.cast-container .results-table {
+  max-height: calc(100vh - 340px);
+  overflow: hidden;
+}
+
+.cast-container .result-entry {
+  padding: 8px 16px;
+}
+
+.cast-container .score-entry {
+  padding: 8px 16px;
 }

@@ -31,16 +31,14 @@ class ScoreService {
     // Sort by distance (closest first)
     results.sort((a, b) => a.distance - b.distance);
 
-    // Assign points
-    results.forEach((result, index) => {
+    // Assign points — all players sharing the minimum distance score equally
+    const minDistance = results.length > 0 ? results[0].distance : Infinity;
+    results.forEach((result) => {
       if (result.distance === 0) {
-        // Exact match - double points
         result.pointsEarned = points.exact;
-      } else if (index === 0) {
-        // Closest answer (if not exact)
+      } else if (result.distance === minDistance) {
         result.pointsEarned = points.closest;
       } else {
-        // Other answers get 0 points
         result.pointsEarned = 0;
       }
 

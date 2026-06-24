@@ -82,23 +82,21 @@ function CastHost({ roomCode }: { roomCode: string }) {
       {gameState === 'waiting' && (
         <div className="cast-lobby">
           <div className="cast-lobby-left">
-            <QRCodeDisplay joinUrl={joinUrl || ''} roomCode={roomCode} size={280} />
-            <p className="cast-join-hint">Scan to join from your phone</p>
+            <QRCodeDisplay joinUrl={joinUrl || ''} roomCode={roomCode} size={220} />
+            <p className="cast-join-hint">Scan to join</p>
+            <div className="cast-settings-display">
+              <h3>Settings</h3>
+              <p>{settings.questionCount} questions · {difficultyLabel}</p>
+              <p>{categoryLabel} · {settings.timePerQuestion}s</p>
+            </div>
+            {players.length < 2 ? (
+              <p className="cast-status-text">Waiting for players…</p>
+            ) : (
+              <p className="cast-status-text">Waiting for admin to start</p>
+            )}
           </div>
           <div className="cast-lobby-right">
             <PlayerList players={players} />
-            <div className="cast-settings-display">
-              <h3>Game Settings</h3>
-              <p>{settings.questionCount} questions</p>
-              <p>{difficultyLabel}</p>
-              <p>{categoryLabel}</p>
-              <p>{settings.timePerQuestion}s per question</p>
-            </div>
-            {players.length < 2 ? (
-              <p className="cast-status-text">Waiting for players to join…</p>
-            ) : (
-              <p className="cast-status-text">Ready — waiting for admin to start</p>
-            )}
           </div>
         </div>
       )}

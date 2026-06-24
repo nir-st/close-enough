@@ -249,6 +249,24 @@ export function setupSocketHandlers(io: Server) {
       }
     });
 
+    // ── Change name (lobby only) ───────────────────────────────────────────────
+    socket.on('change-name', ({ newName }: { newName: string }) => {
+      const nameErr = validatePlayerName(newName);
+      if (nameErr) { socket.emit('error', { message: nameErr }); return; }
+      const room = getRoomForSocket(socket);
+      if (!room) { socket.emit('error', { message: 'Room not found' }); return; }
+      if (room.state !== 'waiting') { socket.emit('error', { message: 'Cannot change name after game starts' }); return; }
+      const player = roomService.getPlayerBySocketId(socket.id, room.code);
+      if (!player) return;
+      if (roomService.isPlayerNameTaken(room.code, newName.trim()) && player.name !== newName.trim()) {
+        socket.emit('error', { message: 'Name already taken' });
+        return;
+      }
+      player.name = newName.trim();
+      io.to(room.id).emit('player-updated', { players: room.players });
+      console.log(`✏️  ${player.id} changed name to "${player.name}" in room ${room.code}`);
+    });
+
     // ── Add bots ─────────────────────────────────────────────────────────────
     socket.on('add-bots', ({ count }: { count: number }) => {
       const err = validateBotCount(count);

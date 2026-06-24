@@ -36,7 +36,8 @@ function Play() {
     settings,
     updateSettings,
     adminId,
-    restartGame
+    restartGame,
+    changeName
   } = useGameStore();
 
   // Reset "reported" flag when a new question starts
@@ -102,6 +103,17 @@ function Play() {
         <div className="play-waiting">
           <div className="card">
             <h3>Joined!</h3>
+            {myPlayer && (
+              <button
+                className="btn-change-name"
+                onClick={() => {
+                  const name = prompt('Enter new name:', myPlayer.name);
+                  if (name && name.trim() && name.trim() !== myPlayer.name) changeName(name.trim());
+                }}
+              >
+                {myPlayer.avatar} {myPlayer.name} (tap to change)
+              </button>
+            )}
             <div className="player-count">{players.length} players connected</div>
             {isAdmin ? (
               <>

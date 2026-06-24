@@ -66,6 +66,7 @@ interface GameStore {
   restartGame: () => void;
   reportQuestion: (questionId: string, questionText: string) => void;
   kickPlayer: (playerId: string) => void;
+  changeName: (newName: string) => void;
   reset: () => void;
 
   // Internal state setters
@@ -185,6 +186,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     socket.on('settings-updated', (data) => {
       get().setSettingsUpdated(data.settings);
+    });
+
+    socket.on('player-updated', (data: { players: any[] }) => {
+      set({ players: data.players });
     });
 
     socket.on('game-started', () => {
@@ -400,6 +405,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (!socket) return;
 
     socket.emit('kick-player', { playerId });
+  },
+
+  changeName: (newName: string) => {
+    const { socket } = get();
+    if (!socket) return;
+    socket.emit('change-name', { newName });
+    set({ playerName: newName });
   },
 
   // Reset store
