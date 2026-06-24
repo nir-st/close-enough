@@ -24,6 +24,7 @@ interface GameStore {
   playerId: string | null;
   playerName: string | null;
   isHost: boolean;
+  adminId: string | null;
 
   // Game state
   gameState: GameState;
@@ -92,6 +93,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   playerId: null,
   playerName: null,
   isHost: false,
+  adminId: null,
   gameState: 'waiting',
   players: [],
   settings: {
@@ -156,8 +158,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
         joinUrl: data.joinUrl,
         settings: data.settings,
         players: data.players,
-        gameState: data.gameState || get().gameState
+        gameState: data.gameState || get().gameState,
+        adminId: data.adminId ?? get().adminId
       });
+    });
+
+    socket.on('admin-changed', (data: { adminId: string | null }) => {
+      set({ adminId: data.adminId });
     });
 
     // Room is genuinely gone (reaped after the grace period). Send the host home.
@@ -404,6 +411,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       playerId: null,
       playerName: null,
       isHost: false,
+      adminId: null,
       gameState: 'waiting',
       players: [],
       settings: {
@@ -428,7 +436,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       roomCode: data.roomCode,
       playerId: data.playerId,
       joinUrl: data.joinUrl,
-      settings: data.settings
+      settings: data.settings,
+      adminId: data.adminId ?? null
     });
   },
 
@@ -439,18 +448,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
         playerId: data.playerId,
         roomId: data.roomId,
         players: data.players,
-        gameState: data.gameState || get().gameState
+        gameState: data.gameState || get().gameState,
+        adminId: data.adminId ?? get().adminId
       });
     } else if (data.playerId) {
       // Our own reconnection — update players + game state from server
       set({
         players: data.players,
-        gameState: data.gameState || get().gameState
+        gameState: data.gameState || get().gameState,
+        adminId: data.adminId ?? get().adminId
       });
       console.log('✅ Reconnected to game in progress');
     } else {
       // Another player joined or reconnected
-      set({ players: data.players });
+      set({ players: data.players, adminId: data.adminId ?? get().adminId });
       const { gameState } = get();
       if (data.reconnected && gameState !== 'waiting') {
         get().showNotification(`${data.player?.name} reconnected`);

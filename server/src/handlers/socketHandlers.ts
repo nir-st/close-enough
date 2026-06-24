@@ -20,6 +20,13 @@ function getRoomForSocket(socket: Socket) {
   return code ? roomService.getRoom(code) : null;
 }
 
+// Check if the socket is the host OR the admin player.
+function isHostOrAdmin(socket: Socket, room: { hostId: string; adminId: string | null; code: string }): boolean {
+  if (socket.id === room.hostId) return true;
+  const player = roomService.getPlayerBySocketId(socket.id, room.code);
+  return !!(player && player.id === room.adminId);
+}
+
 export function setupSocketHandlers(io: Server) {
   // Periodic cleanup of long-disconnected players (every 60 seconds)
   setInterval(() => {
@@ -49,7 +56,8 @@ export function setupSocketHandlers(io: Server) {
           roomCode: room.code,
           playerId: room.hostId,
           joinUrl,
-          settings: room.settings
+          settings: room.settings,
+          adminId: room.adminId
         });
 
         console.log(`✅ Room created: ${room.code} by ${playerName}`);
@@ -109,7 +117,8 @@ export function setupSocketHandlers(io: Server) {
           roomId: room.id,
           players: room.players,
           gameState: room.state,
-          reconnected: isReconnecting
+          reconnected: isReconnecting,
+          adminId: room.adminId
         });
 
         // Restore state for reconnecting mid-game players
@@ -153,7 +162,8 @@ export function setupSocketHandlers(io: Server) {
         socket.to(room.id).emit('player-joined', {
           player,
           players: room.players,
-          reconnected: isReconnecting
+          reconnected: isReconnecting,
+          adminId: room.adminId
         });
 
       } catch (error: any) {
@@ -190,7 +200,8 @@ export function setupSocketHandlers(io: Server) {
         joinUrl,
         settings: room.settings,
         players: room.players,
-        gameState: room.state
+        gameState: room.state,
+        adminId: room.adminId
       });
       console.log(`🔄 Host reconnected to room ${roomCode} (state: ${room.state})`);
 
@@ -227,7 +238,7 @@ export function setupSocketHandlers(io: Server) {
       try {
         const room = getRoomForSocket(socket);
         if (!room) { socket.emit('error', { message: 'Room not found' }); return; }
-        if (socket.id !== room.hostId) { socket.emit('error', { message: 'Only host can update settings' }); return; }
+        if (!isHostOrAdmin(socket, room)) { socket.emit('error', { message: 'Only host or admin can update settings' }); return; }
 
         roomService.updateSettings(settings, room.code);
         io.to(room.id).emit('settings-updated', { settings: room.settings });
@@ -245,7 +256,7 @@ export function setupSocketHandlers(io: Server) {
       try {
         const room = getRoomForSocket(socket);
         if (!room) { socket.emit('error', { message: 'Room not found' }); return; }
-        if (socket.id !== room.hostId) { socket.emit('error', { message: 'Only host can add bots' }); return; }
+        if (!isHostOrAdmin(socket, room)) { socket.emit('error', { message: 'Only host or admin can add bots' }); return; }
 
         const bots = roomService.addBots(count, room.code);
         io.to(room.id).emit('bots-added', { bots, players: room.players });
@@ -261,7 +272,7 @@ export function setupSocketHandlers(io: Server) {
       try {
         const room = getRoomForSocket(socket);
         if (!room) { socket.emit('error', { message: 'Room not found' }); return; }
-        if (socket.id !== room.hostId) { socket.emit('error', { message: 'Only host can remove bots' }); return; }
+        if (!isHostOrAdmin(socket, room)) { socket.emit('error', { message: 'Only host or admin can remove bots' }); return; }
 
         roomService.removeBots(room.code);
         io.to(room.id).emit('bots-removed', { players: room.players });
@@ -277,10 +288,7 @@ export function setupSocketHandlers(io: Server) {
       try {
         const room = getRoomForSocket(socket);
         if (!room) { socket.emit('error', { message: 'Room not found' }); return; }
-        // Any participant may start (host on a laptop, or any player on their
-        // phone when the host is a Chromecast that can't be clicked).
-        // getRoomForSocket already confirms this socket belongs to the room;
-        // gameService.startGame enforces waiting-state and the 2-player minimum.
+        if (!isHostOrAdmin(socket, room)) { socket.emit('error', { message: 'Only the admin can start the game' }); return; }
 
         gameService.startGame(room.code);
         io.to(room.id).emit('game-started', {});
@@ -444,7 +452,7 @@ export function setupSocketHandlers(io: Server) {
       try {
         const room = getRoomForSocket(socket);
         if (!room) { socket.emit('error', { message: 'Room not found' }); return; }
-        if (socket.id !== room.hostId) { socket.emit('error', { message: 'Only host can restart' }); return; }
+        if (!isHostOrAdmin(socket, room)) { socket.emit('error', { message: 'Only host or admin can restart' }); return; }
 
         roomService.restartGame(room.code);
         io.to(room.id).emit('game-restarted', { players: room.players, settings: room.settings });
@@ -460,7 +468,7 @@ export function setupSocketHandlers(io: Server) {
       try {
         const room = getRoomForSocket(socket);
         if (!room) { socket.emit('error', { message: 'Room not found' }); return; }
-        if (socket.id !== room.hostId) { socket.emit('error', { message: 'Only host can end the game' }); return; }
+        if (!isHostOrAdmin(socket, room)) { socket.emit('error', { message: 'Only host or admin can end the game' }); return; }
 
         io.to(room.id).emit('game-ended', { reason: 'Host ended the game' });
         roomService.deleteRoom(room.code);
@@ -476,7 +484,7 @@ export function setupSocketHandlers(io: Server) {
       try {
         const room = getRoomForSocket(socket);
         if (!room) { socket.emit('error', { message: 'Room not found' }); return; }
-        if (socket.id !== room.hostId) { socket.emit('error', { message: 'Only host can kick players' }); return; }
+        if (!isHostOrAdmin(socket, room)) { socket.emit('error', { message: 'Only host or admin can kick players' }); return; }
 
         const player = roomService.getPlayerById(playerId, room.code);
         if (!player) { socket.emit('error', { message: 'Player not found' }); return; }

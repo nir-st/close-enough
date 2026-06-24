@@ -14,6 +14,7 @@ class RoomService {
       code,
       hostId: hostSocketId,
       hostConnected: true,
+      adminId: null,
       players: [],
       state: 'waiting',
       settings: {
@@ -90,6 +91,9 @@ class RoomService {
     };
 
     room.players.push(player);
+    if (!player.isBot && room.players.filter(p => !p.isBot).length === 1) {
+      room.adminId = player.id;
+    }
     room.lastActivity = new Date();
     return player;
   }
@@ -103,6 +107,11 @@ class RoomService {
 
     releaseAvatar(room.players[index].avatar);
     room.players.splice(index, 1);
+
+    if (room.adminId === playerId) {
+      const nextHuman = room.players.find(p => !p.isBot && p.connected);
+      room.adminId = nextHuman ? nextHuman.id : null;
+    }
 
     if (room.players.length === 0) {
       this.deleteRoom(roomCode);

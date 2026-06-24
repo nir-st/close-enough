@@ -1,8 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useGameStore } from '../stores/gameStore';
 import { CAST_NAMESPACE } from '../services/cast';
-import Host from './Host';
-import './Host.css';
+import CastHost from './CastHost';
 
 // This page is loaded ON the Chromecast (the receiver). It:
 //  1. Initializes the CAF receiver context + custom message channel.
@@ -91,19 +90,16 @@ function CastReceiver() {
 
   if (!roomCode) {
     return (
-      <div className="host-container">
-        <div className="host-header">
-          <h1>🎮 Close Enough</h1>
-        </div>
-        <p style={{ textAlign: 'center', fontSize: '1.5rem', marginTop: '2rem' }}>
-          Starting up… 📺
+      <div className="cast-container" style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <h1 style={{ fontSize: 48, color: 'white' }}>Close Enough</h1>
+        <p style={{ fontSize: 28, color: 'rgba(255,255,255,0.85)', marginTop: 16 }}>
+          Starting up…
         </p>
       </div>
     );
   }
 
-  // Reuse the full host screen for the TV display.
-  return <Host roomCode={roomCode} />;
+  return <CastHost roomCode={roomCode} />;
 }
 
 export default CastReceiver;

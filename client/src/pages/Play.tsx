@@ -4,6 +4,7 @@ import { useGameStore } from '../stores/gameStore';
 import QuestionDisplay from '../components/QuestionDisplay';
 import AnswerInput from '../components/AnswerInput';
 import Scoreboard from '../components/Scoreboard';
+import GameSettings from '../components/GameSettings';
 import './Play.css';
 
 function Play() {
@@ -31,7 +32,11 @@ function Play() {
     answerRevealed,
     markReady,
     reportQuestion,
-    startGame
+    startGame,
+    settings,
+    updateSettings,
+    adminId,
+    restartGame
   } = useGameStore();
 
   // Reset "reported" flag when a new question starts
@@ -66,6 +71,8 @@ function Play() {
   }, [roomCode, playerName, playerId, joinRoom]);
 
   const myPlayer = players.find(p => p.id === playerId);
+  const isAdmin = playerId === adminId;
+  const adminPlayer = players.find(p => p.id === adminId);
   const isReady = readyPlayerIds.includes(playerId || '');
 
   return (
@@ -94,14 +101,23 @@ function Play() {
       {gameState === 'waiting' && (
         <div className="play-waiting">
           <div className="card">
-            <h3>✅ Joined!</h3>
+            <h3>Joined!</h3>
             <div className="player-count">{players.length} players connected</div>
-            {players.length >= 2 ? (
-              <button className="btn-primary start-game-btn" onClick={startGame}>
-                🚀 Start Game ({players.length} players)
-              </button>
+            {isAdmin ? (
+              <>
+                <GameSettings settings={settings} onUpdate={updateSettings} disabled={false} />
+                {players.length >= 2 ? (
+                  <button className="btn-primary start-game-btn" onClick={startGame}>
+                    Start Game ({players.length} players)
+                  </button>
+                ) : (
+                  <p>Waiting for more players… (need at least 2)</p>
+                )}
+              </>
             ) : (
-              <p>Waiting for more players… (need at least 2)</p>
+              <p className="waiting-for-admin">
+                Waiting for {adminPlayer?.name || 'the admin'} to start the game…
+              </p>
             )}
           </div>
         </div>
@@ -183,11 +199,16 @@ function Play() {
           <Scoreboard finalResults={finalResults} />
           <div className="game-over-message">
             <h3>Thanks for playing!</h3>
+            {isAdmin && (
+              <button className="btn-primary" onClick={restartGame} style={{ marginBottom: 12 }}>
+                Play Again
+              </button>
+            )}
             <button
               className="btn-primary"
               onClick={() => navigate('/')}
             >
-              🏠 Go Home
+              Go Home
             </button>
           </div>
         </div>

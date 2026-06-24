@@ -40,6 +40,7 @@ export interface Room {
   code: string;
   hostId: string;
   hostConnected: boolean; // False while the host socket is disconnected (grace period for reconnect)
+  adminId: string | null; // Player id of the admin (first human player to join — controls settings/start)
   players: Player[];
   state: GameState;
   settings: GameSettings;

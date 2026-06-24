@@ -1,0 +1,158 @@
+.cast-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  padding: 40px 60px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.cast-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.cast-header h1 {
+  font-size: 48px;
+  color: white;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.cast-room-badge {
+  background: white;
+  padding: 12px 28px;
+  border-radius: 24px;
+  font-weight: 700;
+  color: #667eea;
+  font-size: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ── Lobby ───────────────────────────────────────────────────────────────── */
+
+.cast-lobby {
+  display: flex;
+  flex: 1;
+  gap: 60px;
+  align-items: flex-start;
+  overflow: hidden;
+}
+
+.cast-lobby-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+.cast-join-hint {
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+}
+
+.cast-lobby-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  overflow: hidden;
+}
+
+.cast-settings-display {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 20px 28px;
+  color: white;
+}
+
+.cast-settings-display h3 {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.cast-settings-display p {
+  font-size: 20px;
+  margin: 4px 0;
+  opacity: 0.9;
+}
+
+.cast-status-text {
+  font-size: 28px;
+  color: rgba(255, 255, 255, 0.85);
+  text-align: center;
+  margin-top: auto;
+  padding: 16px 0;
+}
+
+/* ── In-game ─────────────────────────────────────────────────────────────── */
+
+.cast-game-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
+
+.cast-instruction {
+  font-size: 28px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.cast-answered-status {
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 12px 32px;
+  border-radius: 16px;
+}
+
+/* ── Results ─────────────────────────────────────────────────────────────── */
+
+.cast-results-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.cast-ready-status {
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.85);
+  text-align: center;
+}
+
+/* ── TV-scale overrides for reused components ────────────────────────────── */
+
+.cast-container .question-display.large .question-text {
+  font-size: 40px;
+}
+
+.cast-container .room-code-value {
+  font-size: 48px;
+}
+
+.cast-container .player-list h3 {
+  font-size: 26px;
+}
+
+.cast-container .player-card {
+  font-size: 20px;
+  padding: 10px 14px;
+}
+
+.cast-container .timer-display {
+  font-size: 64px;
+}

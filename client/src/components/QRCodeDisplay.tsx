@@ -4,13 +4,14 @@ import './QRCodeDisplay.css';
 interface QRCodeDisplayProps {
   joinUrl: string;
   roomCode: string;
+  size?: number;
 }
 
-function QRCodeDisplay({ joinUrl, roomCode }: QRCodeDisplayProps) {
+function QRCodeDisplay({ joinUrl, roomCode, size = 200 }: QRCodeDisplayProps) {
   return (
     <div className="qr-container">
       <div className="qr-code">
-        <QRCodeSVG value={joinUrl} size={200} level="M" />
+        <QRCodeSVG value={joinUrl} size={size} level="M" />
       </div>
       <div className="room-code-display">
         <p className="room-code-label">Room Code:</p>
