@@ -132,14 +132,16 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-  gap: 32px;
+  gap: 24px;
+  width: 100%;
 }
 
 .cast-instruction {
   font-size: 28px;
   color: rgba(255, 255, 255, 0.85);
+  text-align: center;
 }
 
 .cast-answered-status {
@@ -149,6 +151,7 @@
   background: rgba(255, 255, 255, 0.15);
   padding: 12px 32px;
   border-radius: 16px;
+  text-align: center;
 }
 
 /* ── Results ─────────────────────────────────────────────────────────────── */
@@ -157,19 +160,28 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-  gap: 24px;
+  gap: 16px;
   width: 100%;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .cast-ready-status {
   font-size: 24px;
   color: rgba(255, 255, 255, 0.85);
   text-align: center;
+  flex-shrink: 0;
 }
 
 /* ── TV-scale overrides for reused components ────────────────────────────── */
+
+/* Question display: stretch to full width */
+.cast-container .question-display {
+  width: 100%;
+  box-sizing: border-box;
+}
 
 .cast-container .question-display.large .question-text {
   font-size: 40px;
@@ -181,6 +193,7 @@
 
 .cast-container .player-list h3 {
   font-size: 26px;
+  margin-bottom: 12px;
 }
 
 .cast-container .player-card {
@@ -218,34 +231,117 @@
   color: #f56565;
 }
 
-/* Answer reveal: stretch to full width */
+/* Answer reveal: stretch to full width, reduce padding for TV */
 .cast-container .answer-reveal {
   width: 100%;
   max-width: none;
   box-sizing: border-box;
+  padding: 20px 24px;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.cast-container .reveal-title {
+  font-size: 28px;
+  margin-bottom: 16px;
 }
 
 .cast-container .number-line-container {
-  min-height: 300px;
+  min-height: 280px;
+  flex: 1;
+  margin: 16px 0;
+  padding: 60px 20px 32px 20px;
 }
 
-/* Scoreboard: full width, constrain height so all players fit */
+.cast-container .marker-name {
+  font-size: 16px;
+}
+
+.cast-container .marker-label {
+  font-size: 20px;
+}
+
+.cast-container .answer-label {
+  font-size: 24px;
+}
+
+.cast-container .tick-label {
+  font-size: 16px;
+}
+
+/* Winner announcement below the number line */
+.cast-container .winner-announcement {
+  font-size: 24px;
+  margin-top: 12px;
+  padding: 12px;
+}
+
+/* Scoreboard: full width, compact entries for TV */
 .cast-container .scoreboard {
   width: 100%;
   max-width: none;
-  max-height: calc(100vh - 200px);
+  padding: 20px 24px;
+  box-sizing: border-box;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
+.cast-container .scoreboard h2 {
+  font-size: 24px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.cast-container .correct-answer {
+  font-size: 20px;
+  padding: 8px;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.cast-container .round-winner {
+  font-size: 20px;
+  padding: 10px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.cast-container .final-winner-banner {
+  font-size: 24px;
+  padding: 14px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.cast-container .leaderboard,
 .cast-container .results-table {
-  max-height: calc(100vh - 340px);
+  flex: 1;
   overflow: hidden;
+  gap: 6px;
 }
 
-.cast-container .result-entry {
-  padding: 8px 16px;
-}
-
+.cast-container .result-entry,
 .cast-container .score-entry {
   padding: 8px 16px;
+  flex-shrink: 0;
+}
+
+.cast-container .player-name-result,
+.cast-container .player-name-score {
+  font-size: 20px;
+}
+
+.cast-container .score,
+.cast-container .points {
+  font-size: 22px;
+}
+
+.cast-container .rank {
+  font-size: 22px;
+  width: 40px;
 }
