@@ -2,7 +2,7 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  padding: 40px 60px;
+  padding: 32px 48px;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -12,11 +12,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 32px;
+  margin-bottom: 20px;
+  flex-shrink: 0;
 }
 
 .cast-header h1 {
-  font-size: 48px;
+  font-size: 42px;
   color: white;
   text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
@@ -36,22 +37,24 @@
 .cast-lobby {
   display: flex;
   flex: 1;
-  gap: 60px;
-  align-items: flex-start;
+  gap: 48px;
+  align-items: stretch;
   overflow: hidden;
+  min-height: 0;
 }
 
 .cast-lobby-left {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   flex-shrink: 0;
-  width: 320px;
+  width: 300px;
+  overflow: hidden;
 }
 
 .cast-join-hint {
-  font-size: 20px;
+  font-size: 18px;
   color: rgba(255, 255, 255, 0.9);
   text-align: center;
 }
@@ -60,36 +63,67 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 12px;
   overflow: hidden;
-  max-height: 100%;
+  min-height: 0;
+}
+
+/* Override PlayerList for TV: remove card padding, scale items to fill */
+.cast-lobby-right .player-list {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.cast-lobby-right .players {
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Scale down QR container padding on TV to save vertical space */
+.cast-lobby-left .qr-container {
+  padding: 16px;
+}
+
+.cast-lobby-left .qr-code {
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.cast-lobby-left .qr-instruction {
+  display: none;
+}
+
+.cast-lobby-left .room-code-label {
+  display: none;
 }
 
 .cast-settings-display {
   background: rgba(255, 255, 255, 0.15);
-  border-radius: 12px;
-  padding: 14px 20px;
+  border-radius: 10px;
+  padding: 10px 16px;
   color: white;
   width: 100%;
   box-sizing: border-box;
 }
 
 .cast-settings-display h3 {
-  font-size: 18px;
-  margin-bottom: 4px;
+  font-size: 16px;
+  margin-bottom: 2px;
+  opacity: 0.8;
 }
 
 .cast-settings-display p {
-  font-size: 16px;
-  margin: 2px 0;
+  font-size: 15px;
+  margin: 1px 0;
   opacity: 0.9;
 }
 
 .cast-status-text {
-  font-size: 22px;
-  color: rgba(255, 255, 255, 0.85);
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.8);
   text-align: center;
-  padding: 8px 0;
+  padding: 4px 0;
 }
 
 /* ── In-game ─────────────────────────────────────────────────────────────── */
@@ -142,7 +176,7 @@
 }
 
 .cast-container .room-code-value {
-  font-size: 48px;
+  font-size: 36px;
 }
 
 .cast-container .player-list h3 {

@@ -82,7 +82,7 @@ function CastHost({ roomCode }: { roomCode: string }) {
       {gameState === 'waiting' && (
         <div className="cast-lobby">
           <div className="cast-lobby-left">
-            <QRCodeDisplay joinUrl={joinUrl || ''} roomCode={roomCode} size={220} />
+            <QRCodeDisplay joinUrl={joinUrl || ''} roomCode={roomCode} size={180} />
             <p className="cast-join-hint">Scan to join</p>
             <div className="cast-settings-display">
               <h3>Settings</h3>
