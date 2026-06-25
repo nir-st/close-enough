@@ -48,10 +48,18 @@ function Landing() {
     try {
       setCasting(true);
       setCastError('');
-      await requestCastSession(); // opens device picker; receiver creates the room
+      const session = await requestCastSession();
+      // Session started — the room-code poll is running. If onRoomReady
+      // fires we'll navigate; if it never does, reset after 15s so the
+      // button isn't stuck forever.
+      if (session) {
+        setTimeout(() => setCasting(false), 15000);
+      } else {
+        setCasting(false);
+      }
     } catch (err) {
       console.error('Cast failed:', castErrorCode(err), err);
-      setCastError(describeCastError(err)); // empty string for user-cancel
+      setCastError(describeCastError(err));
       setCasting(false);
     }
   };

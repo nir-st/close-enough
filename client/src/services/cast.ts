@@ -64,10 +64,23 @@ export function loadCastSender(): Promise<boolean> {
 }
 
 // Start a cast session (opens the device picker). Returns the active session.
+// After the session starts, repeatedly asks the receiver for the room code
+// (the receiver may not have created it yet if it's still loading).
 export async function requestCastSession(): Promise<any> {
   const context = cast.framework.CastContext.getInstance();
   await context.requestSession();
-  return context.getCurrentSession();
+  const session = context.getCurrentSession();
+  if (session) {
+    let attempts = 0;
+    const poll = setInterval(() => {
+      attempts++;
+      try { session.sendMessage(CAST_NAMESPACE, JSON.stringify({ type: 'request-room' })); } catch { /* not ready */ }
+      if (attempts >= 15) clearInterval(poll); // stop after 15s
+    }, 1000);
+    // Store the interval so onRoomReady can clear it once the code arrives
+    (session as any).__roomPoll = poll;
+  }
+  return session;
 }
 
 // Extract the raw Cast error code (for logging).
@@ -104,11 +117,12 @@ export function onRoomReady(handler: (roomCode: string) => void): () => void {
     session.addMessageListener(CAST_NAMESPACE, (_ns: string, msg: string) => {
       try {
         const data: CastMessage = typeof msg === 'string' ? JSON.parse(msg) : msg;
-        if (data.type === 'room-ready') handler(data.roomCode);
+        if (data.type === 'room-ready') {
+          if ((session as any).__roomPoll) clearInterval((session as any).__roomPoll);
+          handler(data.roomCode);
+        }
       } catch { /* ignore malformed */ }
     });
-    // Ask the receiver to (re)send the current room code in case it created the
-    // room before we attached the listener.
     try { session.sendMessage(CAST_NAMESPACE, JSON.stringify({ type: 'request-room' })); } catch { /* not ready */ }
   };
 
