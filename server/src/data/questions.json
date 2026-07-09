@@ -1671,16 +1671,6 @@
       "unit": "atmospheres"
     },
     {
-      "id": "money_easy_1",
-      "categories": [
-        "Money"
-      ],
-      "difficulty": "easy",
-      "text": "What is the price of a new iPhone 15 Pro in dollars?",
-      "correctAnswer": 999,
-      "unit": "dollars"
-    },
-    {
       "id": "money_easy_2",
       "categories": [
         "Money"
@@ -2629,16 +2619,6 @@
       "text": "How many billion hours of gameplay does Roblox have per month?",
       "correctAnswer": 4,
       "unit": "billion hours"
-    },
-    {
-      "id": "weather_easy_1",
-      "categories": [
-        "Weather"
-      ],
-      "difficulty": "easy",
-      "text": "What is the freezing point of water in degrees Celsius?",
-      "correctAnswer": 0,
-      "unit": "°C"
     },
     {
       "id": "weather_easy_2",
@@ -4138,6 +4118,243 @@
       "text": "How many kilometers from Tel Aviv to Be'er Sheva?",
       "correctAnswer": 105,
       "unit": "km"
+    },
+    {
+      "id": "history_easy_3",
+      "categories": ["History"],
+      "difficulty": "easy",
+      "text": "What year was the United Nations founded?",
+      "correctAnswer": 1945
+    },
+    {
+      "id": "history_easy_4",
+      "categories": ["History", "Space"],
+      "difficulty": "easy",
+      "text": "What year did the first humans land on the Moon?",
+      "correctAnswer": 1969
+    },
+    {
+      "id": "history_easy_5",
+      "categories": ["History"],
+      "difficulty": "easy",
+      "text": "What year did Christopher Columbus first reach America?",
+      "correctAnswer": 1492
+    },
+    {
+      "id": "history_easy_6",
+      "categories": ["History"],
+      "difficulty": "easy",
+      "text": "How many seats are in the US Senate?",
+      "correctAnswer": 100,
+      "unit": "seats"
+    },
+    {
+      "id": "history_medium_3",
+      "categories": ["History", "Technology"],
+      "difficulty": "medium",
+      "text": "What year was NASA founded?",
+      "correctAnswer": 1958
+    },
+    {
+      "id": "history_medium_4",
+      "categories": ["History"],
+      "difficulty": "medium",
+      "text": "What year was Abraham Lincoln born?",
+      "correctAnswer": 1809
+    },
+    {
+      "id": "history_medium_5",
+      "categories": ["History"],
+      "difficulty": "medium",
+      "text": "How many seats are in the US House of Representatives?",
+      "correctAnswer": 435,
+      "unit": "seats"
+    },
+    {
+      "id": "history_medium_6",
+      "categories": ["History", "Transportation"],
+      "difficulty": "medium",
+      "text": "What year did the New York City subway first open?",
+      "correctAnswer": 1904
+    },
+    {
+      "id": "history_hard_2",
+      "categories": ["History", "Technology"],
+      "difficulty": "hard",
+      "text": "In what year did Thomas Newcomen build the first practical steam engine?",
+      "correctAnswer": 1712
+    },
+    {
+      "id": "history_hard_3",
+      "categories": ["History", "Buildings"],
+      "difficulty": "hard",
+      "text": "What year was the construction of Notre-Dame de Paris completed?",
+      "correctAnswer": 1345
+    },
+    {
+      "id": "history_hard_4",
+      "categories": ["History", "Buildings"],
+      "difficulty": "hard",
+      "text": "What year was the Leaning Tower of Pisa completed?",
+      "correctAnswer": 1372
+    },
+    {
+      "id": "history_hard_5",
+      "categories": ["History", "Buildings"],
+      "difficulty": "hard",
+      "text": "What year was the Taj Mahal completed?",
+      "correctAnswer": 1653
+    },
+    {
+      "id": "history_hard_6",
+      "categories": ["History"],
+      "difficulty": "hard",
+      "text": "What year was Jules Verne born?",
+      "correctAnswer": 1828
+    },
+    {
+      "id": "tech_easy_4",
+      "categories": ["Technology", "Business"],
+      "difficulty": "easy",
+      "text": "What year was Apple founded?",
+      "correctAnswer": 1976
+    },
+    {
+      "id": "tech_med_4",
+      "categories": ["Technology"],
+      "difficulty": "medium",
+      "text": "What year was Windows XP released?",
+      "correctAnswer": 2001
+    },
+    {
+      "id": "tech_med_5",
+      "categories": ["Technology"],
+      "difficulty": "medium",
+      "text": "What year was Windows 1.0 released?",
+      "correctAnswer": 1985
+    },
+    {
+      "id": "tech_med_6",
+      "categories": ["Technology"],
+      "difficulty": "medium",
+      "text": "What year was the first Apple Macintosh released?",
+      "correctAnswer": 1984
+    },
+    {
+      "id": "tech_med_7",
+      "categories": ["Technology"],
+      "difficulty": "medium",
+      "text": "What year was Bill Gates born?",
+      "correctAnswer": 1955
+    },
+    {
+      "id": "geo_med_8",
+      "categories": ["Geography"],
+      "difficulty": "medium",
+      "text": "How long is the Rhine River in kilometers?",
+      "correctAnswer": 1230,
+      "unit": "km"
+    },
+    {
+      "id": "geo_hard_8",
+      "categories": ["Geography"],
+      "difficulty": "hard",
+      "text": "How long is US Route 1 in kilometers?",
+      "correctAnswer": 3813,
+      "unit": "km"
+    },
+    {
+      "id": "height_med_4",
+      "categories": ["Geography", "Distances"],
+      "difficulty": "medium",
+      "text": "What is the height of Mont Blanc, the highest peak in the Alps, in meters?",
+      "correctAnswer": 4808,
+      "unit": "meters"
+    },
+    {
+      "id": "animal_med_6",
+      "categories": ["Animals"],
+      "difficulty": "medium",
+      "text": "How many liters of water does an elephant drink per day?",
+      "correctAnswer": 150,
+      "unit": "liters"
+    },
+    {
+      "id": "space_med_4",
+      "categories": ["Space", "History"],
+      "difficulty": "medium",
+      "text": "How many days did it take Apollo 11 to travel from Earth to the Moon?",
+      "correctAnswer": 4,
+      "unit": "days"
+    },
+    {
+      "id": "sport_hard_6",
+      "categories": ["Sports"],
+      "difficulty": "hard",
+      "text": "Approximately how many kilometers does the Tour de France cover each year?",
+      "correctAnswer": 3400,
+      "unit": "km"
+    },
+    {
+      "id": "music_med_4",
+      "categories": ["Music", "History"],
+      "difficulty": "medium",
+      "text": "What year was John Lennon assassinated?",
+      "correctAnswer": 1980
+    },
+    {
+      "id": "ent_easy_7",
+      "categories": ["Entertainment"],
+      "difficulty": "easy",
+      "text": "What year did the first episode of Friends air?",
+      "correctAnswer": 1994
+    },
+    {
+      "id": "ent_hard_6",
+      "categories": ["Entertainment"],
+      "difficulty": "hard",
+      "text": "What was the total worldwide box office of all 8 Harry Potter films in dollars?",
+      "correctAnswer": 7700000000,
+      "unit": "dollars"
+    },
+    {
+      "id": "ages_medium_6",
+      "categories": ["Ages", "Technology"],
+      "difficulty": "medium",
+      "text": "How old was Steve Jobs when he died?",
+      "correctAnswer": 56
+    },
+    {
+      "id": "lang_med_4",
+      "categories": ["Language", "Entertainment"],
+      "difficulty": "medium",
+      "text": "How many words are in Harry Potter and the Philosopher's Stone?",
+      "correctAnswer": 77325,
+      "unit": "words"
+    },
+    {
+      "id": "lang_hard_4",
+      "categories": ["Language", "Entertainment"],
+      "difficulty": "hard",
+      "text": "How many detective novels did Agatha Christie write?",
+      "correctAnswer": 66,
+      "unit": "novels"
+    },
+    {
+      "id": "lang_hard_5",
+      "categories": ["Language"],
+      "difficulty": "hard",
+      "text": "How many novels did Jules Verne write?",
+      "correctAnswer": 54,
+      "unit": "novels"
+    },
+    {
+      "id": "lang_hard_6",
+      "categories": ["Language", "History"],
+      "difficulty": "hard",
+      "text": "How many plays did William Shakespeare write?",
+      "correctAnswer": 37,
+      "unit": "plays"
     }
   ]
 }
