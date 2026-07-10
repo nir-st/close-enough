@@ -3,12 +3,34 @@ import { useGameStore } from '../stores/gameStore';
 import { CAST_NAMESPACE } from '../services/cast';
 import CastHost from './CastHost';
 
+// Keep the TV screen awake for the duration of the cast session.
+function useWakeLock() {
+  useEffect(() => {
+    if (!('wakeLock' in navigator)) return;
+    let lock: WakeLockSentinel | null = null;
+
+    const acquire = async () => {
+      try { lock = await navigator.wakeLock.request('screen'); } catch { /* TV may deny */ }
+    };
+
+    acquire();
+    // Re-acquire after the tab comes back to the foreground (lock is released on hide)
+    const onVisibility = () => { if (document.visibilityState === 'visible') acquire(); };
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility);
+      lock?.release();
+    };
+  }, []);
+}
+
 // This page is loaded ON the Chromecast (the receiver). It:
 //  1. Initializes the CAF receiver context + custom message channel.
 //  2. Connects to the game server and creates a room as host.
 //  3. Broadcasts the room code to the casting phone (sender).
 //  4. Renders the normal Host screen (QR/lobby + game) for the TV.
 function CastReceiver() {
+  useWakeLock();
   const { connectSocket, createRoom, roomCode } = useGameStore();
   const ctxRef = useRef<any>(null);
   const startedRef = useRef(false);

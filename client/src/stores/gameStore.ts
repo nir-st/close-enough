@@ -518,12 +518,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setQuestionEnded: (result) => {
+    const connectedCount = get().players.filter(p => p.connected !== false).length;
     set({
       gameState: 'results',
       roundResult: result,
       readyPlayerIds: [],
       readyCount: 0,
-      totalCount: 0,
+      totalCount: connectedCount,
       // Update players with new scores
       players: get().players.map(p => {
         const playerResult = result.results.find(r => r.playerId === p.id);

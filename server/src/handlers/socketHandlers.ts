@@ -594,6 +594,7 @@ export function setupSocketHandlers(io: Server) {
   function endCurrentQuestion(io: Server, roomCode: string) {
     const room = roomService.getRoom(roomCode);
     if (!room) return;
+    if (room.state !== 'answering') return; // guard against timer + all-answered race condition
 
     try {
       const results = gameService.endQuestion(room.code);
