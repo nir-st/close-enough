@@ -9,11 +9,13 @@ class RoomService {
 
   createRoom(hostName: string, hostSocketId: string): Room {
     const code = this.generateUniqueCode();
+    const isCastRoom = hostName === 'TV';
     const room: Room = {
       id: this.generateRoomId(),
       code,
       hostId: hostSocketId,
       hostConnected: true,
+      isCastRoom,
       adminId: null,
       players: [],
       state: 'waiting',
@@ -91,7 +93,7 @@ class RoomService {
     };
 
     room.players.push(player);
-    if (!player.isBot && room.players.filter(p => !p.isBot).length === 1) {
+    if (room.isCastRoom && !player.isBot && room.players.filter(p => !p.isBot).length === 1) {
       room.adminId = player.id;
     }
     room.lastActivity = new Date();

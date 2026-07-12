@@ -25,6 +25,7 @@ interface GameStore {
   playerName: string | null;
   isHost: boolean;
   adminId: string | null;
+  isCastRoom: boolean;
 
   // Game state
   gameState: GameState;
@@ -51,7 +52,7 @@ interface GameStore {
   // True after host's animation completes — enables ready buttons on players
   answerRevealed: boolean;
 
-  // Actions
+  // Actions (isCastRoom is read-only derived from server)
   connectSocket: () => void;
   createRoom: (playerName: string) => void;
   joinRoom: (roomCode: string, playerName: string) => void;
@@ -95,6 +96,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   playerName: null,
   isHost: false,
   adminId: null,
+  isCastRoom: false,
   gameState: 'waiting',
   players: [],
   settings: {
@@ -160,7 +162,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         settings: data.settings,
         players: data.players,
         gameState: data.gameState || get().gameState,
-        adminId: data.adminId ?? get().adminId
+        adminId: data.adminId ?? get().adminId,
+        isCastRoom: data.isCastRoom ?? get().isCastRoom
       });
     });
 
@@ -449,7 +452,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       playerId: data.playerId,
       joinUrl: data.joinUrl,
       settings: data.settings,
-      adminId: data.adminId ?? null
+      adminId: data.adminId ?? null,
+      isCastRoom: data.isCastRoom ?? false
     });
   },
 
@@ -461,14 +465,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
         roomId: data.roomId,
         players: data.players,
         gameState: data.gameState || get().gameState,
-        adminId: data.adminId ?? get().adminId
+        adminId: data.adminId ?? get().adminId,
+        isCastRoom: data.isCastRoom ?? get().isCastRoom
       });
     } else if (data.playerId) {
       // Our own reconnection — update players + game state from server
       set({
         players: data.players,
         gameState: data.gameState || get().gameState,
-        adminId: data.adminId ?? get().adminId
+        adminId: data.adminId ?? get().adminId,
+        isCastRoom: data.isCastRoom ?? get().isCastRoom
       });
       console.log('✅ Reconnected to game in progress');
     } else {

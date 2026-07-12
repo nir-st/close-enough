@@ -1,0 +1,89 @@
+.name-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.name-modal-card {
+  background: var(--card-bg, #1e1e2e);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 32px 28px 28px;
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+
+.name-modal-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary, #fff);
+  text-align: center;
+  margin: 0;
+}
+
+.name-modal-input {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 1.1rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  color: var(--text-primary, #fff);
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+  text-align: center;
+  font-family: inherit;
+}
+
+.name-modal-input:focus {
+  border-color: var(--accent, #7c3aed);
+}
+
+.name-modal-input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.name-modal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.name-modal-cancel {
+  flex: 0 0 auto;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-primary, #fff);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.name-modal-cancel:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.name-modal-submit {
+  flex: 1;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.name-modal-submit:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

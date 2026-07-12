@@ -57,7 +57,8 @@ export function setupSocketHandlers(io: Server) {
           playerId: room.hostId,
           joinUrl,
           settings: room.settings,
-          adminId: room.adminId
+          adminId: room.adminId,
+          isCastRoom: room.isCastRoom
         });
 
         console.log(`✅ Room created: ${room.code} by ${playerName}`);
@@ -118,7 +119,8 @@ export function setupSocketHandlers(io: Server) {
           players: room.players,
           gameState: room.state,
           reconnected: isReconnecting,
-          adminId: room.adminId
+          adminId: room.adminId,
+          isCastRoom: room.isCastRoom
         });
 
         // Restore state for reconnecting mid-game players
@@ -163,7 +165,8 @@ export function setupSocketHandlers(io: Server) {
           player,
           players: room.players,
           reconnected: isReconnecting,
-          adminId: room.adminId
+          adminId: room.adminId,
+          isCastRoom: room.isCastRoom
         });
 
       } catch (error: any) {
@@ -201,7 +204,8 @@ export function setupSocketHandlers(io: Server) {
         settings: room.settings,
         players: room.players,
         gameState: room.state,
-        adminId: room.adminId
+        adminId: room.adminId,
+        isCastRoom: room.isCastRoom
       });
       console.log(`🔄 Host reconnected to room ${roomCode} (state: ${room.state})`);
 
@@ -335,8 +339,8 @@ export function setupSocketHandlers(io: Server) {
     socket.on('submit-answer', ({ answer }: { answer: number }) => {
       const err = validateAnswer(answer);
       if (err) { socket.emit('error', { message: err }); return; }
-      if (!rl.allow(socket.id, 'submit-answer', 2, 60_000)) {
-        socket.emit('error', { message: 'Answer already submitted' });
+      if (!rl.allow(socket.id, 'submit-answer', 10, 60_000)) {
+        socket.emit('error', { message: 'Too many answer submissions. Please wait.' });
         return;
       }
       try {
@@ -356,8 +360,13 @@ export function setupSocketHandlers(io: Server) {
           endCurrentQuestion(io, room.code);
         }
       } catch (error: any) {
-        socket.emit('error', { message: error.message });
-        console.error('❌ Error submitting answer:', error.message);
+        if (error.message === 'Not accepting answers right now') {
+          // Question ended before this answer arrived — silently drop, don't alarm the player
+          console.log(`⏱️ Late answer dropped (question already ended)`);
+        } else {
+          socket.emit('error', { message: error.message });
+          console.error('❌ Error submitting answer:', error.message);
+        }
       }
     });
 

@@ -40,7 +40,8 @@ export interface Room {
   code: string;
   hostId: string;
   hostConnected: boolean; // False while the host socket is disconnected (grace period for reconnect)
-  adminId: string | null; // Player id of the admin (first human player to join — controls settings/start)
+  isCastRoom: boolean; // True when the host is a Chromecast (TV) — enables admin player controls in Play.tsx
+  adminId: string | null; // Player id of the admin (first human player to join — controls settings/start in Cast mode)
   players: Player[];
   state: GameState;
   settings: GameSettings;

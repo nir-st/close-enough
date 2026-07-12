@@ -5,6 +5,7 @@ import QuestionDisplay from '../components/QuestionDisplay';
 import AnswerInput from '../components/AnswerInput';
 import Scoreboard from '../components/Scoreboard';
 import GameSettings from '../components/GameSettings';
+import NameModal from '../components/NameModal';
 import './Play.css';
 
 function Play() {
@@ -12,6 +13,8 @@ function Play() {
   const navigate = useNavigate();
   const hasJoinedRef = useRef(false);
   const [reported, setReported] = useState(false);
+  const [showJoinModal, setShowJoinModal] = useState(false);
+  const [showChangeModal, setShowChangeModal] = useState(false);
   const {
     connectSocket,
     joinRoom,
@@ -36,6 +39,7 @@ function Play() {
     settings,
     updateSettings,
     adminId,
+    isCastRoom,
     restartGame,
     changeName
   } = useGameStore();
@@ -52,39 +56,51 @@ function Play() {
   useEffect(() => {
     if (roomCode && !playerName && !playerId && !hasJoinedRef.current) {
       hasJoinedRef.current = true;
-
       const storedName = localStorage.getItem(`player_name_${roomCode}`);
-
       if (storedName) {
         joinRoom(roomCode, storedName);
       } else {
-        // Keep prompting until a non-empty name is entered or the user cancels
-        let name: string | null = null;
-        while (!name || !name.trim()) {
-          name = prompt('Enter your name:');
-          if (name === null) break; // User cancelled
-        }
-        if (name && name.trim()) {
-          joinRoom(roomCode, name.trim());
-        }
+        setShowJoinModal(true);
       }
     }
   }, [roomCode, playerName, playerId, joinRoom]);
 
   const myPlayer = players.find(p => p.id === playerId);
-  const isAdmin = playerId === adminId;
+  const isAdmin = isCastRoom && playerId === adminId;
   const adminPlayer = players.find(p => p.id === adminId);
   const isReady = readyPlayerIds.includes(playerId || '');
 
   return (
     <div className="play-container">
+      {showJoinModal && (
+        <NameModal
+          title="What's your name?"
+          placeholder="Enter your name"
+          onSubmit={(name) => {
+            setShowJoinModal(false);
+            if (roomCode) joinRoom(roomCode, name);
+          }}
+        />
+      )}
+
+      {showChangeModal && myPlayer && (
+        <NameModal
+          title="Change your name"
+          defaultValue={myPlayer.name}
+          onSubmit={(name) => {
+            setShowChangeModal(false);
+            if (name !== myPlayer.name) changeName(name);
+          }}
+          onCancel={() => setShowChangeModal(false)}
+        />
+      )}
+
       {!connected && (
         <div className="connection-lost-banner">
           🔄 Reconnecting...
         </div>
       )}
 
-      {/* In-game notification (#9) */}
       {notification && (
         <div className="play-notification">{notification}</div>
       )}
@@ -106,10 +122,7 @@ function Play() {
             {myPlayer && (
               <button
                 className="btn-change-name"
-                onClick={() => {
-                  const name = prompt('Enter new name:', myPlayer.name);
-                  if (name && name.trim() && name.trim() !== myPlayer.name) changeName(name.trim());
-                }}
+                onClick={() => setShowChangeModal(true)}
               >
                 {myPlayer.avatar} {myPlayer.name} (tap to change)
               </button>
@@ -128,7 +141,9 @@ function Play() {
               </>
             ) : (
               <p className="waiting-for-admin">
-                Waiting for {adminPlayer?.name || 'the admin'} to start the game…
+                {isCastRoom
+                  ? `Waiting for ${adminPlayer?.name || 'the first player'} to start the game…`
+                  : 'Waiting for the host to start the game…'}
               </p>
             )}
           </div>
@@ -182,7 +197,6 @@ function Play() {
             </div>
           </div>
 
-          {/* Last question: no button needed — server auto-advances after animation */}
           {!roundResult.isLastQuestion && (
             <div className="ready-section">
               {!answerRevealed ? (
